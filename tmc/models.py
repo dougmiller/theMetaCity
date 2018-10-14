@@ -16,14 +16,14 @@ class Article(db.Model):
     def __repr__(self):
         return '<Article: {}>'.format(self.title)
 
-class Tags(db.model):
+class Tags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String, unique=True)
 
     def __repr__(self):
         return '<Tag: {}>'.format(self.tag)
 
-class ArticleTags(db.model):
+class ArticleTags(db.Model):
     article = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.Integer, primary_key=True)
 
