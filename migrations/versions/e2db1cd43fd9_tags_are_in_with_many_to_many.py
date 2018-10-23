@@ -1,8 +1,8 @@
-"""Remade article to be better
+"""Tags are in with many to many
 
-Revision ID: d1a1a428aae0
+Revision ID: e2db1cd43fd9
 Revises: 4e7b4c69111b
-Create Date: 2018-10-23 22:18:11.271098
+Create Date: 2018-10-24 07:04:17.387599
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = 'd1a1a428aae0'
+revision = 'e2db1cd43fd9'
 down_revision = '4e7b4c69111b'
 branch_labels = None
 depends_on = None
@@ -23,7 +23,7 @@ def upgrade():
     sa.Column('title', sa.String(), nullable=True),
     sa.Column('url', sa.String(), nullable=True),
     sa.Column('type', sa.Enum('blog', 'workshop', name='type'), server_default='blog', nullable=False),
-    sa.Column('text', sa.String(), nullable=True),
+    sa.Column('text', sa.String(), nullable=False),
     sa.Column('creation_date', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_date', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
@@ -33,14 +33,16 @@ def upgrade():
     op.create_table('tags',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('tag', sa.String(), nullable=False),
-    sa.PrimaryKeyConstraint('id', 'tag')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('id'),
+    sa.UniqueConstraint('tag')
     )
     op.create_table('tags_joiner',
-    sa.Column('tag', sa.Integer(), nullable=False),
-    sa.Column('article', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['article'], ['articles.id'], ),
-    sa.ForeignKeyConstraint(['tag'], ['tags.id'], ),
-    sa.PrimaryKeyConstraint('tag', 'article')
+    sa.Column('tag_id', sa.Integer(), nullable=False),
+    sa.Column('article_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['article_id'], ['articles.id'], ),
+    sa.ForeignKeyConstraint(['tag_id'], ['tags.id'], ),
+    sa.PrimaryKeyConstraint('tag_id', 'article_id')
     )
     op.drop_table('article')
     # ### end Alembic commands ###
