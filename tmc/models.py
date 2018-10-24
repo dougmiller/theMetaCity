@@ -9,8 +9,8 @@ article_tags = db.Table('tags_joiner',
 
 class Tags(db.Model):
     __tablename__ = 'tags'
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    tag = db.Column(db.String, unique=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String, primary_key=True)
 
     def __repr__(self):
         return '<Tag: {}>'.format(self.tag)
@@ -25,7 +25,8 @@ class Article(db.Model):
     text = db.Column(db.String, nullable=False)
     creation_date = db.Column(db.DateTime, server_default=db.func.now())
     update_date = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
-    parent = db.relationship('Article', backref='Parent', lazy='dynamic')
+    parent = db.Column(db.Integer, db.ForeignKey('articles.id'))
+    children = db.relationship('Article', remote_side=[id], backref='articles')
     tags = db.relationship('Tags', secondary=article_tags, backref='articles')
 
     def __repr__(self):

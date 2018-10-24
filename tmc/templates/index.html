@@ -12,6 +12,10 @@
             <h1><a href="/blog">Blog</a></h1>
             <h1><a href="/workshop">Workshop</a></h1>
         </nav>
+
+        {% for article in articles %}
+            {{ article.title }}
+        {% endfor %}
     </main>
 </body>
 </html>
