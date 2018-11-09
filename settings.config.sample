@@ -1,0 +1,5 @@
+[SETTINGS]
+SECRET_KEY = 'your super secret key'
+SERVER_NAME = 'localhost:5000'
+DEBUG = TRUE
+CSRF_ENABLED = TRUE
