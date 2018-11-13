@@ -8,7 +8,7 @@ article_tags = db.Table('tags_joiner',
 
 class Tag(db.Model):
     __tablename__ = 'tags'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     tag = db.Column(db.String, primary_key=True)
 
     def __repr__(self):
