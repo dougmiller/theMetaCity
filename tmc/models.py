@@ -25,9 +25,9 @@ class Article(db.Model):
     text = db.Column(db.String, nullable=False)
     creation_date = db.Column(db.DateTime, server_default=db.func.now())
     update_date = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
-    parent = db.Column(db.Integer, db.ForeignKey('articles.id'))
-    children = db.relationship('Article', remote_side=[id], backref='articles')
-    tags = db.relationship('Tag', secondary=article_tags, backref='articles')
+    parent_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
+    parent = db.relationship('Article', remote_side=[id], backref='children', order_by='Article.id')
+    tags = db.relationship('Tag', secondary=article_tags, backref='tags')
 
     def __repr__(self):
         return '<Article {}: {}>'.format(self.id, self.title)

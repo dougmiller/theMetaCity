@@ -15,9 +15,12 @@
 
         {% for article in articles %}
             <article>
-                <img src=""/>
-                <h2>{{ article.title }}</h2>
-                <h2>{{ article.update_date }}</h2>
+                <a href="/blog/{{ article.url }}">
+                    <img src=""/>
+                    <h2>{{ article.title }}</h2>
+                    <h3>{{ article.blurb }}</h3>
+                    <h4>{{ article.update_date }}</h4>
+                </a>
             </article>
         {% endfor %}
     </main>

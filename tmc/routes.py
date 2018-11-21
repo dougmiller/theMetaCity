@@ -54,4 +54,8 @@ def blog_with_year_and_month_and_title(year, month, url):
 
 @tmc.route('/workshop')
 def workshop():
-    pass
+    articles = Article.query\
+        .filter_by(type='workshop')\
+        .order_by(Article.creation_date.desc()).limit(10).all()
+    return render_template('workshop/index.html', articles=articles)
+

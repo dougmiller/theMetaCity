@@ -8,4 +8,4 @@ tmc.config.from_object(Config())
 db = SQLAlchemy(tmc)
 migrate = Migrate(tmc, db)
 
-from tmc import routes, models
+from tmc import routes, models, helpers
