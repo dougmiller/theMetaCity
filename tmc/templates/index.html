@@ -7,19 +7,19 @@
 <body>
     <main>
         <nav class="rootBlock">
-            <img alt="The MetaCity Logo" src="/media/site-images/fp-logo.svg"/>
+            <img alt="The MetaCity Logo" src="/static/images/tmc-logo-animated.svg"/>
             <h1>Douglas Miller</h1>
-            <h1><a href="/blog">Blog</a></h1>
-            <h1><a href="/workshop">Workshop</a></h1>
+            <h1><a href="{{ url_for('blog') }}">Blog</a></h1>
+            <h1><a href="{{ url_for('workshop') }}">Workshop</a></h1>
         </nav>
 
         {% for article in articles %}
             <article>
-                <a href="/blog/{{ article.url }}">
+                <a href="{{ url_for('blog_with_title', url=article.url) }}">
                     <img src=""/>
                     <h2>{{ article.title }}</h2>
-                    <h3>{{ article.blurb }}</h3>
-                    <h4>{{ article.update_date }}</h4>
+                    <h3>{{ article.build_date_byline() }}</h3>
+                    {{ article.blurb|safe }}
                 </a>
             </article>
         {% endfor %}

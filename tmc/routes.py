@@ -56,6 +56,6 @@ def blog_with_year_and_month_and_title(year, month, url):
 def workshop():
     articles = Article.query\
         .filter_by(type='workshop')\
-        .order_by(Article.creation_date.desc()).limit(10).all()
+        .order_by(Article.creation_date.desc()).all()
     return render_template('workshop/index.html', articles=articles)
 

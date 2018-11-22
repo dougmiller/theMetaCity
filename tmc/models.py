@@ -34,7 +34,7 @@ class Article(db.Model):
 
     def build_date_byline(self):
         if self.creation_date < self.update_date:
-            return 'Published: {}. Updated {}' \
+            return 'Published: {}; Updated {}' \
                 .format(self.creation_date.strftime("%d %B %y"), self.update_date.strftime("%d %B %y"))
         else:
             return 'Published: {}' \
