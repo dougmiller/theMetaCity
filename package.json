@@ -1,0 +1,30 @@
+{
+  "name": "themetacityflask",
+  "version": "0.0.1",
+  "description": "Build for the MetaCity main site",
+  "private": true,
+  "author": "Douglas Miller",
+  "scripts": {
+    "lint": "jshint theMetaCityMedia/static/javascript/*.js",
+    "css": "node postCSS.js",
+    "watch": "watch 'npm run css' css/"
+  },
+  "dependencies": {
+    "autoprefixer": "latest",
+    "fs": "latest",
+    "import-postcss": "latest",
+    "jshint": "latest",
+    "postcss": "latest",
+    "postcss-css-variables": "latest",
+    "postcss-custom-media": "latest",
+    "postcss-discard-comments": "latest",
+    "postcss-import-part": "latest",
+    "postcss-media-variables": "latest",
+    "postcss-nested": "latest",
+    "postcss-partial-import": "latest",
+    "postcss-reporter": "latest"
+  },
+  "devDependencies": {
+    "postcss-map": "latest"
+  }
+}
