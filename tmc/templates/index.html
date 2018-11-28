@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>The MetaCity.com</title>
+    <link href="/static/css/style.css" rel="stylesheet"/>
 </head>
 <body>
-    <main>
-        <nav class="rootBlock">
-            <img alt="The MetaCity Logo" src="/static/images/tmc-logo-animated.svg"/>
+    <main id="fp-main">
+        <nav id="fp-nav">
+            <img alt="The MetaCity Logo" src="/static/images/tmc-logo-animated.svg" width="100%" height="auto"/>
             <h1>Douglas Miller</h1>
             <h1><a href="{{ url_for('blog') }}">Blog</a></h1>
             <h1><a href="{{ url_for('workshop') }}">Workshop</a></h1>
         </nav>
 
         {% for article in articles %}
-            <article>
+            <article class="fp-article">
                 <a href="{{ url_for('blog_with_title', url=article.url) }}">
                     <img src=""/>
                     <h2>{{ article.title }}</h2>
@@ -23,12 +24,11 @@
                 </a>
             </article>
         {% endfor %}
+        <footer id="fp-footer">
+            <h2><a href="/twitter/">Twitter</a></h2>
+            <h2><a href="/about">About</a></h2>
+            <h2><a href="https://media.themetacity.com">Media</a></h2>
+        </footer>
     </main>
-    <footer>
-        <h2><a href="/github/">Github</a></h2>
-        <h2><a href="/twitter/">Twitter</a></h2>
-        <h2><a href="/about">About</a></h2>
-        <h2><a href="https://media.themetacity.com">Media</a></h2>
-    </footer>
 </body>
 </html>
