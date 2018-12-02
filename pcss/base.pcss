@@ -1,7 +1,19 @@
 
 #fp-main {
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    grid-row-gap: 10px;
+    grid-template-areas:
+        "navigation"
+        "articles"
+        "links";
+
+
     nav {
-        max-width: 500px;
+        grid-area: navigation;
+
         display: grid;
         grid-template-columns: 120px 1fr;
         grid-column-gap: 10px;
@@ -25,6 +37,37 @@
         h1:nth-of-type(3) {grid-area: workshop;}
     }
 
-    article {}
-    footer {}
+    article {
+        grid-area: articles;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+        grid-row-gap: 10px;
+        grid-template-areas:
+            "a-first"
+            "a-second"
+            "a-third";
+
+        div:nth-of-type(1) {grid-area: a-first;}
+        div:nth-of-type(2) {grid-area: a-second;}
+        div:nth-of-type(3) {grid-area: a-third;}
+    }
+
+    footer {
+        grid-area: links;
+
+        background-color: green;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-column-gap: 10px;
+        grid-template-rows: 1fr;
+
+        grid-template-areas:
+            "twitter about media";
+
+        h2:nth-of-type(1) {grid-area: twitter;}
+        h2:nth-of-type(2) {grid-area: about;}
+        h2:nth-of-type(3) {grid-area: media;}
+    }
 }

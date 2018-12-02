@@ -3,7 +3,7 @@ console.log("CSS changed. Processing...");
 var postcss = require('postcss');
 var fs = require('fs');
 
-var postcss_import = require('import-postcss');
+var postcss_import = require('postcss-import');
 var postcss_custom_media = require('postcss-custom-media');
 var postcss_css_variables = require('postcss-css-variables');
 var postcss_discard_comments = require('postcss-discard-comments');

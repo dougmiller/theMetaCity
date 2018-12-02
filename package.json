@@ -11,17 +11,20 @@
   },
   "dependencies": {
     "autoprefixer": "latest",
+    "caniuse-lite": "^1.0.30000912",
+    "electron-to-chromium": "^1.3.86",
     "fs": "latest",
-    "import-postcss": "latest",
     "jshint": "latest",
+    "node-releases": "^1.0.5",
     "postcss": "latest",
     "postcss-css-variables": "latest",
     "postcss-custom-media": "latest",
     "postcss-discard-comments": "latest",
+    "postcss-import": "latest",
     "postcss-import-part": "latest",
+    "postcss-partial-import": "latest",
     "postcss-media-variables": "latest",
     "postcss-nested": "latest",
-    "postcss-partial-import": "latest",
     "postcss-reporter": "latest"
   },
   "devDependencies": {
