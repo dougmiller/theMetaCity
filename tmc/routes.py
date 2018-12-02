@@ -59,3 +59,7 @@ def workshop():
         .order_by(Article.creation_date.desc()).all()
     return render_template('workshop/index.html', articles=articles)
 
+
+@tmc.route('/about')
+def about():
+    pass

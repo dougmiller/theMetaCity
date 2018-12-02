@@ -16,15 +16,16 @@
     "fs": "latest",
     "jshint": "latest",
     "node-releases": "^1.0.5",
+    "npm": "^6.4.1",
     "postcss": "latest",
     "postcss-css-variables": "latest",
     "postcss-custom-media": "latest",
     "postcss-discard-comments": "latest",
     "postcss-import": "latest",
     "postcss-import-part": "latest",
-    "postcss-partial-import": "latest",
     "postcss-media-variables": "latest",
     "postcss-nested": "latest",
+    "postcss-partial-import": "latest",
     "postcss-reporter": "latest"
   },
   "devDependencies": {

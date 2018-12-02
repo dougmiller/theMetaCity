@@ -6,29 +6,29 @@
     <link href="/static/css/style.css" rel="stylesheet"/>
 </head>
 <body>
-    <main id="fp-main">
-        <nav id="fp-nav">
-            <img alt="The MetaCity Logo" src="/static/images/tmc-logo-animated.svg" width="100%" height="auto"/>
-            <h1>Douglas Miller</h1>
-            <h1><a href="{{ url_for('blog') }}">Blog</a></h1>
-            <h1><a href="{{ url_for('workshop') }}">Workshop</a></h1>
-        </nav>
+    <nav>
+        <img alt="The MetaCity Logo" src="/static/images/tmc-logo-animated.svg" width="100%" height="auto"/>
+        <h1>Douglas Miller</h1>
+        <h1><a href="{{ url_for('blog') }}">Blog</a></h1>
+        <h1><a href="{{ url_for('workshop') }}">Workshop</a></h1>
+    </nav>
 
-        {% for article in articles %}
-            <article class="fp-article">
-                <a href="{{ url_for('blog_with_title', url=article.url) }}">
-                    <img src=""/>
-                    <h2>{{ article.title }}</h2>
-                    <h3>{{ article.build_date_byline() }}</h3>
-                    {{ article.blurb|safe }}
-                </a>
-            </article>
-        {% endfor %}
-        <footer>
-            <h2><a href="/twitter/">Twitter</a></h2>
-            <h2><a href="/about">About</a></h2>
-            <h2><a href="https://media.themetacity.com">Media</a></h2>
-        </footer>
+    <main>
+    {% for article in articles %}
+        <article>
+            <a href="{{ url_for('blog_with_title', url=article.url) }}">
+                <img src=""/>
+                <h2>{{ article.title }}</h2>
+                <h3>{{ article.build_date_byline() }}</h3>
+                {{ article.blurb|safe }}
+            </a>
+        </article>
+    {% endfor %}
     </main>
+    <footer>
+        <h2><a href="/twitter/">Twitter</a></h2>
+        <h2><a href="{{ url_for('about') }}">About</a></h2>
+        <h2><a href="https://media.themetacity.com">Media</a></h2>
+    </footer>
 </body>
 </html>
