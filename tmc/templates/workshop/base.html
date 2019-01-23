@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block includes %}{% endblock %}
+</head>
+<body>
+{% block articles %}{% endblock %}
+<footer>
+    <div id="licence">
+        <p>{% block licence %}{% endblock %} by Douglas Miller is licensed under a
+            <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                Creative Commons Attribution-ShareAlike 4.0 International License
+            </a>.
+        </p>
+    </div>
+</footer>
+</body>
+</html>

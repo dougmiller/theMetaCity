@@ -5,9 +5,10 @@
   "private": true,
   "author": "Douglas Miller",
   "scripts": {
-    "lint": "jshint theMetaCityMedia/static/javascript/*.js",
+    "lint": "jshint theMetaCityFlask/static/javascript/*.js",
+    "ts": "ts typescript/*.ts",
     "css": "node postCSS.js",
-    "watch": "watch 'npm run css' css/"
+    "watch": "watch 'npm run css' ./pcss"
   },
   "dependencies": {
     "autoprefixer": "latest",
@@ -26,7 +27,9 @@
     "postcss-media-variables": "latest",
     "postcss-nested": "latest",
     "postcss-partial-import": "latest",
-    "postcss-reporter": "latest"
+    "postcss-reporter": "latest",
+    "typescript": "^3.2.2",
+    "watch": "^1.0.2"
   },
   "devDependencies": {
     "postcss-map": "latest"

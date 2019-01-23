@@ -1,8 +1,8 @@
 @import "variables.pcss";
 
 @import "base.pcss";
-@import "small/base.pcss";
-@import "medium/base.pcss";
-@import "large/base.pcss";
+@import "small/base.pcss" (width >= 300px);
+@import "medium/base.pcss" (min-width: 800px);
+@import "large/base.pcss"(width >= 1200px);
 
 @import "ui-toolkit.pcss";

@@ -1,19 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Blog Index</title>
+{% extends "blog/base.html" %}
+
+{% block title %}{{ article.title }} | theMetaCity{% endblock %}
+{% block includes %}
     <link rel="canonical" href="{{ url_for('blog_with_title', url=article.url) }}"/>
-</head>
-<body>
+{% endblock %}
+
+{% block body_content %}
     <article>
         <h1><a href="{{ url_for('blog_with_title', url=article.url) }}">{{ article.title }}</a></h1>
         <h2>{{ article.build_date_byline() }}</h2>
         {% if article.parent.children %}
             <h3>Articles in this series:</h3>
-            {{ other_articles_list(article)|safe }}
+            {{ other_blog_articles_list(article)|safe }}
         {% endif %}
         {{ article.text|safe }}
     </article>
-</body>
-</html>
+{% endblock %}

@@ -17,7 +17,9 @@ def blog():
 
 @tmc.route('/blog/<string:url>')
 def blog_with_title(url):
-    article = Article.query.filter_by(url=url).first_or_404()
+    article = Article.query.filter_by(url=url)\
+        .filter_by(type='blog') \
+        .first_or_404()
     return render_template('blog/article.html', article=article)
 
 
@@ -58,6 +60,14 @@ def workshop():
         .filter_by(type='workshop')\
         .order_by(Article.creation_date.desc()).all()
     return render_template('workshop/index.html', articles=articles)
+
+
+@tmc.route('/workshop/<string:url>')
+def workshop_with_title(url):
+    article = Article.query\
+        .filter_by(type='workshop') \
+        .filter_by(url=url).first_or_404()
+    return render_template('workshop/article.html', article=article)
 
 
 @tmc.route('/about')

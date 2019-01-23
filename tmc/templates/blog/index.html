@@ -2,12 +2,12 @@
 
 {% block title %}Blog Index{% endblock %}
 
-{% block articles %}
+{% block body_content %}
     {% for article in articles %}
         <article>
-            <img src=""/>
-            <h2><a href="{{ url_for('blog_with_title', url=article.url) }}">{{ article.title }}</a></h2>
+            <h1><a href="{{ url_for('blog_with_title', url=article.url) }}">{{ article.title }}</a></h1>
             <h2>{{ article.build_date_byline() }}</h2>
+            {{ article.blurb|safe }}
         </article>
     {% endfor %}
 {% endblock %}
