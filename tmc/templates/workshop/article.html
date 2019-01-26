@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Workshop Index</title>
+{% extends "workshop/base.html" %}
+{% block title %}{{ article.title }} | theMetaCity{% endblock %}
+
+{% block includes %}
     <link rel="canonical" href="{{ url_for('workshop_with_title', url=article.url) }}"/>
-</head>
-<body>
+{% endblock %}
+
+{% block body_content %}
     <article>
         <h1><a href="{{ url_for('workshop_with_title', url=article.url) }}">{{ article.title }}</a></h1>
         <h2>{{ article.build_date_byline() }}</h2>
@@ -15,5 +15,4 @@
         {% endif %}
         {{ article.text|safe }}
     </article>
-</body>
-</html>
+{% endblock %}
