@@ -19,6 +19,15 @@ def blog():
     return render_template('blog/index.html', articles=articles)
 
 
+@tmc.route('/blog/archive')
+def blog_archive():
+    articles = Article.query.\
+        filter_by(type='blog')\
+        .order_by(Article.creation_date.desc())\
+        .all()
+    return render_template('blog/index.html', articles=articles)
+
+
 @tmc.route('/blog/<string:url>')
 def blog_with_title(url):
     article = Article.query.\
@@ -83,4 +92,4 @@ def workshop_with_title(url):
 
 @tmc.route('/about')
 def about():
-    pass
+    return render_template('about.html')

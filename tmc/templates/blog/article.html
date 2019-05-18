@@ -14,5 +14,8 @@
             {{ other_blog_articles_list(article)|safe }}
         {% endif %}
         {{ article.text|safe }}
+        <footer>
+            <a href="{{ url_for('blog') }}">Back to blog</a>
+        </footer>
     </article>
 {% endblock %}

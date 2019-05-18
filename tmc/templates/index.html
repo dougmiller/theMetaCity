@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>The MetaCity.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/static/css/style.css" rel="stylesheet"/>
-    <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
-    <style>
-        body {
-            background: url("/static/images/backgrounds/{{ range(1, 17) | random }}.jpg") no-repeat center center fixed;
-        }
-    </style>
-
+    <link rel="icon" type="image/svg+xml" href="/static/images/tmc-logo-animated.svg">
+    <style>body{background:url("/static/images/backgrounds/{{ range(1, 17) | random }}.jpg") no-repeat center center fixed;}</style>
 </head>
 <body id="front-page">
         <nav>
@@ -33,6 +28,7 @@
                         {{ article.title }}
                     </a>
                 </h1>
+                <h2>{{ article.build_date_byline() }}</h2>
             </article>
         {% endfor %}
         </main>

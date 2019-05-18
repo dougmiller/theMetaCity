@@ -22,7 +22,7 @@
 
 	<g transform="scale(0.6)" fill-rule="evenodd">
 		<g clip-path="url(#innerCity)">
-			<use id="largegear" fill="none" stroke="#7575a3" stroke-width="3" transform="scale(0.40) translate(72, 180)" style="filter:url(#distanceBlurFar)" xlink:href="#tengearuse">
+			<use id="large_gear" fill="none" stroke="#7575a3" stroke-width="3" transform="scale(0.40) translate(72, 180)" style="filter:url(#distanceBlurFar)" xlink:href="#tengearuse">
 		    	<animateTransform
         			attributeType="XML"
         			attributeName="transform"
@@ -32,8 +32,8 @@
         			repeatCount="indefinite"
 					additive="sum"/>
 
-					<animate id="largegearblue" attributeName="stroke" from="#E2E2E2" to="blue" begin="0; largegeargray.end+5s" dur="3s" repeatCount="1"/>
-					<animate id="largegeargray" attributeName="stroke" from="blue" to="#E2E2E2" begin="largegearblue.end" dur="3s" repeatCount="1"/>
+					<animate id="large_gearblue" attributeName="stroke" from="#7575a3" to="blue" begin="0; large_geargray.end" dur="3s" repeatCount="1"/>
+					<animate id="large_geargray" attributeName="stroke" from="blue" to="#7575a3" begin="large_gearblue.end" dur="3s" repeatCount="1"/>
 			</use>
 
 			<use id="smallgear" fill="none" stroke="#7575a3" stroke-width="2.5" transform="scale(0.25) translate(390, 360)" style="filter:url(#distanceBlurClose)" xlink:href="#tengearuse">
@@ -46,8 +46,8 @@
                     repeatCount="indefinite"
                     additive="sum"/>
 
-                    <animate id="smallgearorange" attributeName="stroke" from="#E2E2E2" to="orange" begin="2s; smallgeargray.end+7s" dur="4s" repeatCount="1"/>
-                    <animate id="smallgeargray" attributeName="stroke" from="orange" to="#E2E2E2" begin="smallgearorange.end" dur="4s" repeatCount="1"/>
+                    <animate id="smallgearorange" attributeName="stroke" from="#7575a3" to="orange" begin="2s; smallgeargray.end" dur="4s" repeatCount="1"/>
+                    <animate id="smallgeargray" attributeName="stroke" from="orange" to="#7575a3" begin="smallgearorange.end" dur="4s" repeatCount="1"/>
             </use>
         </g>
 

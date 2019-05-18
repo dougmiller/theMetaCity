@@ -1,3 +1,4 @@
+htmlmin
 alembic==1.0.0
 click==6.7
 Flask==1.0.2

@@ -13,11 +13,12 @@
   "dependencies": {
     "autoprefixer": "latest",
     "caniuse-lite": "^1.0.30000912",
+    "cssnano": "^4.1.10",
     "electron-to-chromium": "^1.3.86",
     "fs": "latest",
     "jshint": "latest",
     "node-releases": "^1.0.5",
-    "npm": "^6.4.1",
+    "npm": "^6.9.0",
     "postcss": "latest",
     "postcss-css-variables": "latest",
     "postcss-custom-media": "latest",

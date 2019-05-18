@@ -3,11 +3,24 @@
 {% block title %}Blog Index{% endblock %}
 
 {% block body_content %}
+    <header>
+        <h1>The MetaCity Blog index</h1>
+        <nav>
+
+        </nav>
+    </header>
     {% for article in articles %}
         <article>
             <h1><a href="{{ url_for('blog_with_title', url=article.url) }}">{{ article.title }}</a></h1>
             <h2>{{ article.build_date_byline() }}</h2>
             {{ article.blurb|safe }}
+
+            {% if loop.index is divisibleby 5 %}
+            <footer>
+                <a href="{{ url_for('blog') }}">Back to blog index</a>
+            </footer>
+            {% endif %}
         </article>
     {% endfor %}
+    <h2><a href="{{ url_for('blog_archive') }}">See the rest of the articles</a></h2>
 {% endblock %}

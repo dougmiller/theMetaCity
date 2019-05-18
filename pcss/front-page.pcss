@@ -1,7 +1,7 @@
-
 #front-page {
-    height: 100vh;
+    margin: 0;
     display: grid;
+    height: 100vh;
     grid-template-columns: 1fr;
     grid-template-rows: 120px 1fr;
     grid-row-gap: 10px;
@@ -10,7 +10,9 @@
         "articles"
         "links";
 
-    h1, h2 {margin: 0; font-size: 1em;
+    h1 {
+        margin: 0;
+        font-size: 1em;
 
         a {
             color: var(--colour-alight);
@@ -24,6 +26,11 @@
         a:visited {
             color: var(--colour-known);
         }
+    }
+
+    h2 {
+        font-size: 0.8em;
+        margin: 0.8em 0 0 0;
     }
 
     nav, article, footer {
@@ -66,25 +73,37 @@
 
         article.blog {border: 1px solid var(--colour-work);}
         article.workshop {border: 1px solid var(--colour-explore);}
+
+        article:last-child {
+            margin: 0;
+        }
     }
 
+
+
     footer {
+        padding: 1em;
+        text-align: center;
+
         grid-area: links;
+        align-self: end;
 
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-column-gap: 10px;
         grid-template-rows: 1fr;
 
-        grid-template-areas:
-            "twitter about media";
+        grid-template-areas: "twitter about media";
 
-        h2 {margin: 0;}
+        h2 {
+            a {
+                color: var(--colour-alight);
+                text-decoration: none;
+            }
+        }
 
         h2:nth-of-type(1) {grid-area: twitter;}
         h2:nth-of-type(2) {grid-area: about;}
         h2:nth-of-type(3) {grid-area: media;}
-
-        text-align: center;
     }
 }
