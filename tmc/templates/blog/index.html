@@ -1,14 +1,8 @@
 {% extends "blog/base.html" %}
 
-{% block title %}Blog Index{% endblock %}
+{% block title %}theMetaCity.com Blog{% endblock %}
 
 {% block body_content %}
-    <header>
-        <h1>The MetaCity Blog index</h1>
-        <nav>
-
-        </nav>
-    </header>
     {% for article in articles %}
         <article>
             <h1><a href="{{ url_for('blog_with_title', url=article.url) }}">{{ article.title }}</a></h1>

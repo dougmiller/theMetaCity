@@ -7,12 +7,14 @@
   "scripts": {
     "lint": "jshint theMetaCityFlask/static/javascript/*.js",
     "ts": "ts typescript/*.ts",
-    "css": "node postCSS.js",
-    "watch": "watch 'npm run css' ./pcss"
+    "fp": "node FPPostCSS.js",
+    "fpwatch": "watch 'npm run fp' ./pcss/front-page.pcss",
+    "css": "node CSSPostCSS.js",
+    "csswatch": "watch 'npm run css' ./pcss"
   },
   "dependencies": {
     "autoprefixer": "latest",
-    "caniuse-lite": "^1.0.30000912",
+    "caniuse-lite": "^1.0.30000974",
     "cssnano": "^4.1.10",
     "electron-to-chromium": "^1.3.86",
     "fs": "latest",

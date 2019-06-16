@@ -93,3 +93,8 @@ def workshop_with_title(url):
 @tmc.route('/about')
 def about():
     return render_template('about.html')
+
+
+@tmc.route('/rss')
+def rss():
+    pass

@@ -1,5 +1,31 @@
-@import "front-page.pcss";
-@import "article.pcss";
+body {
+    margin: 0;
+}
+
+body > header {
+    background: var(--colour-float);
+    box-shadow: 10px 10px 15px 0 var(--colour-forgotten);
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+    text-align: center;
+
+    h1 {
+        font-family: var(--font-heading);
+        margin: 0;
+
+        .titleHighlight {
+            color: var(--colour-work);
+        }
+    }
+}
+
+body > article {
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6em;
+    font-size: 1.4em;
+    padding: 1em;
+}
 
 h1, h2, h3 {
     font-family: var(--font-heading);
@@ -11,4 +37,9 @@ h3 {
 
 p {
     font-family: var(--font-bulk);
+}
+
+body > footer {
+    padding-top: 4em;
+    background: repeat-x url(/static/images/tmc-logo-cityscape.svg);
 }

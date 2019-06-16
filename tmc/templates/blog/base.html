@@ -12,8 +12,19 @@
         {% block includes %}{% endblock %}
     </head>
     <body class="article">
+        <header>
+            <h1>theMetaCity<wbr><span class="titleHighlight">Blog</span></h1>
+            <nav>
+
+            </nav>
+        </header>
         {% block body_content %}{% endblock %}
         <footer>
+            <nav>
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('blog') }}">Blog</a>
+                <a href="{{ url_for('rss') }}">RSS</a>
+            </nav>
             <div id="licence">
                 <p>{% block licence %}{% endblock %} by Douglas Miller is licensed under a
                     <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
