@@ -6,7 +6,12 @@ from tmc.models import Article
 @tmc.route('/')
 def index():
     articles = Article.query.order_by(Article.creation_date.desc()).limit(3).all()
-    return render_template('index.html', articles=articles)
+    return render_template('front-page.html', articles=articles)
+
+
+@tmc.route('/about')
+def about():
+    return render_template('about.html')
 
 
 @tmc.route('/blog')
@@ -88,11 +93,6 @@ def workshop_with_title(url):
         .filter_by(type='workshop') \
         .filter_by(url=url).first_or_404()
     return render_template('workshop/article.html', article=article)
-
-
-@tmc.route('/about')
-def about():
-    return render_template('about.html')
 
 
 @tmc.route('/rss')

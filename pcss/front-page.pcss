@@ -1,4 +1,7 @@
-#front-page {
+@import "variables.pcss";
+@import "fonts.pcss";
+
+body {
     margin: 0;
     display: grid;
     height: 100vh;
@@ -9,101 +12,113 @@
         "navigation"
         "articles"
         "links";
+}
 
-    h1 {
+h1 {
+    margin: 0;
+    font-size: 1em;
+
+    a {
+        color: var(--colour-alight);
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: var(--colour-work);
+    }
+
+    a:visited {
+        color: var(--colour-known);
+    }
+}
+
+h2 {
+    font-size: 0.8em;
+    margin: 0.8em 0 0 0;
+}
+
+nav, article, footer {
+    background-color: var(--colour-mist);
+    border: 1px solid var(--colour-unforgiving);
+}
+
+nav {
+    grid-area: navigation;
+
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    grid-column-gap: 1em;
+    grid-template-rows: repeat(3, 1fr);
+    grid-row-gap: 1em;
+    grid-template-areas:
+        "imglogo name"
+        "imglogo blog"
+        "imglogo workshop";
+
+    align-items: center;
+
+    img {
+        grid-area: imglogo;
+        width: 120px;
+    }
+
+    h1:nth-of-type(1) {grid-area: name; margin-top: 1em;}
+    h1:nth-of-type(2) {grid-area: blog;}
+    h1:nth-of-type(3) {grid-area: workshop; margin-bottom: 1em;}
+}
+
+main {
+    grid-area: articles;
+
+    article {
+        padding: 1em;
+        margin: 0 0 1em 0;
+    }
+
+    article.blog {border: 1px solid var(--colour-work);}
+    article.workshop {border: 1px solid var(--colour-explore);}
+
+    article:last-child {
         margin: 0;
-        font-size: 1em;
+    }
+}
 
+footer {
+    padding: 1em;
+    text-align: center;
+
+    grid-area: links;
+    align-self: end;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 10px;
+    grid-template-rows: 1fr;
+
+    grid-template-areas: "twitter about media";
+
+    h2 {
         a {
             color: var(--colour-alight);
             text-decoration: none;
         }
-
-        a:hover {
-            color: var(--colour-work);
-        }
-
-        a:visited {
-            color: var(--colour-known);
-        }
     }
 
-    h2 {
-        font-size: 0.8em;
-        margin: 0.8em 0 0 0;
-    }
+    h2:nth-of-type(1) {grid-area: twitter;}
+    h2:nth-of-type(2) {grid-area: about;}
+    h2:nth-of-type(3) {grid-area: media;}
+}
 
-    nav, article, footer {
-        background-color: var(--colour-mist);
-        border: 1px solid var(--colour-unforgiving);
-    }
-
-    nav {
-        grid-area: navigation;
-
-        display: grid;
-        grid-template-columns: 120px 1fr;
-        grid-column-gap: 1em;
-        grid-template-rows: repeat(3, 1fr);
+@media (min-width: 601px) {
+    body {
+        grid-template-columns: 1fr 400px;
+        grid-template-rows: 1fr 120px auto 1fr auto;
         grid-row-gap: 1em;
         grid-template-areas:
-            "imglogo name"
-            "imglogo blog"
-            "imglogo workshop";
-
-        align-items: center;
-
-        img {
-            grid-area: imglogo;
-            width: 120px;
-        }
-
-        h1:nth-of-type(1) {grid-area: name; margin-top: 1em;}
-        h1:nth-of-type(2) {grid-area: blog;}
-        h1:nth-of-type(3) {grid-area: workshop; margin-bottom: 1em;}
-    }
-
-    main {
-        grid-area: articles;
-
-        article {
-            padding: 1em;
-            margin: 0 0 1em 0;
-        }
-
-        article.blog {border: 1px solid var(--colour-work);}
-        article.workshop {border: 1px solid var(--colour-explore);}
-
-        article:last-child {
-            margin: 0;
-        }
-    }
-
-
-
-    footer {
-        padding: 1em;
-        text-align: center;
-
-        grid-area: links;
-        align-self: end;
-
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-column-gap: 10px;
-        grid-template-rows: 1fr;
-
-        grid-template-areas: "twitter about media";
-
-        h2 {
-            a {
-                color: var(--colour-alight);
-                text-decoration: none;
-            }
-        }
-
-        h2:nth-of-type(1) {grid-area: twitter;}
-        h2:nth-of-type(2) {grid-area: about;}
-        h2:nth-of-type(3) {grid-area: media;}
+            ". ."
+            ". navigation"
+            ". articles"
+            ". ."
+            ". links";
     }
 }

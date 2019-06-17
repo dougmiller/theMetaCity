@@ -13,8 +13,7 @@ var css_nano = require('cssnano');
 
 var options = {
     from: 'pcss/front-page.css',
-    to: 'tmc/static/css/front-page.css',
-    map: { inline: true }
+    to: 'tmc/static/css/front-page.css'
 };
 
 var css = fs.readFileSync("pcss/front-page.pcss", "utf8");
@@ -27,7 +26,7 @@ FPPostCSS([
     postcss_discard_comments,
     postcss_autoprefixer,
     postcss_reporter,
-    //css_nano
+    css_nano
 ])
 .process(css, options)
 .then(function (result) {
