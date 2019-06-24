@@ -13,12 +13,12 @@ var postcss_nested = require('postcss-nested');
 var css_nano = require('cssnano');
 
 var options = {
-    from: 'pcss/style.css',
+    from: 'pcss/article.css',
     to: 'tmc/static/css/style.css',
     map: { inline: true }
 };
 
-var css = fs.readFileSync("pcss/style.pcss", "utf8");
+var css = fs.readFileSync("pcss/article.pcss", "utf8");
 
 postcss([
     postcss_import,

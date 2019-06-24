@@ -15,7 +15,9 @@
         <header>
             <h1>theMetaCity<wbr><span class="titleHighlight">Blog</span></h1>
             <nav>
-
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('tags') }}">Tags</a>
+                <a href="https://media.themetacity.com">Media</a>
             </nav>
         </header>
         {% block body_content %}{% endblock %}
@@ -23,15 +25,15 @@
             <nav>
                 <a href="{{ url_for('index') }}">Home</a>
                 <a href="{{ url_for('blog') }}">Blog</a>
+                <a href="https://media.themetacity.com">Media</a>
+                <a href="https://assets.themetacity.com">Assets</a>
+                <a href="https://demo.themetacity.com">Demo</a>
                 <a href="{{ url_for('rss') }}">RSS</a>
+                <a href="#donate_overlay">Buy me a beer</a>
             </nav>
-            <div id="licence">
-                <p>{% block licence %}{% endblock %} by Douglas Miller is licensed under a
-                    <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
-                        Creative Commons Attribution-ShareAlike 4.0 International License
-                    </a>.
-                </p>
-            </div>
+
+            <p>{% block licence %}{% endblock %} by Douglas Miller is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License.</a>.</p>
         </footer>
+        {% include 'donate.html' %}
     </body>
 </html>

@@ -1,6 +1,6 @@
 from flask import render_template, abort
 from tmc import tmc, db
-from tmc.models import Article
+from tmc.models import Article, Tag
 
 
 @tmc.route('/')
@@ -94,6 +94,18 @@ def workshop_with_title(url):
         .filter_by(url=url).first_or_404()
     return render_template('workshop/article.html', article=article)
 
+
+@tmc.route('/blog/tags')
+def tags():
+    tags = Tag.query.all()
+    return render_template('blog/tags.html', tags=tags)
+
+
+
+@tmc.route('/blog/tags/<string:tag>')
+def tags_tag(tag):
+    tag = Tag.all()
+    return render_template('blog/tags.html', tag=tag)
 
 @tmc.route('/rss')
 def rss():
