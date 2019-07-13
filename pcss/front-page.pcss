@@ -16,7 +16,8 @@ body {
 
 h1 {
     margin: 0;
-    font-size: 1em;
+    font-size: 1.1em;
+    font-family: var(--font-heading);
 
     a {
         color: var(--colour-alight);
@@ -33,8 +34,28 @@ h1 {
 }
 
 h2 {
+    font-size: 0.9em;
+    margin: 0.5em 0 0 0;
+    font-family: var(--font-lead)
+}
+
+h3 {
     font-size: 0.8em;
-    margin: 0.8em 0 0 0;
+    margin: 0.5em 0 0 0;
+    font-family: var(--font-lead);
+
+    a {
+        color: var(--colour-alight);
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: var(--colour-work);
+    }
+
+    a:visited {
+        color: var(--colour-known);
+    }
 }
 
 nav, article, footer {
@@ -49,7 +70,6 @@ nav {
     grid-template-columns: 120px 1fr;
     grid-column-gap: 1em;
     grid-template-rows: repeat(3, 1fr);
-    grid-row-gap: 1em;
     grid-template-areas:
         "imglogo name"
         "imglogo blog"

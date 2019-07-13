@@ -4,6 +4,6 @@
 
 {% block body_content %}
     {% for tag in tags %}
-        {{ tag }}
+        <a href="{{ url_for('tags_tag', tag=tag.tag) }}">{{ tag.tag }}</a>
     {% endfor %}
 {% endblock %}

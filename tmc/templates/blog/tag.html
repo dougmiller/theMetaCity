@@ -1,0 +1,7 @@
+{% extends "blog/base.html" %}
+
+{% block title %}theMetaCity.com Blog Tags - {{ tag }}{% endblock %}
+
+{% block body_content %}
+    {{ tag.articles }}
+{% endblock %}

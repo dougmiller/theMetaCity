@@ -15,7 +15,9 @@
         {% endif %}
         {{ article.text|safe }}
         <footer>
-            <a href="{{ url_for('blog') }}">Back to blog</a>
+            <h2><a href="{{ url_for('blog') }}">Back to blog</a></h2>S
         </footer>
     </article>
 {% endblock %}
+
+{% block licence %}"{{ article.title }}" by Douglas Miller is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License.</a>.{% endblock %}

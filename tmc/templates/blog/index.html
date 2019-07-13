@@ -1,12 +1,22 @@
 {% extends "blog/base.html" %}
 
-{% block title %}theMetaCity.com Blog{% endblock %}
+{% block title %} Blog{% endblock %}
 
 {% block body_content %}
     {% for article in articles %}
         <article>
             <h1><a href="{{ url_for('blog_with_title', url=article.url) }}">{{ article.title }}</a></h1>
             <h2>{{ article.build_date_byline() }}</h2>
+            <nav>
+                Tags:
+                {% if article.tags|length %}
+                    {% for tag in article.tags %}
+                        <a href="{{ url_for('tags_tag', tag=tag.tag) }}">{{ tag.tag }}</a>
+                    {% endfor %}
+                {% else %}
+                    No tags
+                {% endif %}
+            </nav>
             {{ article.blurb|safe }}
 
             {% if loop.index is divisibleby 5 %}

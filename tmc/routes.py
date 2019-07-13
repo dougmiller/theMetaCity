@@ -9,12 +9,12 @@ def index():
     return render_template('front-page.html', articles=articles)
 
 
-@tmc.route('/about')
+@tmc.route('/about/')
 def about():
     return render_template('about.html')
 
 
-@tmc.route('/blog')
+@tmc.route('/blog/')
 def blog():
     articles = Article.query.\
         filter_by(type='blog')\
@@ -24,16 +24,16 @@ def blog():
     return render_template('blog/index.html', articles=articles)
 
 
-@tmc.route('/blog/archive')
+@tmc.route('/blog/archive/')
 def blog_archive():
     articles = Article.query.\
         filter_by(type='blog')\
         .order_by(Article.creation_date.desc())\
         .all()
-    return render_template('blog/index.html', articles=articles)
+    return render_template('blog/archive.html', articles=articles)
 
 
-@tmc.route('/blog/<string:url>')
+@tmc.route('/blog/<string:url>/')
 def blog_with_title(url):
     article = Article.query.\
         filter_by(url=url)\
@@ -42,7 +42,7 @@ def blog_with_title(url):
     return render_template('blog/article.html', article=article)
 
 
-@tmc.route('/blog/<int:year>')
+@tmc.route('/blog/<int:year>/')
 def blog_with_year(year):
     articles = Article.query\
         .filter(db.func.extract('year', Article.creation_date) == year)\
@@ -51,7 +51,7 @@ def blog_with_year(year):
     return render_template('blog/index.html', articles=articles)
 
 
-@tmc.route('/blog/<int:year>/<string:url>')
+@tmc.route('/blog/<int:year>/<string:url>/')
 def blog_with_year_and_title(year, url):
     article = Article.query\
         .filter(db.func.extract('year', Article.creation_date) == year)\
@@ -60,7 +60,7 @@ def blog_with_year_and_title(year, url):
     return render_template('blog/article.html', article=article)
 
 
-@tmc.route('/blog/<int:year>/<int:month>')
+@tmc.route('/blog/<int:year>/<int:month>/')
 def blog_with_year_and_month(year, month):
     articles = Article.query\
         .filter(db.func.extract('year', Article.creation_date) == year)\
@@ -69,7 +69,7 @@ def blog_with_year_and_month(year, month):
     return render_template('blog/index.html', articles=articles)
 
 
-@tmc.route('/blog/<int:year>/<int:month>/<string:url>')
+@tmc.route('/blog/<int:year>/<int:month>/<string:url>/')
 def blog_with_year_and_month_and_title(year, month, url):
     article = Article.query\
         .filter(db.func.extract('year', Article.creation_date) == year)\
@@ -79,7 +79,7 @@ def blog_with_year_and_month_and_title(year, month, url):
     return render_template('blog/article.html', article=article)
 
 
-@tmc.route('/workshop')
+@tmc.route('/workshop/')
 def workshop():
     articles = Article.query\
         .filter_by(type='workshop')\
@@ -87,7 +87,7 @@ def workshop():
     return render_template('workshop/index.html', articles=articles)
 
 
-@tmc.route('/workshop/<string:url>')
+@tmc.route('/workshop/<string:url>/')
 def workshop_with_title(url):
     article = Article.query\
         .filter_by(type='workshop') \
@@ -95,18 +95,20 @@ def workshop_with_title(url):
     return render_template('workshop/article.html', article=article)
 
 
-@tmc.route('/blog/tags')
+@tmc.route('/blog/tags/')
 def tags():
     tags = Tag.query.all()
     return render_template('blog/tags.html', tags=tags)
 
 
-
-@tmc.route('/blog/tags/<string:tag>')
+@tmc.route('/blog/tags/<string:tag>/')
 def tags_tag(tag):
-    tag = Tag.all()
-    return render_template('blog/tags.html', tag=tag)
+    tag = Tag.query\
+        .filter_by(tag=tag)\
+        .first_or_404()
+    return render_template('blog/tag.html', tag=tag)
 
-@tmc.route('/rss')
+
+@tmc.route('/rss/')
 def rss():
     pass

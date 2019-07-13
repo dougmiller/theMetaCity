@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from htmlmin.main import minify
 
-tmc = Flask(__name__)
+tmc = Flask(__name__, static_url_path='')
 tmc.config.from_object(Config())
 db = SQLAlchemy(tmc)
 migrate = Migrate(tmc, db)

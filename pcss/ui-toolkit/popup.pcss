@@ -32,22 +32,125 @@
 
     .close {
         position: absolute;
-        top: 20px;
-        right: 30px;
+        top: 0;
+        right: 10px;
         transition: all 200ms;
-        font-size: 30px;
+        font-size: 2em;
         font-weight: bold;
         text-decoration: none;
         color: var(--colour-glide);
+        z-index: 100;
     }
 
     .close:hover {
         color: var(--colour-work);
     }
 
-    .content {
+    .container {
         max-height: 30%;
         overflow: auto;
+
+        .tab {
+            display: none;
+            padding: 0 20px;
+            color: var(--colour-glide);
+
+            a {
+                color: var(--colour-glide);
+                text-decoration: none;
+            }
+        }
+
+        .tabs {
+            overflow-X: auto;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            white-space: nowrap;
+
+
+            label {
+                display: inline-block;
+                padding: 18px;
+                position: relative;
+                color: var(--colour-glide);
+                font-weight: 700;
+                font-size: 1em;
+                font-family: var(--font-lead);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                cursor: pointer;
+            }
+
+            label:after {
+                content: '';
+                background: var(--colour-work);
+                width: 0;
+                height: 4px;
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                transition: .1s;
+            }
+        }
+
+        input[name="tabs"] {
+            display: none;
+        }
+
+        input[name="tabs"]#tab-1:checked ~ .content .tab:nth-of-type(1) {
+            display: inline-block;
+        }
+
+        input[name="tabs"]#tab-1:checked ~ .tabs label:nth-child(1) {
+            color: var(--colour-alight);
+        }
+
+        input[name="tabs"]#tab-1:checked ~ .tabs label:nth-child(1):after {
+            width: calc(100% - 40px);
+            transition: .3s;
+        }
+
+        input[name="tabs"]#tab-2:checked ~ .content .tab:nth-of-type(2) {
+            display: inline-block;
+        }
+
+        input[name="tabs"]#tab-2:checked ~ .tabs label:nth-child(2) {
+            color: var(--colour-alight);
+        }
+
+        input[name="tabs"]#tab-2:checked ~ .tabs label:nth-child(2):after {
+            width: calc(100% - 40px);
+            transition: .3s;
+        }
+
+        input[name="tabs"]#tab-3:checked ~ .content .tab:nth-of-type(3) {
+            display: inline-block;
+        }
+
+        input[name="tabs"]#tab-3:checked ~ .tabs label:nth-child(3) {
+            color: var(--colour-alight);
+        }
+
+        input[name="tabs"]#tab-3:checked ~ .tabs label:nth-child(3):after {
+            width: calc(100% - 40px);
+            transition: .3s;
+        }
+
+        input[name="tabs"]#tab-4:checked ~ .content .tab:nth-of-type(4) {
+            display: inline-block;
+        }
+
+        input[name="tabs"]#tab-4:checked ~ .tabs label:nth-child(4) {
+            color: var(--colour-alight);
+        }
+
+        input[name="tabs"]#tab-4:checked ~ .tabs label:nth-child(4):after {
+            width: calc(100% - 40px);
+            transition: .3s;
+        }
+
+
     }
 }
 

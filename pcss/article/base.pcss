@@ -33,19 +33,44 @@ body > header {
 }
 
 body > article {
-    max-width: 600px;
+    max-width: var(--width-mid);
     margin: 0 auto;
-    line-height: 1.6em;
-    font-size: 1.4em;
+    line-height: 1.4em;
+    font-size: 1.2em;
     padding: 1em;
+
+    footer {
+        margin-top: 1em;
+    }
 }
 
-h1, h2, h3 {
+h1, h2, h3, nav {
     font-family: var(--font-heading);
 }
 
-h2 {
-    font-size: 1em;
+h1 {
+    a {
+    color: var(--colour-work);
+    text-decoration: underline;
+    text-decoration-color: var(--colour-explore);
+    }
+
+    a:hover {
+        color: red;
+    }
+
+    a:visited {
+        color: var(--colour-rest);
+    }
+
+    a:active {
+        color: var(--colour-fight);
+    }
+}
+
+h2, nav, nav a {
+    font-size: 0.8em;
+    color: var(--colour-forgotten);
 }
 
 h3 {
@@ -54,11 +79,24 @@ h3 {
 
 p {
     font-family: var(--font-bulk);
+    font-size: 1em;
+}
+
+code {
+    font-size: 1em;
+}
+
+body > h2 {
+    max-width: var(--width-mid);
+    margin: 0 auto;
+    font-size: 1em;
 }
 
 body > footer {
+    margin-top: 1em;
     padding-top: 4em;
-    background: repeat-x url(/static/images/tmc-logo-cityscape.svg);
+    background: repeat-x url(/images/tmc-logo-cityscape.svg);
+    background-position-x: center;
 
     nav {
         padding: 0.5em;
@@ -68,14 +106,20 @@ body > footer {
             font-family: var(--font-heading);
             color: var(--colour-forgotten);
             text-decoration: none;
-            font-size: 1em;
-            padding: 1em;
+            font-size: 1.2em;
+            margin: 1em;
+            display: inline-block;
         }
+    }
 
-        p {
-            text-align: center;
-            font-size: 1em;
-            font-family: var(--font-bulk);
+    p {
+        text-align: center;
+        font-size: 1em;
+        font-family: var(--font-bulk);
+        color: var(--colour-forgotten);
+
+        a {
+            color: var(--colour-forgive);
         }
     }
 }

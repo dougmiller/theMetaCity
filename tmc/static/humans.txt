@@ -1,0 +1,15 @@
+/* TEAM */
+	Maker: Doug Miller
+	Twitter: @dougmillertmc
+	From: Brisbane, Australia
+
+/* SITE */
+	Language: English
+	Doctype: HTML5
+	IDE: PyCharm, Vim
+
+None of anything here would have been possible without my amazing partner Io Gatto.
+After more than a decade of tolerating my presence, they continue to love and support all that I do.
+I love you more than you could know.
+
+Skiddermancer (our son) is a constant source of joy and energy. He helps give drive and focus to what happens here.

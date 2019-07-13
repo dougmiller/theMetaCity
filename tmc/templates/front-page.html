@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <title>The MetaCity.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/static/css/front-page.css" rel="stylesheet"/>
-    <link rel="icon" type="image/svg+xml" href="/static/images/tmc-logo-animated.svg">
-    <style>body{background:url("/static/images/backgrounds/{{ range(1, 17) | random }}.jpg") no-repeat center center fixed;}</style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/front-page.css') }}"/>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/tmc-logo-animated.svg') }}">
+    <style>body{background:url("{{ url_for('static', filename='images/backgrounds/') }}{{ range(1, 17) | random }}.jpg") no-repeat center center fixed;}</style>
 </head>
 <body>
     <nav>
-        <img alt="The MetaCity Logo" src="/static/images/tmc-logo-animated.svg" width="120" height="120"/>
+        <img alt="The MetaCity Logo" src="{{ url_for('static', filename='images/tmc-logo-animated.svg') }}" width="120" height="120"/>
         <h1>Doug Miller</h1>
         <h1><a href="{{ url_for('blog') }}">Blog</a></h1>
-        <h1><a href="{{ url_for('workshop') }}">Workshop</a></h1>
+        <h1><a href="https://media.themetacity.com">Media</a></h1>
     </nav>
 
     <main>
@@ -29,13 +29,17 @@
                 </a>
             </h1>
             <h2>{{ article.build_date_byline() }}</h2>
+            <h3>
+            {% for tag in article.tags %}
+                <a href="{{ url_for("tags_tag", tag=tag.tag) }}">{{ tag.tag }}</a>
+            {% endfor %}
+            </h3>
         </article>
     {% endfor %}
     </main>
     <footer>
-        <h2><a href="/twitter/">Twitter</a></h2>
+        <h2><a href="https://twitter.com/dougmillertmc">Twitter</a></h2>
         <h2><a href="{{ url_for('about') }}">About</a></h2>
-        <h2><a href="https://media.themetacity.com">Media</a></h2>
     </footer>
 </body>
 </html>
