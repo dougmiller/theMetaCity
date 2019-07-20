@@ -1,0 +1,20 @@
+<div id="tags" class="overlay">
+    <div class="popup">
+        <a class="close" href="#">&times;</a>
+        <div class="container">
+            <input id="tab-tags-all" type="radio" name="tabs-tags" checked="checked"/>
+            <div class="tabs">
+                <label for="tab-tags-all">Tags</label>
+            </div>
+            <div class="content">
+                <div class="tab">
+                    <nav>
+                        {% for tag in tags %}
+                            <a href="{{ url_for('tags_tag', tag=tag.tag) }}">{{ tag.tag }}</a>
+                        {% endfor %}
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

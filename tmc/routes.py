@@ -21,7 +21,9 @@ def blog():
         .order_by(Article.creation_date.desc())\
         .limit(10)\
         .all()
-    return render_template('blog/index.html', articles=articles)
+    tags = Tag.query\
+        .all()
+    return render_template('blog/index.html', **locals())
 
 
 @tmc.route('/blog/archive/')

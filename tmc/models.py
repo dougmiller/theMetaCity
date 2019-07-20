@@ -10,7 +10,7 @@ class Tag(db.Model):
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     tag = db.Column(db.String, primary_key=True)
-    articles = db.relationship('Article', secondary=article_tags, backref='articles')
+    articles = db.relationship('Article', secondary=article_tags, backref='articles', order_by="desc(Article.id)")
 
     def __repr__(self):
         return '<Tag: {}>'.format(self.tag)
@@ -36,7 +36,7 @@ class Article(db.Model):
     def build_date_byline(self):
         if self.creation_date < self.update_date:
             return 'Published: {}; Updated {}' \
-                .format(self.creation_date.strftime("%d %B %y"), self.update_date.strftime("%d %B %y"))
+                .format(self.creation_date.strftime("%d %B %Y"), self.update_date.strftime("%d %B %Y"))
         else:
             return 'Published: {}' \
-                .format(self.creation_date.strftime("%d %B %y"))
+                .format(self.creation_date.strftime("%d %B %Y"))

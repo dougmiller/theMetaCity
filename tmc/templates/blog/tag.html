@@ -1,7 +1,12 @@
 {% extends "blog/base.html" %}
 
+{% from 'macros.html' import article_builder %}
+
 {% block title %}theMetaCity.com Blog Tags - {{ tag }}{% endblock %}
 
 {% block body_content %}
-    {{ tag.articles }}
+    <h1>Articles for the tag: {{ tag.tag }}</h1>
+    {% for article in tag.articles %}
+        {{ article_builder(article) }}
+    {% endfor %}
 {% endblock %}
