@@ -7,20 +7,22 @@
   "scripts": {
     "lint": "jshint theMetaCityFlask/static/javascript/*.js",
     "ts": "ts typescript/*.ts",
-    "fp": "node FPPostCSS.js",
-    "fpwatch": "watch 'npm run fp' ./pcss/front-page.pcss",
-    "css": "node CSSPostCSS.js",
-    "csswatch": "watch 'npm run css' ./pcss"
+    "fp": "node FPPostCSS-dev.js",
+    "fp-prod": "node FPPostCSS-prod.js",
+    "fp-watch": "watch 'npm run fp' ./pcss/front-page.pcss",
+    "css": "node CSSPostCSS-dev.js",
+    "css-watch": "watch 'npm run css' ./pcss",
+    "css-prod": "node CSSPostCSS-prod.js"
   },
   "dependencies": {
     "autoprefixer": "latest",
-    "caniuse-lite": "^1.0.30000974",
-    "cssnano": "^4.1.10",
-    "electron-to-chromium": "^1.3.86",
+    "caniuse-lite": "latest",
+    "cssnano": "latest",
+    "electron-to-chromium": "latest",
     "fs": "latest",
     "jshint": "latest",
-    "node-releases": "^1.0.5",
-    "npm": "^6.9.0",
+    "node-releases": "latest",
+    "npm": "latest",
     "postcss": "latest",
     "postcss-css-variables": "latest",
     "postcss-custom-media": "latest",
@@ -31,8 +33,8 @@
     "postcss-nested": "latest",
     "postcss-partial-import": "latest",
     "postcss-reporter": "latest",
-    "typescript": "^3.2.2",
-    "watch": "^1.0.2"
+    "typescript": "latest",
+    "watch": "latest"
   },
   "devDependencies": {
     "postcss-map": "latest"

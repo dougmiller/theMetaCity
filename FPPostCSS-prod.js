@@ -1,8 +1,7 @@
 console.log("CSS changed. Processing...");
 
-var postcss = require('postcss');
+var FPPostCSS = require('postcss');
 var fs = require('fs');
-
 var postcss_import = require('postcss-import');
 var postcss_custom_media = require('postcss-custom-media');
 var postcss_css_variables = require('postcss-css-variables');
@@ -13,14 +12,14 @@ var postcss_nested = require('postcss-nested');
 var css_nano = require('cssnano');
 
 var options = {
-    from: 'pcss/article.css',
-    to: 'tmc/static/css/style.css',
-    map: { inline: true }
+    from: 'pcss/front-page.css',
+    to: 'tmc/static/css/front-page.css',
+    map: false
 };
 
-var css = fs.readFileSync("pcss/article.pcss", "utf8");
+var css = fs.readFileSync("pcss/front-page.pcss", "utf8");
 
-postcss([
+FPPostCSS([
     postcss_import,
     postcss_custom_media,
     postcss_css_variables,
@@ -28,14 +27,14 @@ postcss([
     postcss_discard_comments,
     postcss_autoprefixer,
     postcss_reporter,
-    //css_nano
+    css_nano
 ])
 .process(css, options)
 .then(function (result) {
-    fs.writeFileSync('tmc/static/css/style.css', result.css);
-    console.log("CSS finished");
+    fs.writeFileSync('tmc/static/css/front-page.css', result.css);
+    console.log("FP CSS production build finished");
 }, function(error) {
     console.log(error);
-    console.log("CSS error");
+    console.log("FP CSS production build error");
 });
 

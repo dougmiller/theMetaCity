@@ -1,7 +1,8 @@
-console.log("CSS changed. Processing...");
+console.log("Main CSS prod build processing");
 
-var FPPostCSS = require('postcss');
+var postcss = require('postcss');
 var fs = require('fs');
+
 var postcss_import = require('postcss-import');
 var postcss_custom_media = require('postcss-custom-media');
 var postcss_css_variables = require('postcss-css-variables');
@@ -12,13 +13,14 @@ var postcss_nested = require('postcss-nested');
 var css_nano = require('cssnano');
 
 var options = {
-    from: 'pcss/front-page.css',
-    to: 'tmc/static/css/front-page.css'
+    from: 'pcss/article.css',
+    to: 'tmc/static/css/style.css',
+    map: false
 };
 
-var css = fs.readFileSync("pcss/front-page.pcss", "utf8");
+var css = fs.readFileSync("pcss/article.pcss", "utf8");
 
-FPPostCSS([
+postcss([
     postcss_import,
     postcss_custom_media,
     postcss_css_variables,
@@ -30,10 +32,10 @@ FPPostCSS([
 ])
 .process(css, options)
 .then(function (result) {
-    fs.writeFileSync('tmc/static/css/front-page.css', result.css);
-    console.log("FP CSS finished");
+    fs.writeFileSync('tmc/static/css/style.css', result.css);
+    console.log("Main CSS prod build completed");
 }, function(error) {
     console.log(error);
-    console.log("FP CSS error");
+    console.log("Main CSS prod build error");
 });
 
