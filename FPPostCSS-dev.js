@@ -1,6 +1,6 @@
 console.log("FP CSS dev build processing...");
 
-let FPPostCSS = require('postcss'); 
+let FPPostCSS = require('postcss');
 let fs = require('fs');
 let postcss_import = require('postcss-import');
 let postcss_custom_media = require('postcss-custom-media');
