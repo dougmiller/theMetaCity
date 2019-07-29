@@ -1,3 +1,4 @@
 settings.config
 database.config
-tmc/static/css/*
+tmc/static/css
+tmc/static/js

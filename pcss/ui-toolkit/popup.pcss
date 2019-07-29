@@ -51,10 +51,25 @@
             display: none;
             padding: 0 20px;
             color: var(--colour-glide);
+            text-align: center;
+
+            h4 {
+                margin: 1em auto;
+                text-align: center;
+            }
 
             a {
                 color: var(--colour-glide);
                 text-decoration: none;
+            }
+
+            svg {
+                fill: hsla(20, 75%, 50%, 1);
+                fill-rule: nonzero;
+                stroke: none;
+                height: auto;
+                width: 50%;
+                margin: 0 auto;
             }
         }
 
@@ -63,7 +78,6 @@
             -webkit-overflow-scrolling: touch;
             position: relative;
             white-space: nowrap;
-
 
             label {
                 display: inline-block;
@@ -97,7 +111,7 @@
         }
 
         input[name="tabs-donate"]#tab-donate-thanks:checked ~ .content .tab:nth-of-type(1) {
-            display: inline-block;
+            display: block;
         }
 
         input[name="tabs-donate"]#tab-donate-thanks:checked ~ .tabs label:nth-child(1) {
@@ -110,7 +124,7 @@
         }
 
         input[name="tabs-donate"]#tab-donate-dogecoin:checked ~ .content .tab:nth-of-type(2) {
-            display: inline-block;
+            display: block;
         }
 
         input[name="tabs-donate"]#tab-donate-dogecoin:checked ~ .tabs label:nth-child(2) {
@@ -123,7 +137,7 @@
         }
 
         input[name="tabs-donate"]#tab-donate-bitcoin:checked ~ .content .tab:nth-of-type(3) {
-            display: inline-block;
+            display: block;
         }
 
         input[name="tabs-donate"]#tab-donate-bitcoin:checked ~ .tabs label:nth-child(3) {
@@ -136,7 +150,7 @@
         }
 
         input[name="tabs-donate"]#tab-donate-litecoin:checked ~ .content .tab:nth-of-type(4) {
-            display: inline-block;
+            display: block;
         }
 
         input[name="tabs-donate"]#tab-donate-litecoin:checked ~ .tabs label:nth-child(4) {
@@ -154,7 +168,7 @@
         }
 
         input[name="tabs-tags"]#tab-tags-all:checked ~ .content .tab:nth-of-type(1) {
-            display: inline-block;
+            display: block;
         }
 
         input[name="tabs-tags"]#tab-tags-all:checked ~ .tabs label:nth-child(1) {
@@ -184,12 +198,14 @@
     }
 }
 
-@media screen and (max-width: 700px) {
-    .box {
-        width: 70%;
+@media screen and (max-width: 800px) {
+    .popup {
+        width: 80%;
     }
 
-    .popup {
-        width: 70%;
+    .tab {
+        h4 {
+            font-size: 0.9em;
+        }
     }
 }

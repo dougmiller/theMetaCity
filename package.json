@@ -12,14 +12,16 @@
     "fp-watch": "watch 'npm run fp' ./pcss/front-page.pcss",
     "css": "node CSSPostCSS-dev.js",
     "css-watch": "watch 'npm run css' ./pcss",
-    "css-prod": "node CSSPostCSS-prod.js"
+    "css-prod": "node CSSPostCSS-prod.js",
+    "deploy": "node deploy.js"
   },
   "dependencies": {
     "autoprefixer": "latest",
     "caniuse-lite": "latest",
     "cssnano": "latest",
     "electron-to-chromium": "latest",
-    "fs": "latest",
+    "fs-extra": "latest",
+    "chownr": "latest",
     "jshint": "latest",
     "node-releases": "latest",
     "npm": "latest",
