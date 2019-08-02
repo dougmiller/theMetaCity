@@ -13,7 +13,7 @@
     "css": "node CSSPostCSS-dev.js",
     "css-watch": "watch 'npm run css' ./pcss",
     "css-prod": "node CSSPostCSS-prod.js",
-    "deploy": "node deploy.js"
+    "deploy": "node Deploy-local.js"
   },
   "dependencies": {
     "autoprefixer": "latest",

@@ -1,20 +1,23 @@
 from flask import render_template, abort
-from tmc import tmc, db
+from tmc import tmc, db, cache
 from tmc.models import Article, Tag
 
 
 @tmc.route('/')
+@cache.cached()
 def index():
     articles = Article.query.order_by(Article.creation_date.desc()).limit(3).all()
     return render_template('front-page.html', articles=articles)
 
 
 @tmc.route('/about/')
+@cache.cached()
 def about():
     return render_template('about.html')
 
 
 @tmc.route('/blog/')
+@cache.cached()
 def blog():
     articles = Article.query.\
         filter_by(type='blog')\
@@ -27,6 +30,7 @@ def blog():
 
 
 @tmc.route('/blog/archive/')
+@cache.cached()
 def blog_archive():
     articles = Article.query.\
         filter_by(type='blog')\
@@ -36,6 +40,7 @@ def blog_archive():
 
 
 @tmc.route('/blog/<string:url>/')
+@cache.cached()
 def blog_with_title(url):
     article = Article.query.\
         filter_by(url=url)\
@@ -45,6 +50,7 @@ def blog_with_title(url):
 
 
 @tmc.route('/blog/<int:year>/')
+@cache.cached()
 def blog_with_year(year):
     articles = Article.query\
         .filter(db.func.extract('year', Article.creation_date) == year)\
@@ -54,6 +60,7 @@ def blog_with_year(year):
 
 
 @tmc.route('/blog/<int:year>/<string:url>/')
+@cache.cached()
 def blog_with_year_and_title(year, url):
     article = Article.query\
         .filter(db.func.extract('year', Article.creation_date) == year)\
@@ -63,6 +70,7 @@ def blog_with_year_and_title(year, url):
 
 
 @tmc.route('/blog/<int:year>/<int:month>/')
+@cache.cached()
 def blog_with_year_and_month(year, month):
     articles = Article.query\
         .filter(db.func.extract('year', Article.creation_date) == year)\
@@ -72,6 +80,7 @@ def blog_with_year_and_month(year, month):
 
 
 @tmc.route('/blog/<int:year>/<int:month>/<string:url>/')
+@cache.cached()
 def blog_with_year_and_month_and_title(year, month, url):
     article = Article.query\
         .filter(db.func.extract('year', Article.creation_date) == year)\
@@ -82,6 +91,7 @@ def blog_with_year_and_month_and_title(year, month, url):
 
 
 @tmc.route('/workshop/')
+@cache.cached()
 def workshop():
     articles = Article.query\
         .filter_by(type='workshop')\
@@ -90,6 +100,7 @@ def workshop():
 
 
 @tmc.route('/workshop/<string:url>/')
+@cache.cached()
 def workshop_with_title(url):
     article = Article.query\
         .filter_by(type='workshop') \
@@ -98,12 +109,14 @@ def workshop_with_title(url):
 
 
 @tmc.route('/blog/tags/')
+@cache.cached()
 def tags():
     tags = Tag.query.all()
     return render_template('blog/tags.html', tags=tags)
 
 
 @tmc.route('/blog/tags/<string:tag>/')
+@cache.cached()
 def tags_tag(tag):
     tag = Tag.query\
         .filter_by(tag=tag)\
@@ -112,5 +125,6 @@ def tags_tag(tag):
 
 
 @tmc.route('/rss/')
+@cache.cached()
 def rss():
     pass
