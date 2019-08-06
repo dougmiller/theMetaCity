@@ -4,7 +4,7 @@
     <title>A horizontal version of the MetaCity logo</title>
     <defs>
         <path id="cityscape" d="M0,-1 L0,45 L20,45 L20,0 L41,0 L41,45 L51,45 L51,22.5 L61,22 L61,45 L71,45 L71,0 L82,0 L82,45 L112,45 L112,0 L133,0.0 L133,22 L143,22 L143,45 L153,45 L153,22 L164,22 L164,0 L184,0 L184,22 L194,37 L205,22 L205,0 L205,0 L225,0 L225,45 L246,45 L246,0 L266,0 L266,22 L276,22 L276,45 L287,60 L297,45 L297,22 L307,22 L307,0 L328,0 L328,45 L338,45 L338,22 L348,22 L348,0 L369,0 L369,22 L374,37 L379,22 L389,22 L389,0 L400,0
-		   M92,15 L92,37 L102,37 L102,15 L89.5,15" />
+		   M92,15 L92,37 L102,37 L102,15 L91,15" />
     </defs>
 
     <use id="cityscape_horizontal" fill="none" stroke="hsla(20, 75%, 50%, 1)" stroke-width="2" transform="translate(1,63) scale(1,-1)" xlink:href="#cityscape" stroke-dasharray="1302 1500"/>
