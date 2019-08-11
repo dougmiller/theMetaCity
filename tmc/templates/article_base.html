@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>The MetaCity{% block title %}{% endblock %}</title>
+        <title>{% block title %}{% endblock %} | theMetaCity</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
         <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/tmc-logo-animated.svg') }}">
@@ -14,7 +14,7 @@
             <h1>theMetaCity<wbr><span class="titleHighlight">Blog</span></h1>
             <nav>
                 <a href="{{ url_for('index') }}">Home</a>
-                <a href="{{ url_for('blog_archive') }}">Archive</a>
+                <a href="{{ url_for('blog.archive') }}">Archive</a>
                 <a href="#tags">Tags</a>
                 <a href="https://media.themetacity.com">Media</a>
             </nav>
@@ -23,7 +23,7 @@
         <footer>
             <nav>
                 <a href="{{ url_for('index') }}">Home</a>
-                <a href="{{ url_for('blog') }}">Blog</a>
+                <a href="{{ url_for('blog.home') }}">Blog</a>
                 <a href="https://media.themetacity.com">Media</a>
                 <a href="https://assets.themetacity.com">Assets</a>
                 <a href="https://demo.themetacity.com">Demo</a>

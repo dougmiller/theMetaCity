@@ -14,7 +14,7 @@ var css_nano = require('cssnano');
 
 var options = {
     from: 'pcss/article.css',
-    to: 'tmc/static/css/style.css',
+    to: 'tmc/blog/static/css/style.css',
     map: false
 };
 
@@ -32,7 +32,7 @@ postcss([
 ])
 .process(css, options)
 .then(function (result) {
-    fs.writeFileSync('tmc/static/css/style.css', result.css);
+    fs.writeFileSync('tmc/blog/static/css/style.css', result.css);
     console.log("Main CSS prod build completed");
 }, function(error) {
     console.log(error);

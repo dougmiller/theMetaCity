@@ -1,8 +1,8 @@
-{% extends "blog/base.html" %}
+{% extends "archive.html" %}
 
 {% from 'macros.html' import article_builder %}
 
-{% block title %}theMetaCity.com Blog Tags - {{ tag }}{% endblock %}
+{% block title %}{{ tag }} - Tags{% endblock %}
 
 {% block body_content %}
     <h1>Articles for the tag: {{ tag.tag }}</h1>

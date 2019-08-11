@@ -11,7 +11,7 @@ let postcss_nested = require('postcss-nested');
 
 let options = {
     from: 'pcss/front-page.css',
-    to: 'tmc/static/css/front-page.css',
+    to: 'tmc/frontpage/static/css/front-page.css',
     map: { inline: false }
 };
 
@@ -27,7 +27,7 @@ FPPostCSS([
 ])
 .process(css, options)
 .then(function (result) {
-    fs.writeFileSync('tmc/static/css/front-page.css', result.css);
+    fs.writeFileSync('tmc/frontpage/static/css/front-page.css', result.css);
     console.log("FP CSS dev build finished");
 }, function(error) {
     console.log(error);

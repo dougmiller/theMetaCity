@@ -10,7 +10,7 @@
                 <div class="tab">
                     <nav>
                         {% for tag in tags %}
-                            <a href="{{ url_for('tags_tag', tag=tag.tag) }}">{{ tag.tag }}</a>
+                            <a href="{{ url_for('blog.tags_tag', tag=tag.tag) }}">{{ tag.tag }}</a>
                         {% endfor %}
                     </nav>
                 </div>

@@ -13,7 +13,7 @@ var css_nano = require('cssnano');
 
 var options = {
     from: 'pcss/front-page.css',
-    to: 'tmc/static/css/front-page.css',
+    to: 'tmc/frontpage/static/css/front-page.css',
     map: false
 };
 
@@ -31,7 +31,7 @@ FPPostCSS([
 ])
 .process(css, options)
 .then(function (result) {
-    fs.writeFileSync('tmc/static/css/front-page.css', result.css);
+    fs.writeFileSync('tmc/frontpage/static/css/front-page.css', result.css);
     console.log("FP CSS production build finished");
 }, function(error) {
     console.log(error);

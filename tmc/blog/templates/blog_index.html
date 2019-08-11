@@ -1,0 +1,16 @@
+{% extends "article_base.html" %}
+
+{% from 'blog_macros.html' import article_builder %}
+
+{% block title %}Blog{% endblock %}
+
+{% block body_content %}
+    {% if articles is defined %}
+        {% for article in articles %}
+            {{ article_builder(article) }}
+        {% endfor %}
+    {% else %}
+        <h2>No articles here sorry :(</h2>
+    {% endif %}
+    <h2><a href="{{ url_for('blog.archive') }}">See the rest of the articles</a></h2>
+{% endblock %}

@@ -13,7 +13,7 @@
         <nav>
             <img alt="The MetaCity Logo" src="{{ url_for('static', filename='images/tmc-logo-animated.svg') }}" width="120" height="120"/>
             <h1>Doug Miller</h1>
-            <h1><a href="{{ url_for('blog') }}">Blog</a></h1>
+            <h1><a href="{{ url_for('blog.home') }}">Blog</a></h1>
             <h1><a href="https://media.themetacity.com">Media</a></h1>
         </nav>
         <main>
@@ -21,9 +21,7 @@
             <article class="{{ article.type }}">
                 <h1>
                     {% if article.type == 'blog' %}
-                        <a href="{{ url_for('blog_with_title', url=article.url) }}">
-                    {% else %}
-                        <a href="{{ url_for('workshop_with_title', url=article.url) }}">
+                        <a href="{{ url_for('blog.title', url=article.url) }}">
                     {% endif %}
                         {{ article.title }}
                     </a>
@@ -31,7 +29,7 @@
                 <h2>{{ article.build_date_byline() }}</h2>
                 <h3>
                 {% for tag in article.tags %}
-                    <a href="{{ url_for("tags_tag", tag=tag.tag) }}">{{ tag.tag }}</a>
+                    <a href="{{ url_for('blog.tags_tag', tag=tag.tag) }}">{{ tag.tag }}</a>
                 {% endfor %}
                 </h3>
             </article>
@@ -40,6 +38,7 @@
         <footer>
             <h2><a href="https://twitter.com/dougmillertmc">Twitter</a></h2>
             <h2><a href="{{ url_for('about') }}">About</a></h2>
+            <h2><a href="https://github.com/dougmiller">GitHub</a></h2>
         </footer>
     </body>
 </html>

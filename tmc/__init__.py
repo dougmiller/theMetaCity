@@ -13,7 +13,10 @@ db = SQLAlchemy(tmc)
 migrate = Migrate(tmc, db)
 cache.init_app(tmc)
 
-from tmc import routes, models, helpers
+from tmc import routes, models, helpers, blog
+
+tmc.register_blueprint(blog.blog, url_prefix='/blog')
+
 
 if os.environ['FLASK_ENV'] == 'production':
     @tmc.after_request
