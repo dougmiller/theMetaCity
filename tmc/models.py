@@ -10,6 +10,7 @@ class Tag(db.Model):
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     tag = db.Column(db.String, primary_key=True)
+    blurb = db.Column(db.String)
     articles = db.relationship('Article', secondary=article_tags, backref='articles', order_by="desc(Article.id)")
 
     def __repr__(self):
