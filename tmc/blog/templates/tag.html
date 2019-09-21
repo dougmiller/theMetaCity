@@ -2,10 +2,13 @@
 
 {% from 'macros.html' import article_builder %}
 
-{% block title %}{{ tag }} - Tags{% endblock %}
+{% block title %}{{ tag.tag }} - Tags{% endblock %}
 
 {% block body_content %}
     <h1>Articles for the tag: {{ tag.tag }}</h1>
+
+    {{ tag.blurb }}
+
     {% for article in tag.articles %}
         {{ article_builder(article) }}
     {% endfor %}
