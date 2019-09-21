@@ -4,9 +4,8 @@
         <meta charset="utf-8">
         <title>{% block title %}{% endblock %} | theMetaCity</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
+        <link href="{{ url_for('blog.static', filename='css/style.css') }}" rel="stylesheet"/>
         <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/tmc-logo-animated.svg') }}">
-        <link type="text/plain" rel="author" href="{{ url_for('static', filename='humans.txt') }}" />
         {% block includes %}{% endblock %}
     </head>
     <body class="article">
