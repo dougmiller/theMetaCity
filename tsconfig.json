@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "tmc/static/js",
+    "outDir": "tmc/home/static/js"
   },
   "include": [
     "typescript/*"

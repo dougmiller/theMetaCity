@@ -110,7 +110,7 @@ class Config(object):
             cls.DEBUG = config['SETTINGS']['DEBUG']
             cls.SECRET_KEY = config['SETTINGS']['SECRET_KEY']
             cls.CSRF_ENABLED = config['SETTINGS']['CSRF_ENABLED']
-            #cls.SERVER_NAME = config['SETTINGS']['SERVER_NAME']
+            cls.SERVER_NAME = config['SETTINGS']['SERVER_NAME']
         except KeyError as key_error:
             print("Could not find key in settings config file: " + key_error.args[0])
             print("Expecting 'DEBUG', 'SECRET_KEY', 'CSRF_ENABLED', 'SERVER_NAME'")

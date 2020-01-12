@@ -1,0 +1,198 @@
+/**/
+
+@import "audio.pcss";
+@import "code.pcss";
+@import "picture.pcss";
+@import "video.pcss";
+
+main.mediaItem {
+    max-width: var(--size-media-default);
+    margin: 0 auto;
+    background-color: var(--colour-float);
+}
+
+.mediaItem {
+    h1 {font-family: var(--font-heading);}
+    h2 {font-family: var(--font-lead);}
+    h3 {font-family: var(--font-lead);}
+    h4 {font-family: var(--font-lead);}
+    h5 {font-family: var(--font-lead);}
+
+    #mediaTitle {
+        margin: 0;
+        padding: 1em 0;
+        text-align: center;
+
+        a {
+            color: var(--colour-explore);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--colour-work);
+        }
+
+        a:active {
+            color: var(--colour-rest);
+        }
+
+        a:visited {
+            color: var(--colour-explore);
+        }
+    }
+
+    .mediaContainer {
+        max-width: var(--size-media-default);
+        margin: 0 auto;
+        text-align: center;
+
+        .mediaBox {
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .mediaPoster {
+            margin: 0 auto;
+        }
+
+        .mediaMeta {
+            align-items: center;
+            padding: 15px 5px;
+            background: var(--colour-deep);
+            color: var(--colour-float);
+
+            #timeBox {
+                font-size: 1.5em;
+                font-family: var(--font-bulk);
+                text-align: center;
+            }
+
+            #playProgress {
+                width: 100%;
+            }
+
+            .mediaControls {
+                display: flex;
+                justify-content: flex-end;
+
+                #playPauseButton {
+                    align-self: auto;
+                }
+
+                #fullscreenButton {
+                }
+
+                #tracksControl {
+                    display: flex;
+                    align-items: center;
+                    position: relative;
+                }
+
+                #tracksControl:hover #tracksList {
+                    visibility: visible;
+                    transition-delay: 0s;
+                }
+
+                #tracksList {
+                    background: var(--colour-glide);
+                    border: 2px solid var(--colour-work);
+                    visibility: hidden;
+                    left: 0;
+                    list-style-type: none;
+                    padding: 0;
+                    position: absolute;
+                    text-align: left;
+                    white-space: nowrap;
+                    transition-delay: 1s;
+
+                    li {
+                        background: var(--colour-float);
+                        border: 1px solid var(--colour-float);
+                        color: var(--colour-explore);
+                        font-family: var(--font-bulk);
+                        margin: 0.6em;
+                        padding: 0.4em;
+                    }
+
+                    li.active {
+                        border: 1px solid var(--colour-work);
+                        color: var(--colour-work);
+                    }
+
+                    li:hover {
+                        border: 1px solid var(--colour-explore);
+                        cursor: pointer;
+                    }
+                }
+
+                #tracksList:hover {
+                    visibility: visible;
+                }
+
+                #tracksList.emulateHover {
+                    display: block;
+                }
+
+                #noTracksList {
+                    display: none;
+                }
+            }
+        }
+
+        #chapterControls {
+            display: flex;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            white-space: nowrap;
+            text-align: left;
+            border: 2px solid var(--colour-work);
+            background: var(--colour-glide);
+
+            li {
+                text-align: center;
+                flex: 1;
+                padding: 0.4em;
+                background: var(--colour-float);
+                margin: 0.6em;
+                font-family: var(--font-bulk);
+                border: 1px solid var(--colour-float);
+            }
+
+            li.active {
+                border: 1px solid var(--colour-work);
+                color: var(--colour-work);
+            }
+
+            li:hover {
+                cursor: pointer;
+                border: 1px solid var(--colour-explore);
+            }
+
+            li.playing {
+                border: 1px solid var(--colour-work);
+            }
+        }
+    }
+
+    .mediaInfo {
+        padding: 1em;
+
+        ul {
+            list-style-type: none;
+            margin: 1em 0;
+            padding: 0;
+
+            li {
+                display: inline;
+                font-family: var(--font-bulk);
+            }
+        }
+    }
+}
+
+#licence {
+    text-align: center;
+    background-color: var(--colour-float);
+    padding: 0.5em;
+}

@@ -1,0 +1,18 @@
+{% macro fp_video(video) -%}
+<article class="mediaEntry video">
+    <a href="/video/{{ video.id }}">
+        {{ video.Parent.Postcard.build_picture('video') }}
+    </a>
+    <h1><a href="/video/{{ video.id }}">{{ video.Parent.title }}</a></h1>
+    <div class="metaEntry">
+        <h2 class="published">{{ video.Parent.date_published }}</h2>
+        <h2 class="running_time">{{ video.format_running_time_to_human_readable() }}</h2>
+        <ul class="tags">
+            {% for tag in video.Parent.tags %}
+                <li><a href="/tag/{{ tag }}">{{ tag }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% autoescape false %}{{ video.Parent.about }}{% endautoescape %}
+</article>
+{%- endmacro %}

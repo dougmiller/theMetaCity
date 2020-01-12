@@ -64,22 +64,24 @@ body > header nav a {
             font-size: 1em;
             padding: 1em;
         }
-body > article {
+body > section {
     max-width: 600px;
     margin: 0 auto;
+}
+body > section > article {
     line-height: 1.4em;
     font-size: 1.2em;
-    padding: 1em;
+    padding: 1em 0;
 }
-body > article h2 {
+body > section > article h2 {
         margin-top: 0;
         margin-bottom: 0;
     }
-body > article nav {
+body > section > article nav {
         margin-top: 0;
         margin-bottom: 0;
     }
-body > article footer {
+body > section > article footer {
         margin-top: 1em;
     }
 h1 {

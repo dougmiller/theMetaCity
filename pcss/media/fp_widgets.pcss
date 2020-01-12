@@ -1,0 +1,35 @@
+@import "fp_widgets/base.pcss";
+@import "fp_widgets/video.pcss";
+@import "fp_widgets/audio.pcss";
+@import "fp_widgets/picture.pcss";
+@import "fp_widgets/code.pcss";
+@import "fp_widgets/large/base.pcss" (--large-device);
+@import "fp_widgets/medium/base.pcss" (--medium-device);
+@import "fp_widgets/small/base.pcss" (--small-device);
+
+body > header {
+    background: var(--colour-float);
+    box-shadow: 10px 10px 15px 0 var(--colour-forgotten);
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+    text-align: center;
+
+    h1 {
+        font-family: var(--font-heading);
+        margin: 0;
+
+        .titleHighlight {
+            color: var(--colour-work);
+        }
+    }
+
+    nav {
+        margin: 1em 0;
+        padding: 1em;
+        text-align: center;
+
+        input {
+            font-size: 1.5em;
+        }
+    }
+}

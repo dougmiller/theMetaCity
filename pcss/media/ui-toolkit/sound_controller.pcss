@@ -1,0 +1,77 @@
+#soundControl {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    #tmcSoundIcon {
+        .soundIcon {
+            stroke: var(--colour-float);
+            stroke-width: 2px;
+            fill: var(--colour-meditate);
+        }
+
+        #soundIconBody {
+            transition-delay: 1s;
+        }
+
+        #soundIconBody.emulateHover {
+            fill: var(--colour-float);
+        }
+
+        #soundIconBody:hover {
+            fill: var(--colour-float);
+            transition-delay: 0s;
+        }
+
+        #soundIconRayMute {
+            stroke: var(--colour-work);
+        }
+    }
+
+    #soundSlider {
+        bottom: 102px;
+        background: var(--colour-float);
+        visibility: hidden;
+        right: -32px;
+        border-top-right-radius: 1em;
+        border-bottom-right-radius: 1em;
+        padding-left: 1em;
+        position: absolute;
+        transform: rotate(270deg);
+        width: 8em;
+        height: 0.2em;
+        z-index: 100;
+        transition-delay: 1s;
+        margin: 0;
+    }
+
+    #soundSlider.emulateHover {
+        visibility: visible;
+        transition-delay: 0s;
+    }
+
+    #soundSlider::-moz-range-track, #soundSlider::-webkit-slider-runnable-track {
+        height: 1em;
+        background: var(--colour-work);
+        border: 2px solid var(--colour-float);
+        border-radius: 1em;
+    }
+
+    #soundSlider::-moz-range-progress {
+        background: var(--colour-explore);
+        height: 1em;
+        border-radius: 1em 0 0 1em;
+    }
+
+    #soundSlider::-moz-range-thumb, ::-webkit-slider-thumb {
+        border: 0.3em solid var(--colour-float);
+        height: 1.2em;
+        width: 1.2em;
+        background: var(--colour-explore);
+        cursor: pointer;
+    }
+
+    #noSoundSlider {
+        display: none;
+    }
+}

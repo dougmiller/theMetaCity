@@ -1,0 +1,113 @@
+/*
+ * Common styles for front page media elements
+ * Each element has a specific style for it in their respective files
+ */
+
+@import "audio.pcss";
+@import "code.pcss";
+@import "picture.pcss";
+@import "video.pcss";
+
+.mediaEntries {
+    padding: 1em;
+
+    .mediaEntry {
+        background: var(--colour-float);
+        border: var(--colour-work) 1px solid;
+        box-shadow: 10px 10px 15px 0 var(--colour-forgotten);
+        break-inside: avoid;
+        margin: 0 1em 2em 1em;
+        display: inline-block;
+
+        img {
+            height: auto;
+            min-height: 5em;
+            width: 100%;
+        }
+
+        h1, h2, p, ul, .meta, .about {
+            padding: 0 1em;
+        }
+
+        h1 {
+            background: var(--colour-float);
+            border-radius: 5px;
+            border: 1px solid;
+            font-family: var(--font-heading);
+            font-size: 1.5em;
+            margin: 0 auto;
+            padding: 0.5em;
+            position: relative;
+            text-align: center;
+            top: -30px;
+            width: 80%;
+        }
+
+        h2 {
+            font-family: var(--font-lead);
+            font-size: 1em;
+        }
+
+        li {
+            font-family: var(--font-lead);
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.4em;
+        }
+
+        a {
+            color: var(--colour-explore);
+            text-decoration: none;
+        }
+        a:visited {
+            color: var(--colour-forgive);
+        }
+        a:hover {
+            color: var(--colour-work);
+        }
+        a:active {
+            color: var(--colour-explore);
+        }
+
+        ul.tags {
+            list-style-type: none;
+            margin: 1em 0;
+
+            li {
+                display: inline;
+            }
+        }
+    }
+
+    .mediaEntry:first-child {
+        margin-top: 0;
+    }
+}
+
+.goBackOption {
+    font-family: var(--font-lead);
+    padding: 0.5em;
+    background-color: var(--colour-float);
+    font-size: 1.4em;
+
+    a {
+        color: var(--colour-explore);
+    }
+    a:visited {
+        color: var(--colour-forgive);
+    }
+    a:hover {
+        color: var(--colour-work);
+    }
+    a:active {
+        color: var(--colour-explore);
+    }
+
+}
+.goBackOptionTop {}
+.goBackOptionBottom {
+    text-align: center;
+    margin-bottom: 0;
+}

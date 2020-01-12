@@ -1,7 +1,7 @@
 from flask import render_template
 from tmc import db, cache
 from tmc.blog import blog
-from tmc.models import Article, Tag
+from tmc.models import Article, ArticleTag
 
 
 @blog.route('/')
@@ -12,7 +12,7 @@ def home():
         .order_by(Article.creation_date.desc())\
         .limit(10)\
         .all()
-    tags = Tag.query\
+    tags = ArticleTag.query\
         .all()
     return render_template('blog_index.html', **locals())
 
@@ -24,7 +24,7 @@ def archive():
         filter_by(type='blog')\
         .order_by(Article.creation_date.desc())\
         .all()
-    tags = Tag.query\
+    tags = ArticleTag.query\
         .all()
     return render_template('archive.html', **locals())
 
@@ -83,14 +83,14 @@ def year_and_month_and_title(year, month, url):
 @blog.route('/tags/')
 @cache.cached()
 def tags():
-    tags = Tag.query.all()
+    tags = ArticleTag.query.all()
     return render_template('tags.html', tags=tags)
 
 
 @blog.route('/tags/<string:tag>/')
 @cache.cached()
 def tags_tag(tag):
-    tag = Tag.query\
+    tag = ArticleTag.query\
         .filter_by(tag=tag)\
         .first_or_404()
     return render_template('tag.html', tag=tag)

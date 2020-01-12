@@ -1,0 +1,19 @@
+{% macro fp_picture(picture) -%}
+<div class="mediaPoster picture">
+    <h1><a href="/picture/{{ picture.id }}">{{ picture.title }}</a></h1>
+        <img src="//assets.localcity.com/video/postcards/{{ picture.postcard.url }}"
+             title="{{ picture.postcard.title }}"
+             alt="{{ picture.postcard.alt_text }}">
+    <h3>Published: {{ picture.date_published }}</h3>
+    <div class="about">
+        {% autoescape false %}{{ picture.about }}{% endautoescape %}
+    </div>
+    <ul class="meta">
+        <li class="running_time">{{ picture.format_time_to_human_readable() }}</li>
+        <li class="mime_types">{% for mt in picture.get_mime_types() %} {{ mt }} {% endfor %}</li>
+        <li class="sizes">{{ picture.get_smallest_filesize_formatted() }} {% if picture.difference_between_max_and_min_filesize() %} - {{ picture.get_largest_filesize_formatted() }} {% endif %}</li>
+        <li class="tracks">{% for track in picture.tracks %} {{ track.type }} {% endfor %}</li>
+        <li class="licence">{{ picture.licence }}</li>
+    </ul>
+</div>
+{%- endmacro %}
