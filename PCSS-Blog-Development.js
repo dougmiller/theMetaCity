@@ -1,28 +1,25 @@
 console.log("Main CSS dev build processing");
 
-var postcss = require('postcss');
-var fs = require('fs');
+let postcss = require('postcss');
+let fs = require('fs');
+let postcss_import = require('postcss-import');
+let postcss_nested = require('postcss-nested');
+let postcss_css_variables = require('postcss-css-variables');
+let postcss_autoprefixer = require('autoprefixer');
+let postcss_reporter = require('postcss-reporter');
 
-var postcss_import = require('postcss-import');
-var postcss_custom_media = require('postcss-custom-media');
-var postcss_css_variables = require('postcss-css-variables');
-var postcss_autoprefixer = require('autoprefixer');
-var postcss_reporter = require('postcss-reporter');
-var postcss_nested = require('postcss-nested');
-
-var options = {
+let options = {
     from: 'pcss/blog.pcss',
     to: 'tmc/blog/static/css/style.css',
     map: { inline: false }
 };
 
-var css = fs.readFileSync("pcss/blog.pcss", "utf8");
+let css = fs.readFileSync("pcss/blog.pcss", "utf8");
 
 postcss([
     postcss_import,
-    postcss_custom_media,
-    postcss_css_variables,
     postcss_nested,
+    postcss_css_variables,
     postcss_autoprefixer,
     postcss_reporter,
 ])

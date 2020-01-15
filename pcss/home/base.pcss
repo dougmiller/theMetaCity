@@ -125,17 +125,3 @@ footer {
     h2:nth-of-type(2) {grid-area: about;}
     h2:nth-of-type(3) {grid-area: media;}
 }
-
-@media (min-width: 601px) {
-    body {
-        grid-template-columns: 1fr 400px;
-        grid-template-rows: 1fr 120px auto 1fr auto;
-        grid-row-gap: 1em;
-        grid-template-areas:
-            ". ."
-            ". navigation"
-            ". articles"
-            ". ."
-            ". links";
-    }
-}

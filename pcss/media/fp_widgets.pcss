@@ -3,9 +3,9 @@
 @import "fp_widgets/audio.pcss";
 @import "fp_widgets/picture.pcss";
 @import "fp_widgets/code.pcss";
-@import "fp_widgets/large/base.pcss" (--large-device);
-@import "fp_widgets/medium/base.pcss" (--medium-device);
-@import "fp_widgets/small/base.pcss" (--small-device);
+@import "fp_widgets/small/base.pcss" (max-width: 600px);
+@import "fp_widgets/medium/base.pcss" (min-width: 601px);
+@import "fp_widgets/large/base.pcss" (min-width: 1201px);
 
 body > header {
     background: var(--colour-float);

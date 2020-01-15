@@ -4,6 +4,10 @@
   --size-column-small: 600px; /* Max width of the media container*/
   --size-media-default: 980px; /* Max width of the media container*/
 
+  --small-device: 600px;
+  --medium-device: 1200px;
+  --large-device: 1201px;
+
   /* Font sets */
   --font-heading: "Orbitron", Verdana, Arial, sans-serif;;
   --font-lead: "Inconsolata", Verdana, Arial, sans-serif;;
@@ -23,9 +27,3 @@
   --colour-fight: hsla(10, 85%, 50%, 1);
   --colour-meditate: hsla(0, 0%, 0%, 0);
 }
-
-  /* Media query sizes
-   3 sizes */
-@custom-media --small-device (max-width: 600px);
-@custom-media --medium-device (max-width: 1200px);
-@custom-media --large-device (min-width: 1201px);

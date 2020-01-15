@@ -1,9 +1,8 @@
 console.log("Home CSS dev build processing...");
 
-let FPPostCSS = require('postcss');
+let postcss = require('postcss');
 let fs = require('fs');
 let postcss_import = require('postcss-import');
-let postcss_custom_media = require('postcss-custom-media');
 let postcss_css_variables = require('postcss-css-variables');
 let postcss_autoprefixer = require('autoprefixer');
 let postcss_reporter = require('postcss-reporter');
@@ -17,11 +16,10 @@ let options = {
 
 let css = fs.readFileSync("pcss/home.pcss", "utf8");
 
-FPPostCSS([
+postcss([
     postcss_import,
-    postcss_custom_media,
-    postcss_css_variables,
     postcss_nested,
+    postcss_css_variables,
     postcss_autoprefixer,
     postcss_reporter
 ])
