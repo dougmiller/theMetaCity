@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% for article in articles %}
+        <url>
+            <loc>https://www.themetacity.com{{ url_for('blog.title', url=article.url) }}</loc>
+            <lastmod>{{ article.update_date.strftime('%Y-%m-%d') }}</lastmod>
+            <changefreq>never</changefreq>
+        </url>
+    {% endfor %}
+
+    <url>
+        <loc>https://www.themetacity.com{{ url_for('blog.tags') }}</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+
+    {% for article_tag in article_tags %}
+        <url>
+            <loc>https://www.themetacity.com{{ url_for('blog.tags_tag', tag=article_tag.tag) }}</loc>
+            <changefreq>monthly</changefreq>
+        </url>
+    {% endfor %}
+
+</urlset>

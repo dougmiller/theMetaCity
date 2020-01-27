@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, make_response
 from tmc import db, cache
 from tmc.blog import blog
 from tmc.models import Article, ArticleTag
@@ -94,3 +94,19 @@ def tags_tag(tag):
         .filter_by(tag=tag)\
         .first_or_404()
     return render_template('tag.html', tag=tag)
+
+
+@blog.route('/sitemap.xml')
+@cache.cached()
+def sitemap():
+    articles = Article.query.\
+        filter_by(type='blog')\
+        .order_by(Article.creation_date.desc())\
+        .all()
+    article_tags = ArticleTag.query\
+        .all()
+
+    template = render_template('sitemap.xml', **locals())
+    response = make_response(template)
+    response.headers['Content-Type'] = 'application/xml'
+    return response
