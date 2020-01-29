@@ -1,4 +1,4 @@
-console.log("Main CSS dev build processing");
+console.log("Blog CSS dev build processing");
 
 let fs = require('fs');
 let postcss = require('postcss');
@@ -24,6 +24,6 @@ postcss([
     console.log("Blog CSS dev build completed");
 }, function(error) {
     console.log(error);
-    console.log("Blog CSS prod build error");
+    console.log("Blog CSS dev build error");
 });
 
