@@ -5,7 +5,7 @@
         <title>{% block title %}{% endblock %} | theMetaCity</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="{{ url_for('blog.static', filename='css/style.css') }}" rel="stylesheet"/>
-        <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/tmc-logo-animated.svg') }}">
+        <link rel="icon" type="image/svg+xml" href="{{ url_for('home.static', filename='images/tmc-logo-animated.svg') }}">
         {% block includes %}{% endblock %}
     </head>
     <body class="article">
@@ -26,7 +26,7 @@
                 <a href="{{ url_for('media.home') }}">Media</a>
                 <a href="https://assets.themetacity.com">Assets</a>
                 <a href="https://demo.themetacity.com">Demo</a>
-                <a href="{{ url_for('home.rss') }}">RSS</a>
+                <a href="{{ url_for('blog.sitemap') }}">Sitemap</a>
                 <a href="#donate">Buy me a beer</a>
             </nav>
             <p>{% block licence %} Everything here is by Douglas Miller and is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License.</a>.{% endblock %}</p>

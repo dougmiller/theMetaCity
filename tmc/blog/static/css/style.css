@@ -1,9 +1,27 @@
 :root {
   /* Font sets */
+  --font-heading: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
+  --font-lead: "Inconsolata", Verdana, Arial, sans-serif;
+  --font-bulk: "Droid Sans", serif;
 
   /* Numbers */
+  --width-mid: 600px;
 
   /* Colours */
+  --colour-meditate: hsla(0, 0%, 0%, 0);
+  --colour-float: hsla(0, 0%, 100%, 1);
+  --colour-glide: hsla(0, 5%, 95%, 0.9);
+  --colour-mist: hsla(0, 0%, 100%, 0.8);
+  --colour-explore: hsla(170, 50%, 45%, 1);
+  --colour-known: hsla(170, 50%, 45%, 0.5);
+  --colour-alight: hsla(220, 60%, 30%, 1);
+  --colour-rest: hsla(20, 75%, 50%, 0.5);
+  --colour-work: hsla(20, 75%, 50%, 1);
+  --colour-fight: hsla(10, 85%, 50%, 1);
+  --colour-forgive: hsla(200, 10%, 30%, 1);
+  --colour-forgotten: hsla(180, 20%, 10%, 0.8);
+  --colour-deep: hsla(210, 30%, 15%, 1);
+  --colour-unforgiving: hsla(180, 20%, 10%, 1);
 }
 @font-face {
     font-family: 'Orbitron';
@@ -41,31 +59,31 @@ body {
     margin: 0;
 }
 body > header {
-    background: hsla(0, 0%, 100%, 1);
-    box-shadow: 0 0 1px 0 hsla(180, 20%, 10%, 0.8);
+    background: var(--colour-float);
+    box-shadow: 0 0 1px 0 var(--colour-forgotten);
     margin-bottom: 0.5em;
     padding: 0.5em;
     text-align: center;
 }
 body > header h1 {
-        font-family: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
+        font-family: var(--font-heading);
         margin: 0;
     }
 body > header h1 .titleHighlight {
-            color: hsla(20, 75%, 50%, 1);
+            color: var(--colour-work);
         }
 body > header nav {
         padding: 0.5em;
     }
 body > header nav a {
-            font-family: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
-            color: hsla(180, 20%, 10%, 0.8);
+            font-family: var(--font-heading);
+            color: var(--colour-forgotten);
             text-decoration: none;
             font-size: 1em;
             padding: 1em;
         }
 body > article {
-    max-width: 600px;
+    max-width: var(--width-mid);
     margin: 0 auto;
     line-height: 1.4em;
     font-size: 1.2em;
@@ -82,57 +100,39 @@ body > article nav {
 body > article footer {
         margin-top: 1em;
     }
-h1 {
-    font-family: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
-}
-h2 {
-    font-family: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
-}
-h3 {
-    font-family: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
-}
-nav {
-    font-family: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
+h1, h2, h3, nav {
+    font-family: var(--font-heading);
 }
 h1 a {
-    color: hsla(20, 75%, 50%, 1);
+    color: var(--colour-work);
     text-decoration: underline;
-    -webkit-text-decoration-color: hsla(170, 50%, 45%, 1);
-            text-decoration-color: hsla(170, 50%, 45%, 1);
+    text-decoration-color: var(--colour-explore);
     }
 h1 a:hover {
         color: red;
     }
 h1 a:visited {
-        color: hsla(20, 75%, 50%, 0.5);
+        color: var(--colour-rest);
     }
 h1 a:active {
-        color: hsla(10, 85%, 50%, 1);
+        color: var(--colour-fight);
     }
-h2 {
+h2, nav, nav a {
     font-size: 0.8em;
-    color: hsla(180, 20%, 10%, 0.8);
-}
-nav {
-    font-size: 0.8em;
-    color: hsla(180, 20%, 10%, 0.8);
-}
-nav a {
-    font-size: 0.8em;
-    color: hsla(180, 20%, 10%, 0.8);
+    color: var(--colour-forgotten);
 }
 h3 {
-    font-family: "Inconsolata", Verdana, Arial, sans-serif;
+    font-family: var(--font-lead);
 }
 p {
-    font-family: "Droid Sans", serif;
+    font-family: var(--font-bulk);
     font-size: 1em;
 }
 code {
     font-size: 1em;
 }
 body > h2 {
-    max-width: 600px;
+    max-width: var(--width-mid);
     margin: 0 auto;
     font-size: 1em;
 }
@@ -147,8 +147,8 @@ body > footer nav {
         text-align: center;
     }
 body > footer nav a {
-            font-family: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
-            color: hsla(180, 20%, 10%, 0.8);
+            font-family: var(--font-heading);
+            color: var(--colour-forgotten);
             text-decoration: none;
             font-size: 1.2em;
             margin: 1em;
@@ -157,11 +157,11 @@ body > footer nav a {
 body > footer p {
         text-align: center;
         font-size: 1em;
-        font-family: "Droid Sans", serif;
-        color: hsla(180, 20%, 10%, 0.8);
+        font-family: var(--font-bulk);
+        color: var(--colour-forgotten);
     }
 body > footer p a {
-            color: hsla(200, 10%, 30%, 1);
+            color: var(--colour-forgive);
         }
 @media (min-width: 601px) {
 .article {
@@ -178,8 +178,7 @@ body > footer p a {
     bottom: 0;
     left: 0;
     right: 0;
-    background: hsla(180, 20%, 10%, 0.8);
-    -webkit-transition: opacity 500ms;
+    background: var(--colour-forgotten);
     transition: opacity 500ms;
     visibility: hidden;
     opacity: 0;
@@ -191,37 +190,35 @@ body > footer p a {
 .popup {
     margin: 70px auto;
     padding: 20px;
-    background: hsla(210, 30%, 15%, 1);
+    background: var(--colour-deep);
     border-radius: 5px;
     width: 50%;
     position: relative;
-    -webkit-transition: all 1s ease-in-out;
     transition: all 1s ease-in-out;
 }
 .popup h2 {
         margin-top: 0;
-        color: hsla(0, 5%, 95%, 0.9);
-        font-family: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
+        color: var(--colour-glide);
+        font-family: var(--font-heading);
     }
 .popup .close {
         position: absolute;
         top: 0;
         right: 10px;
-        -webkit-transition: all 200ms;
         transition: all 200ms;
         font-size: 2em;
         font-weight: bold;
         text-decoration: none;
-        color: hsla(0, 5%, 95%, 0.9);
+        color: var(--colour-glide);
         z-index: 100;
     }
 .popup .close:hover {
-        color: hsla(20, 75%, 50%, 1);
+        color: var(--colour-work);
     }
 .popup .container .tab {
             display: none;
             padding: 0 20px;
-            color: hsla(0, 5%, 95%, 0.9);
+            color: var(--colour-glide);
             text-align: center;
         }
 .popup .container .tab h4 {
@@ -229,7 +226,7 @@ body > footer p a {
                 text-align: center;
             }
 .popup .container .tab a {
-                color: hsla(0, 5%, 95%, 0.9);
+                color: var(--colour-glide);
                 text-decoration: none;
             }
 .popup .container .tab svg {
@@ -250,25 +247,23 @@ body > footer p a {
                 display: inline-block;
                 padding: 18px;
                 position: relative;
-                color: hsla(0, 5%, 95%, 0.9);
+                color: var(--colour-glide);
                 font-weight: 700;
                 font-size: 1em;
-                font-family: "Inconsolata", Verdana, Arial, sans-serif;
+                font-family: var(--font-lead);
                 text-transform: uppercase;
                 letter-spacing: 2px;
                 cursor: pointer;
             }
 .popup .container .tabs label:after {
                 content: '';
-                background: hsla(20, 75%, 50%, 1);
+                background: var(--colour-work);
                 width: 0;
                 height: 4px;
                 position: absolute;
                 bottom: 0;
                 left: 50%;
-                -webkit-transform: translateX(-50%);
-                        transform: translateX(-50%);
-                -webkit-transition: .1s;
+                transform: translateX(-50%);
                 transition: .1s;
             }
 /* Thanks / buy me a beep popup */
@@ -279,44 +274,40 @@ body > footer p a {
             display: block;
         }
 .popup .container input[name="tabs-donate"]#tab-donate-thanks:checked ~ .tabs label:nth-child(1) {
-            color: hsla(170, 50%, 45%, 1);
+            color: var(--colour-explore);
         }
 .popup .container input[name="tabs-donate"]#tab-donate-thanks:checked ~ .tabs label:nth-child(1):after {
             width: calc(100% - 40px);
-            -webkit-transition: .3s;
             transition: .3s;
         }
 .popup .container input[name="tabs-donate"]#tab-donate-dogecoin:checked ~ .content .tab:nth-of-type(2) {
             display: block;
         }
 .popup .container input[name="tabs-donate"]#tab-donate-dogecoin:checked ~ .tabs label:nth-child(2) {
-            color: hsla(170, 50%, 45%, 1);
+            color: var(--colour-explore);
         }
 .popup .container input[name="tabs-donate"]#tab-donate-dogecoin:checked ~ .tabs label:nth-child(2):after {
             width: calc(100% - 40px);
-            -webkit-transition: .3s;
             transition: .3s;
         }
 .popup .container input[name="tabs-donate"]#tab-donate-bitcoin:checked ~ .content .tab:nth-of-type(3) {
             display: block;
         }
 .popup .container input[name="tabs-donate"]#tab-donate-bitcoin:checked ~ .tabs label:nth-child(3) {
-            color: hsla(170, 50%, 45%, 1);
+            color: var(--colour-explore);
         }
 .popup .container input[name="tabs-donate"]#tab-donate-bitcoin:checked ~ .tabs label:nth-child(3):after {
             width: calc(100% - 40px);
-            -webkit-transition: .3s;
             transition: .3s;
         }
 .popup .container input[name="tabs-donate"]#tab-donate-litecoin:checked ~ .content .tab:nth-of-type(4) {
             display: block;
         }
 .popup .container input[name="tabs-donate"]#tab-donate-litecoin:checked ~ .tabs label:nth-child(4) {
-            color: hsla(170, 50%, 45%, 1);
+            color: var(--colour-explore);
         }
 .popup .container input[name="tabs-donate"]#tab-donate-litecoin:checked ~ .tabs label:nth-child(4):after {
             width: calc(100% - 40px);
-            -webkit-transition: .3s;
             transition: .3s;
         }
 /* Tags popup */
@@ -327,11 +318,10 @@ body > footer p a {
             display: block;
         }
 .popup .container input[name="tabs-tags"]#tab-tags-all:checked ~ .tabs label:nth-child(1) {
-            color: hsla(170, 50%, 45%, 1);
+            color: var(--colour-explore);
         }
 .popup .container input[name="tabs-tags"]#tab-tags-all:checked ~ .tabs label:nth-child(1):after {
             width: calc(100% - 40px);
-            -webkit-transition: .3s;
             transition: .3s;
         }
 #tags .content .tab {

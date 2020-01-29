@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://www.themetacity.com{{ url_for('blog.home') }}</loc>
+        <lastmod>{{ articles[0].update_date.strftime('%Y-%m-%d') }}</lastmod>
+        <changefreq>monthly</changefreq>
+    </url>
+
     {% for article in articles %}
         <url>
             <loc>https://www.themetacity.com{{ url_for('blog.title', url=article.url) }}</loc>
@@ -19,5 +25,4 @@
             <changefreq>monthly</changefreq>
         </url>
     {% endfor %}
-
 </urlset>

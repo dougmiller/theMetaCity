@@ -17,7 +17,7 @@
     "css:media": "npm run css:media:dev",
     "css:media:dev": "node PCSS-Media-Development.js",
     "css:media:prod": "node PCSS-Media-Production.js",
-    "css:watch": "watch 'npm run css' ./pcss",
+    "css:watch:blog": "watch 'npm run css:blog:dev' ./pcss/blog",
     "deploy": "npm run deploy:local",
     "deploy:local": "node Deploy-local.js",
     "deploy:prod": "node Deploy-prod.js"
