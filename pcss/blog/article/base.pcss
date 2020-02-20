@@ -1,6 +1,6 @@
 
 body {
-    margin: 0;
+    margin: 0 0 12em 0;
 }
 
 body > header {
@@ -13,6 +13,7 @@ body > header {
     h1 {
         font-family: var(--font-heading);
         margin: 0;
+        font-size: 3em;
 
         .titleHighlight {
             color: var(--colour-work);
@@ -26,13 +27,21 @@ body > header {
             font-family: var(--font-heading);
             color: var(--colour-forgotten);
             text-decoration: none;
-            font-size: 1em;
+            font-size: 1.5em;
             padding: 1em;
         }
     }
 }
 
-body > article {
+#container {
+    background: var(--colour-float);
+
+    > h2 {
+        text-align: center;
+    }
+}
+
+#container > article {
     max-width: var(--width-mid);
     margin: 0 auto;
     line-height: 1.4em;
@@ -102,11 +111,21 @@ body > h2 {
     font-size: 1em;
 }
 
+#cityclipdiv {
+    clip-path: url('/blog/images/tmc-logo-cityscape-main-clip.svg#cityScapeClip');
+    height: 4em;
+    background-color: var(--colour-float);
+}
+
 body > footer {
-    margin-top: 1em;
-    padding-top: 4em;
-    background: repeat-x url(/images/tmc-logo-cityscape.svg);
+    height: calc(6em + 64px);
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background: repeat-x url('/blog/images/tmc-footer-bands.svg');
     background-position-x: center;
+    padding-top: 6em;
+    z-index: -1;
 
     nav {
         padding: 0.5em;
@@ -114,9 +133,9 @@ body > footer {
 
         a {
             font-family: var(--font-heading);
-            color: var(--colour-forgotten);
+            color: var(--colour-deep);
             text-decoration: none;
-            font-size: 1.2em;
+            font-size: 1.8em;
             margin: 1em;
             display: inline-block;
         }
@@ -124,9 +143,9 @@ body > footer {
 
     p {
         text-align: center;
-        font-size: 1em;
+        font-size: 1.2em;
         font-family: var(--font-bulk);
-        color: var(--colour-forgotten);
+        color: var(--colour-deep);
 
         a {
             color: var(--colour-forgive);

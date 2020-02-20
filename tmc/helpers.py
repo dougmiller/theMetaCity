@@ -17,7 +17,7 @@ def construct_other_articles_series():
         formatted_article_list_entries = []
         for child in article.parent.children:
             if child != article:
-                a = '<li><a href="{}">{}</a></li>'.format(url_for('blog_with_title', url=child.url), child.title)
+                a = '<li><a href="{}">{}</a></li>'.format(url_for('blog.title', url=child.url), child.title)
                 formatted_article_list_entries.append(a)
             else:
                 a = '<li>{} (this article)</li>'.format(child.title)

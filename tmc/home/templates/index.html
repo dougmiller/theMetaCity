@@ -5,7 +5,7 @@
         <title>The MetaCity.com</title>
         {% autoescape false %}
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{{ url_for('home.static', filename='css/home.css') }}"/>
+        <link rel="stylesheet" href="{{ url_for('home.static', filename='css/style.css') }}"/>
         <link rel="icon" type="image/svg+xml" href="{{ url_for('home.static', filename='images/tmc-logo-animated.svg') }}">
         <link type="text/plain" rel="author" href="{{ url_for('home.static', filename='humans.txt') }}" />
         <style>body{background:url(" {{ url_for('home.static', filename='images/backgrounds') }}/{{ range(1, 17) | random }}.webp") no-repeat center center / cover;}</style>

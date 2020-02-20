@@ -1,20 +1,19 @@
 console.log("Blog CSS prod build processing");
 
-var postcss = require('postcss');
-var fs = require('fs');
+let fs = require('fs');
+let postcss = require('postcss');
+let postcss_import = require('postcss-import');
+let postcss_nested = require('postcss-nested');
+let postcss_discard_comments = require('postcss-discard-comments');
+let css_nano = require('cssnano');
 
-var postcss_import = require('postcss-import');
-var postcss_nested = require('postcss-nested');
-var postcss_discard_comments = require('postcss-discard-comments');
-var css_nano = require('cssnano');
-
-var options = {
-    from: 'pcss/blog/article.css',
+let options = {
+    from: 'pcss/blog.pcss',
     to: 'tmc/blog/static/css/style.css',
     map: false
 };
 
-var css = fs.readFileSync("pcss/blog/article.pcss", "utf8");
+var css = fs.readFileSync("pcss/blog.pcss", "utf8");
 
 postcss([
     postcss_import,

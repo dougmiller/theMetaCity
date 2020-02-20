@@ -1,6 +1,7 @@
 const fs = require("fs-extra");
 const chownr = require("chownr");
-const deploy_dir = "/media/www.themetacity.com";
+//const deploy_dir = "/media/www.themetacity.com";
+const deploy_dir = "~/1";
 const deploy_folder = "tmc";
 
 try {

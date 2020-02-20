@@ -18,7 +18,10 @@
                 <a href="{{ url_for('media.home') }}">Media</a>
             </nav>
         </header>
-        {% block body_content %}{% endblock %}
+        <div id="container">
+            {% block body_content %}{% endblock %}
+        </div>
+        <div id="cityclipdiv"></div>
         <footer>
             <nav>
                 <a href="{{ url_for('home.index') }}">Home</a>
@@ -33,5 +36,6 @@
         </footer>
         {% include 'popups/donate.html' %}
         {% include 'popups/tags.html' %}
+
     </body>
 </html>

@@ -18,11 +18,10 @@ cache.init_app(tmc)
 from tmc import models, helpers, handlers, blog, media, home, api
 
 tmc.url_map.default_subdomain = "www"
-tmc.register_blueprint(home.home)
+tmc.register_blueprint(home.home, url_prefix='/')
 tmc.register_blueprint(blog.blog, url_prefix='/blog')
 tmc.register_blueprint(media.media, subdomain='media')
 tmc.register_blueprint(api.api, subdomain='api')
-admin = Admin(tmc, name='TheMetaCity Media')
 
 
 if os.environ['FLASK_ENV'] == 'production':
@@ -41,6 +40,7 @@ if os.environ['FLASK_ENV'] == 'production':
 
 
 if os.environ['FLASK_ENV'] == 'development':
+    admin = Admin(tmc, name='TheMetaCity Media')
     admin.add_view(ModelView(models.MediaItem, db.session, 'Media Items'))
     admin.add_view(ModelView(models.VideoFile, db.session, 'Video Files'))
     admin.add_view(ModelView(models.VideoTrack, db.session, 'Video Tracks'))

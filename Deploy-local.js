@@ -1,6 +1,6 @@
 const fs = require("fs-extra");
 const chownr = require("chownr");
-const deploy_dir = "/srv/http/www.localcity.com";
+const deploy_dir = "/srv/http/localcity.com";
 const deploy_folder = "tmc";
 
 try {
