@@ -1,26 +1,75 @@
 :root {
-  /* Font sets */
-  --font-heading: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
-  --font-lead: "Inconsolata", Verdana, Arial, sans-serif;
-  --font-bulk: "Droid Sans", serif;
+    /* Colours */
+    --colour-meditate: hsla(0, 0%, 0%, 0);
+    --colour-float: hsla(0, 0%, 100%, 1);
+    --colour-glide: hsla(0, 5%, 95%, 0.9);
+    --colour-mist: hsla(0, 0%, 100%, 0.8);
+    --colour-explore: hsla(170, 50%, 45%, 1);
+    --colour-known: hsla(170, 50%, 45%, 0.5);
+    --colour-alight: hsla(220, 60%, 30%, 1);
+    --colour-rest: hsla(20, 75%, 50%, 0.5);
+    --colour-work: hsla(20, 75%, 50%, 1);
+    --colour-fight: hsla(10, 85%, 50%, 1);
+    --colour-forgive: hsla(200, 10%, 30%, 1);
+    --colour-forgotten: hsla(180, 20%, 10%, 1);
+    --colour-deep: hsla(210, 30%, 15%, 1);
+    --colour-unforgiving: hsla(180, 20%, 10%, 1);
+    --colour-unforgable: hsla(180, 20%, 10%, 0.4);
 
-  /* Numbers */
-  --width-mid: 600px;
-
-  /* Colours */
-  --colour-meditate: hsla(0, 0%, 0%, 0);
-  --colour-float: hsla(0, 0%, 100%, 1);
-  --colour-glide: hsla(0, 5%, 95%, 0.9);
-  --colour-mist: hsla(0, 0%, 100%, 0.8);
-  --colour-explore: hsla(170, 50%, 45%, 1);
-  --colour-known: hsla(170, 50%, 45%, 0.5);
-  --colour-alight: hsla(220, 60%, 30%, 1);
-  --colour-rest: hsla(20, 75%, 50%, 0.5);
-  --colour-work: hsla(20, 75%, 50%, 1);
-  --colour-fight: hsla(10, 85%, 50%, 1);
-  --colour-forgive: hsla(200, 10%, 30%, 1);
-  --colour-forgotten: hsla(180, 20%, 10%, 0.8);
-  --colour-deep: hsla(210, 30%, 15%, 1);
-  --colour-unforgiving: hsla(180, 20%, 10%, 1);
-  --colour-unforgable: hsla(180, 20%, 10%, 0.4);
 }
+
+:root {
+    /* Font sets */
+    --font-heading: "Titillium", "Orbitron Regular", Verdana, Arial, sans-serif;
+    --font-lead: "Inconsolata", Verdana, Arial, sans-serif;
+    --font-bulk: "Droid Sans", serif;
+
+    /* Numbers */
+    --width-mid: 80ch;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --hue-primary: 20;
+        --hue-offset: 40;
+        --hue-accent: 40;
+        --hue-highlight: 20;
+        --hue-background: 40;
+
+        --background: hsl(var(--hue-offset), 20%, 10%);
+
+        --colour-text-normal: hsl(var(--hue-primary), 30%, 80%);
+        --colour-text-highlight: hsl(var(--hue-highlight), 85%, 50%);
+        --colour-text-accent: hsl(var(--hue-highlight), 0%, 100%);
+
+        --colour-header-text: var(--colour-forgotten);
+        --colour-header-hilight: var(--colour-forgotten);
+        --colour-bulk-text: var(--colour-forgotten);
+        --colour-link: var(--colour-work);
+
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --hue-primary: 40;
+        --hue-offset: 180;
+        --hue-accent: 40;
+        --hue-highlight: 10;
+        --hue-background: 40;
+
+        --background: hsl(var(--hue-offset), 20%, 10%);
+        --background-hilight: hsl(var(--hue-offset), 20%, 10%);
+        --colour-main-background-accent: hsl(var(--hue-offset), 20%, 10%);
+
+        --colour-text-normal: hsl(var(--hue-primary), 0%, 100%);
+        --colour-text-highlight: hsl(var(--hue-highlight), 85%, 50%);
+        --colour-text-accent: hsl(var(--hue-highlight), 0%, 100%);
+
+        --colour-header-text: var(--colour-forgotten);
+        --colour-header-hilight: var(--colour-forgotten);
+        --colour-bulk-text: var(--colour-forgotten);
+        --colour-link: var(--colour-work);
+    }
+}
+

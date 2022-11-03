@@ -1,6 +1,5 @@
 import os
 from flask import Flask
-from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from htmlmin.main import minify
@@ -8,24 +7,30 @@ from flask_caching import Cache
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
-cache = Cache(config={'CACHE_TYPE': 'simple', 'CACHE_DEFAULT_TIMEOUT': 300})
-tmc = Flask(__name__, static_url_path='', subdomain_matching=True)
-tmc.config.from_object(Config())
-db = SQLAlchemy(tmc)
-migrate = Migrate(tmc, db)
-cache.init_app(tmc)
+cache = Cache(config={'CACHE_TYPE': 'simple', 'CACHE_DEFAULT_TIMEOUT': 3000})
+db = SQLAlchemy()
+migrate = Migrate()
 
-from tmc import models, helpers, handlers, blog, media, home, api
-
-tmc.url_map.default_subdomain = "www"
-tmc.register_blueprint(home.home, url_prefix='/')
-tmc.register_blueprint(blog.blog, url_prefix='/blog')
-tmc.register_blueprint(media.media, subdomain='media')
-tmc.register_blueprint(api.api, subdomain='api')
+from tmc import models, handlers, helpers
 
 
-if os.environ['FLASK_ENV'] == 'production':
-    @tmc.after_request
+def _setup_url_maps(app):
+    from .util import DateConverter
+    app.url_map.default_subdomain = "www"
+    app.url_map.converters['date'] = DateConverter
+
+
+def _setup_blueprints(app):
+    from tmc import blog, media, home, android, api
+    app.register_blueprint(home.home, url_prefix='/')
+    app.register_blueprint(blog.blog, url_prefix='/blog')
+    app.register_blueprint(media.media, subdomain='media')
+    app.register_blueprint(api.api, subdomain='api')
+    app.register_blueprint(android.android, subdomain='android')
+
+
+def _setup_minification(app):
+    @app.after_request
     def response_minify(response):
         """
         minify html response to decrease site traffic
@@ -39,8 +44,8 @@ if os.environ['FLASK_ENV'] == 'production':
         return response
 
 
-if os.environ['FLASK_ENV'] == 'development':
-    admin = Admin(tmc, name='TheMetaCity Media')
+def _setup_admin(app):
+    admin = Admin(app, name='TheMetaCity Media')
     admin.add_view(ModelView(models.MediaItem, db.session, 'Media Items'))
     admin.add_view(ModelView(models.VideoFile, db.session, 'Video Files'))
     admin.add_view(ModelView(models.VideoTrack, db.session, 'Video Tracks'))
@@ -53,3 +58,28 @@ if os.environ['FLASK_ENV'] == 'development':
     admin.add_view(ModelView(models.Code, db.session, 'Code'))
     admin.add_view(ModelView(models.Postcards, db.session, 'Postcards'))
     admin.add_view(ModelView(models.Licence, db.session, 'Licences'))
+
+
+def create_app(config_file=None):
+    app = Flask(__name__, static_url_path='', subdomain_matching=True)
+
+    if config_file is not None:
+        app.config.from_pyfile(config_file, silent=True)
+    else:
+        from config import Config
+        app.config.from_object(Config())
+
+    db.init_app(app)
+    migrate.init_app(app, db, render_as_batch=True)
+    cache.init_app(app)
+
+    _setup_url_maps(app)
+    _setup_blueprints(app)
+
+    if os.environ['FLASK_ENV'] == 'development':
+        _setup_admin(app)
+
+    if os.environ['FLASK_ENV'] == 'production':
+        _setup_minification(app)
+
+    return app

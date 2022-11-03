@@ -1,11 +1,29 @@
 var d = document.getElementById('document');
 var videos = d.getElementsByTagName('video');
 document.addEventListener("DOMContentLoaded", function () {
-    var videoContainer = document.getElementById("videoContainer"), videoBox = document.getElementById("videoBox"), video = document.getElementById("detailedVideo"), sources = video.getElementsByTagName('source'), playPauseButton = document.getElementById("playPauseButton"), fullscreenButton = document.getElementById("fullscreenButton"), currentTimeSpan = document.getElementById("currentTimeSpan"), playProgress = document.getElementById("playProgress"), soundButton = document.getElementById("tmcSoundIcon"), soundSlider = document.getElementById("soundSlider"), tracksButton = document.getElementById("tracksButton"), tracksList = document.getElementById("tracksList"), videoFileName = video.dataset.filename, hasStartPoster = video.dataset.startposter, hasEndPoster = video.dataset.endposter, hasFullscreen = video.dataset.hasfullscreen, canPlayVid = false, fullscreenFlag = false, soundState = {
-        hideSliderTimout: undefined,
-        prevButtonIcon: soundButton,
-        hideSilderTimoutTime: 3000
-    };
+    var videoContainer = document.getElementById("videoContainer"),
+        videoBox = document.getElementById("videoBox"),
+        video = document.getElementById("detailedVideo"),
+        sources = video.getElementsByTagName('source'),
+        playPauseButton = document.getElementById("playPauseButton"),
+        fullscreenButton = document.getElementById("fullscreenButton"),
+        currentTimeSpan = document.getElementById("currentTimeSpan"),
+        playProgress = document.getElementById("playProgress"),
+        soundButton = document.getElementById("tmcSoundIcon"),
+        soundSlider = document.getElementById("soundSlider"),
+        tracksButton = document.getElementById("tracksButton"),
+        tracksList = document.getElementById("tracksList"),
+        videoFileName = video.dataset.filename,
+        hasStartPoster = video.dataset.startposter,
+        hasEndPoster = video.dataset.endposter,
+        hasFullscreen = video.dattaset.hasfullscreen,
+        canPlayVid = false,
+        fullscreenFlag = false,
+        soundState = {
+            hideSliderTimout: undefined,
+            prevButtonIcon: soundButton,
+            hideSilderTimoutTime: 3000
+        };
     videoBox.style.width = video.width + "px";
     playProgress.value = 0;
     video.controls = false;

@@ -1,4 +1,4 @@
-from flask import render_template, abort
+from flask import render_template, abort, make_response
 from tmc import db, cache
 from tmc.media import media
 from tmc.models import Video, Audio, Code, Picture, MediaItem, Tags
@@ -27,10 +27,10 @@ def show_all_videos():
     return render_template('index.jinja2', media=videos)
 
 
-@media.route('/video/<video>/')
-def show_specific_video(video):
-    if video.isnumeric():
-        video = Video.query.filter_by(id=video).first_or_404()
+@media.route('/video/<video_id>/')
+def show_specific_video(video_id):
+    if video_id.isnumeric():
+        video = Video.query.filter_by(id=video_id).first_or_404()
         return render_template('detailed/video.jinja2', video=video)
     else:
         abort(404)
@@ -91,6 +91,21 @@ def show_specific_tag(tag):
     tag_media.sort(key=lambda media_entry: media_entry.parent_id)
     tag_media = tag_media[::-1]
     return render_template('tags.jinja2', media=tag_media)
+
+
+@media.route('/sitemap.xml')
+@cache.cached()
+def sitemap():
+    all_media = []
+    all_media += Video.query.all()
+    all_media += Audio.query.all()
+    all_media += Picture.query.all()
+    all_media += Code.query.all()
+    template = render_template('sitemap_media.xml', **locals())
+    response = make_response(template)
+    response.headers['Content-Type'] = 'application/xml'
+    return response
+
 
 
 @media.errorhandler(404)

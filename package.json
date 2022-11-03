@@ -6,7 +6,7 @@
   "author": "Douglas Miller",
   "scripts": {
     "lint": "jshint theMetaCityFlask/static/javascript/*.js",
-    "ts": "ts typescript/*.ts",
+    "ts": "tsc typescript/*.ts",
     "css": "npm run css:fp & npm run css:main",
     "css:home": "npm run css:home:dev",
     "css:home:dev": "node PCSS-Home-Development.js",
@@ -17,7 +17,7 @@
     "css:media": "npm run css:media:dev",
     "css:media:dev": "node PCSS-Media-Development.js",
     "css:media:prod": "node PCSS-Media-Production.js",
-    "css:watch:blog": "watch 'npm run css:blog:dev' ./pcss/blog",
+    "css:watch:blog": "watch 'npm run css:blog:dev' ./pcss",
     "deploy": "npm run deploy:local",
     "deploy:local": "node Deploy-local.js",
     "deploy:prod": "node Deploy-prod.js"

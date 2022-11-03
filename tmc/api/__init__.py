@@ -1,11 +1,11 @@
 from flask import Blueprint
-from flask_caching import Cache
-
-cache = Cache(config={'CACHE_TYPE': 'simple', 'CACHE_DEFAULT_TIMEOUT': 60})
+from .edo import edo
 
 api = Blueprint(
     'api',
     __name__
 )
+
+api.register_blueprint(edo, url_prefix="/edo", subdomain='api')
 
 from . import routes

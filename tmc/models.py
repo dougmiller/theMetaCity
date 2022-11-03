@@ -1,5 +1,7 @@
 import os
 from tmc import db
+from .model import UUIDModel
+
 
 article_tags = db.Table('article_tags_joiner',
                         db.Column('tag_id', db.Integer, db.ForeignKey('article_tags.id')),
@@ -12,7 +14,12 @@ class ArticleTag(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     tag = db.Column(db.String, primary_key=True)
     blurb = db.Column(db.String)
-    articles = db.relationship('Article', secondary=article_tags, backref='articles', order_by="desc(Article.id)")
+    articles = db.relationship(
+        'Article',
+        secondary=article_tags,
+        back_populates='tags',
+        order_by="desc(Article.id)"
+    )
 
     def __repr__(self):
         return '<Tag: {}>'.format(self.tag)
@@ -30,7 +37,7 @@ class Article(db.Model):
     update_date = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
     parent_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
     parent = db.relationship('Article', remote_side=[id], backref='children', order_by='Article.id')
-    tags = db.relationship('ArticleTag', secondary=article_tags, backref='tags')
+    tags = db.relationship('ArticleTag', secondary=article_tags, back_populates='articles')
 
     def __repr__(self):
         return '<Article {}: {}>'.format(self.id, self.title)
@@ -352,7 +359,7 @@ class Code(db.Model):
     __tablename__ = 'code'
     id = db.Column(db.Integer, primary_key=True)
     parent_id = db.Column(db.Integer, db.ForeignKey('media_item.id'))
-    language = db.Column(db.String),
+    language = db.Column(db.String)
     file_name = db.Column(db.String, unique=True)
     file_size = db.Column(db.Integer())
     media_type = 'code'
@@ -401,3 +408,12 @@ class MediaItem(db.Model):
 
     def __repr__(self):
         return '%r' % self.title
+
+
+class EverydayOrdinary(UUIDModel):
+    """
+    UUID primary key for EDO
+    """
+    __tablename__ = "everyday_ordinary"
+    contents = db.Column(db.String)
+

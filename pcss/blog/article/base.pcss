@@ -1,65 +1,128 @@
 
 body {
-    margin: 0 0 12em 0;
-}
+    margin: 0 0 14em 0;
 
-body > header {
-    background: var(--colour-float);
-    box-shadow: 0 0 1px 0 var(--colour-forgotten);
-    margin-bottom: 0.5em;
-    padding: 0.5em;
-    text-align: center;
+    > h2 {
+        max-width: var(--width-mid);
+        margin: 0 auto;
+        font-size: 1em;
+    }
 
-    h1 {
-        font-family: var(--font-heading);
-        margin: 0;
-        font-size: 3em;
+    > header {
+        background: var(--background-hilight);
+        box-shadow: 0 0 1px 0 var(--colour-main-background-accent);
+        margin-bottom: 0.5em;
+        padding: 0.5em;
+        text-align: center;
 
-        .titleHighlight {
-            color: var(--colour-work);
+        h1 {
+            font-family: var(--font-heading);
+            margin: 0;
+            font-size: 3em;
+            color: var(--colour-header-text);
+
+            .titleHighlight {
+                color: var(--colour-header-hilight);
+            }
+        }
+
+        nav {
+            padding: 0.5em;
+
+            a {
+                font-family: var(--font-heading);
+                color: var(--colour-bulk-text);
+                text-decoration: none;
+                font-size: 1.5em;
+                padding: 1em;
+            }
         }
     }
 
-    nav {
-        padding: 0.5em;
+    > footer {
+        height: calc(8em + 64px);
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        background: repeat-x url('/blog/images/tmc-footer-clouds.svg');
+        background-position-x: center;
+        padding-top: 6em;
+        z-index: -1;
 
-        a {
-            font-family: var(--font-heading);
-            color: var(--colour-forgotten);
-            text-decoration: none;
-            font-size: 1.5em;
-            padding: 1em;
+        nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            padding: 1.5em;
+            border-top: 1px solid var(--colour-main-background-accent);
+            border-bottom: 1px solid var(--colour-main-background-accent);
+            background-color: var(--background);
+
+            a {
+                font-family: var(--font-heading);
+                color: var(--colour-glide);
+                text-decoration: none;
+                font-size: 1.8em;
+            }
+        }
+
+        p {
+            font-size: 1.2em;
+            font-family: var(--font-bulk);
+            line-height: 1.2em;
+            text-align: center;
+            color: var(--colour-bulk-text);
+            padding: 1.5em;
+            border-top: 1px solid var(--colour-main-background-accent);
+            border-bottom: 1px solid var(--colour-main-background-accent);
+            background-color: var(--background);
+
+            a {
+                color: var(--colour-link);
+            }
         }
     }
 }
 
 #container {
-    background: var(--colour-float);
+    display: grid;
+    grid-template-columns:  1fr var(--width-mid) 1fr;
+
+     > * {
+         grid-column-start: 2;
+         grid-column-end: -2;
+     }
+
+    background: var(--background);
 
     > h2 {
         text-align: center;
     }
-}
 
-#container > article {
-    max-width: var(--width-mid);
-    margin: 0 auto;
-    line-height: 1.4em;
-    font-size: 1.2em;
-    padding: 1em;
+    > article {
+        max-width: var(--width-mid);
+        margin: 0 auto;
+        line-height: 1.4em;
+        font-size: 1.2em;
+        padding: 1em;
 
-    h2 {
-        margin-top: 0;
-        margin-bottom: 0;
+        h2 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        nav {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        footer {
+            margin-top: 1em;
+        }
     }
 
-    nav {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    footer {
-        margin-top: 1em;
+    &::after {
+        height: 4em;
     }
 }
 
@@ -69,9 +132,9 @@ h1, h2, h3, nav {
 
 h1 {
     a {
-    color: var(--colour-work);
-    text-decoration: underline;
-    text-decoration-color: var(--colour-explore);
+        color: var(--colour-work);
+        text-decoration: underline;
+        text-decoration-color: var(--colour-explore);
     }
 
     a:hover {
@@ -99,56 +162,21 @@ h3 {
 p {
     font-family: var(--font-bulk);
     font-size: 1em;
+    color: var(--colour-text-normal);
+
+}
+
+a {
+    color: var(--colour-text-highlight)
 }
 
 code {
     font-size: 1em;
-}
-
-body > h2 {
-    max-width: var(--width-mid);
-    margin: 0 auto;
-    font-size: 1em;
+    background-color: var(--colour-main-background-accent);
 }
 
 #cityclipdiv {
     clip-path: url('/blog/images/tmc-logo-cityscape-main-clip.svg#cityScapeClip');
     height: 4em;
     background-color: var(--colour-float);
-}
-
-body > footer {
-    height: calc(6em + 64px);
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    background: repeat-x url('/blog/images/tmc-footer-bands.svg');
-    background-position-x: center;
-    padding-top: 6em;
-    z-index: -1;
-
-    nav {
-        padding: 0.5em;
-        text-align: center;
-
-        a {
-            font-family: var(--font-heading);
-            color: var(--colour-deep);
-            text-decoration: none;
-            font-size: 1.8em;
-            margin: 1em;
-            display: inline-block;
-        }
-    }
-
-    p {
-        text-align: center;
-        font-size: 1.2em;
-        font-family: var(--font-bulk);
-        color: var(--colour-deep);
-
-        a {
-            color: var(--colour-forgive);
-        }
-    }
 }

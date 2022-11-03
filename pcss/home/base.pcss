@@ -79,9 +79,9 @@ nav {
         width: 120px;
     }
 
-    h1:nth-of-type(1) {grid-area: name; margin-top: 1em;}
-    h1:nth-of-type(2) {grid-area: blog;}
-    h1:nth-of-type(3) {grid-area: workshop; margin-bottom: 1em;}
+    a:nth-of-type(1) {grid-area: name; margin-top: 1em;}
+    a:nth-of-type(2) {grid-area: blog;}
+    a:nth-of-type(3) {grid-area: workshop; margin-bottom: 1em;}
 }
 
 main {
@@ -107,21 +107,13 @@ footer {
     grid-area: links;
     align-self: end;
 
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 10px;
-    grid-template-rows: 1fr;
+    display: flex;
+    justify-content: space-between;
 
-    grid-template-areas: "twitter about media";
-
-    h2 {
+    h3 {
         a {
             color: var(--colour-alight);
             text-decoration: none;
         }
     }
-
-    h2:nth-of-type(1) {grid-area: twitter;}
-    h2:nth-of-type(2) {grid-area: about;}
-    h2:nth-of-type(3) {grid-area: media;}
 }

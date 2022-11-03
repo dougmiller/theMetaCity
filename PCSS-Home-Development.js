@@ -7,7 +7,7 @@ let postcss_nested = require('postcss-nested');
 
 let options = {
     from: 'pcss/home.pcss',
-    to: 'tmc/home/static/css/home.css',
+    to: 'tmc/home/static/css/style.css',
     map: { inline: false }
 };
 
@@ -19,8 +19,8 @@ postcss([
 ])
 .process(css, options)
 .then(function (result) {
-    fs.writeFileSync('tmc/home/static/css/style.css', result.css);
-    fs.writeFileSync('tmc/home/static/css/style.css.map', result.map);
+    fs.writeFileSync('tmc/home/static/css/style.css', result.css.toString());
+    fs.writeFileSync('tmc/home/static/css/style.css.map', result.map.toString());
     console.log("Home CSS dev build finished");
 }, function(error) {
     console.log(error);

@@ -2,7 +2,7 @@
 
 {% block title %}{{ video.Parent.title }}{% endblock %}
 {% block includes %}
-    <script src="/static/javascript/video.js"></script>
+    <script src="{{ url_for('media.static', filename='javascript/video.js') }}"></script>
 {% endblock %}
 
 {% block media %}
@@ -62,7 +62,7 @@
         </div>
     </div>
 
-    <div id="" class="mediaInfo" itemscope itemtype="http://schema.org/VideoObject">
+    <div class="mediaInfo" itemscope itemtype="http://schema.org/VideoObject">
         <h2 itemprop="name">{{ video.Parent.title }}</h2>
 
         <h3>Published:

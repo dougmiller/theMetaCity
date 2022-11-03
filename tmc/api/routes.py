@@ -1,11 +1,6 @@
-from flask_graphql import GraphQLView
-from . import api, schema
+from . import api
 
-api.add_url_rule(
-    '/',
-    view_func=GraphQLView.as_view(
-        'graphql',
-        schema=schema.schema,
-        graphiql=True
-    )
-)
+
+@api.route("/")
+def api_index():
+    return "123"

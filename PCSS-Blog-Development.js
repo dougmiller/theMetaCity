@@ -19,7 +19,7 @@ postcss([
 ])
 .process(css, options)
 .then( result => {
-    fs.writeFileSync('tmc/blog/static/css/style.css.map', result.map);
+    fs.writeFileSync('tmc/blog/static/css/style.css.map', result.map.toString());
     fs.writeFileSync('tmc/blog/static/css/style.css', result.css);
     console.log("Blog CSS dev build completed");
 }, function(error) {

@@ -1,5 +1,6 @@
 import os
 import sys
+from urllib.parse import quote_plus
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -21,8 +22,7 @@ class Config(object):
         cls.__read_password()
 
         cls.__test_connection()
-
-        cls.SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://' + cls.user + ':' + cls.password + '@' + cls.host + ':' + cls.port + '/' + cls.name
+        cls.SQLALCHEMY_DATABASE_URI = f'postgresql+psycopg2://{cls.user}:{cls.password}@{cls.host}:{cls.port}/{cls.name}'
 
     @classmethod
     def __test_connection(cls):
@@ -39,6 +39,7 @@ class Config(object):
                 user=cls.user,
                 password=cls.password
             )
+            print("Successfully connected to the database")
         except psycopg2.InternalError:
             print("I am unable to connect to the database")
             print(
@@ -60,6 +61,8 @@ class Config(object):
                 cls.name,
                 cls.user
             )
+
+            cls.password = quote_plus(cls.password)
         except pgpasslib.FileNotFound:
             print('.pgpass file not found. Please create and populate it.')
             sys.exit(7)
@@ -72,8 +75,7 @@ class Config(object):
         except pgpasslib.PgPassException as ex:
             print('Error with .pgpass system')
             print(ex)
-            sys.exit(6)\
-
+            sys.exit(6)
 
     @classmethod
     def __read_db_config(cls):
