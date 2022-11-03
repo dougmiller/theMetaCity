@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>The MetaCity.com | Android Privacy Policy</title>
+        {% autoescape false %}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('home.static', filename='css/style.css') }}"/>
+        <link rel="icon" type="image/svg+xml" href="{{ url_for('home.static', filename='images/tmc-logo-animated.svg') }}">
+        <link type="text/plain" rel="author" href="{{ url_for('home.static', filename='humans.txt') }}" />
+        <style>body{background:url(" {{ url_for('home.static', filename='images/backgrounds') }}/{{ range(1, 17) | random }}.webp") no-repeat center center / cover;}</style>
+        {% endautoescape %}
+    </head>
+    <body>
+        <nav>
+            <img alt="The MetaCity Logo" src="{{ url_for('home.static', filename='/images/tmc-logo-animated.svg') }}" width="120" height="120"/>
+            <h1>Doug Miller</h1>
+            <h1><a href="{{ url_for('blog.home') }}">Blog</a></h1>
+            <h1><a href="{{ url_for('media.home') }}">Media</a></h1>
+        </nav>
+        <main>
+            <article>
+                <h1>Privacy Policy</h1>
+                <h2>I DO NOT STORE ANY DATA OR MESSAGES YOU PUT INTO THE APP. PERIOD. </h2>
+                <p>I physically can’t.  I have nowhere to store it.  I don’t even have a server database to store it.</p>
+            </article>
+        </main>
+        <footer>
+            <h2><a href="https://twitter.com/dougmillertmc">Twitter</a></h2>
+            <h2><a href="{{ url_for('home.about') }}">About</a></h2>
+            <h2><a href="https://github.com/dougmiller">GitHub</a></h2>
+        </footer>
+    </body>
+</html>
