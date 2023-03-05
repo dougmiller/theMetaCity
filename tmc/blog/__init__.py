@@ -1,5 +1,6 @@
 from flask import Blueprint
 
+
 blog = Blueprint(
     'blog',
     __name__,
@@ -8,4 +9,4 @@ blog = Blueprint(
     static_url_path='',
 )
 
-from . import routes
+from . import routes, helpers

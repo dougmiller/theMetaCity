@@ -11,7 +11,7 @@ cache = Cache(config={'CACHE_TYPE': 'simple', 'CACHE_DEFAULT_TIMEOUT': 3000})
 db = SQLAlchemy()
 migrate = Migrate()
 
-from tmc import models, handlers, helpers
+from tmc import models, handlers
 
 
 def _setup_url_maps(app):
@@ -21,12 +21,13 @@ def _setup_url_maps(app):
 
 
 def _setup_blueprints(app):
-    from tmc import blog, media, home, android, api
+    from tmc import blog, media, home, android, api, edo
     app.register_blueprint(home.home, url_prefix='/')
     app.register_blueprint(blog.blog, url_prefix='/blog')
     app.register_blueprint(media.media, subdomain='media')
     app.register_blueprint(api.api, subdomain='api')
     app.register_blueprint(android.android, subdomain='android')
+    app.register_blueprint(edo.edo, subdomain='everydayordinary')
 
 
 def _setup_minification(app):
@@ -76,8 +77,8 @@ def create_app(config_file=None):
     _setup_url_maps(app)
     _setup_blueprints(app)
 
-    if os.environ['FLASK_ENV'] == 'development':
-        _setup_admin(app)
+    #if os.environ['FLASK_ENV'] == 'development':
+    #    _setup_admin(app)
 
     if os.environ['FLASK_ENV'] == 'production':
         _setup_minification(app)

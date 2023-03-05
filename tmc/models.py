@@ -1,16 +1,20 @@
 import os
 from tmc import db
-from .model import UUIDModel
 
 
 article_tags = db.Table('article_tags_joiner',
-                        db.Column('tag_id', db.Integer, db.ForeignKey('article_tags.id')),
-                        db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
-                        db.PrimaryKeyConstraint('tag_id', 'article_id'))
+                        db.Column('tag_id', db.Integer, db.ForeignKey('com.article_tags.id')),
+                        db.Column('article_id', db.Integer, db.ForeignKey('com.articles.id')),
+                        db.PrimaryKeyConstraint('tag_id', 'article_id'),
+                        schema="com",
+                        info={'bind_key': 'com'}
+                        )
 
 
 class ArticleTag(db.Model):
     __tablename__ = 'article_tags'
+    __table_args__ = {"schema": "com"}
+    __bind_key__ = "com"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     tag = db.Column(db.String, primary_key=True)
     blurb = db.Column(db.String)
@@ -27,6 +31,8 @@ class ArticleTag(db.Model):
 
 class Article(db.Model):
     __tablename__ = 'articles'
+    __table_args__ = {"schema": "com"}
+    __bind_key__ = "com"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, unique=True)
     url = db.Column(db.String, unique=True)
@@ -35,7 +41,7 @@ class Article(db.Model):
     text = db.Column(db.String, nullable=False)
     creation_date = db.Column(db.DateTime, server_default=db.func.now())
     update_date = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
-    parent_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('com.articles.id'))
     parent = db.relationship('Article', remote_side=[id], backref='children', order_by='Article.id')
     tags = db.relationship('ArticleTag', secondary=article_tags, back_populates='articles')
 
@@ -72,6 +78,8 @@ class Licence(db.Model):
     Covers all the different media types (audio/video and code etc)
     """
     __tablename__ = 'licence'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
     licence_name = db.Column(db.String, unique=True)
     licence_text = db.Column(db.String, unique=True)
@@ -90,6 +98,8 @@ class Postcards(db.Model):
     reduced redundancy when a different project uses the same postcard
     """
     __tablename__ = 'postcard'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String, unique=True)
     title = db.Column(db.String, unique=True)
@@ -117,8 +127,10 @@ class Video(db.Model):
     The class 'Track' is a track associated with the video (sub, captions etc)
     """
     __tablename__ = 'video'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
-    parent_id = db.Column(db.Integer, db.ForeignKey('media_item.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('media.media_item.id'))
     file_name = db.Column(db.String, unique=True)
     files = db.relationship('VideoFile', backref='File_Parent')
     tracks = db.relationship('VideoTrack', backref='Track_Parent')
@@ -182,8 +194,10 @@ class VideoFile(db.Model):
     This file will be part of the set of the class 'Video'
     """
     __tablename__ = 'video_file'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
-    parent_video = db.Column(db.Integer, db.ForeignKey('video.id'))
+    parent_video = db.Column(db.Integer, db.ForeignKey('media.video.id'))
     video_codec = db.Column(db.Enum('vp8', 'h264', 'theora', name='video_video_codec'))
     audio_codec = db.Column(db.Enum('nill', 'vorbis', 'mp3', 'wav', name='video_audio_codec'))
     mime_type = db.Column(db.Enum('webm', 'mp4', 'ogg', name='video_mime_type'))
@@ -216,8 +230,10 @@ class VideoTrack(db.Model):
     Represents a single video media 'track'
     """
     __tablename__ = 'video_track'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
-    parent_video = db.Column(db.Integer, db.ForeignKey('video.id'))
+    parent_video = db.Column(db.Integer, db.ForeignKey('media.video.id'))
     type = db.Column(db.Enum('subtitles', 'captions', 'descriptions', 'chapters', 'metadata', name='video_track_type'))
     src_lang = db.Column(db.String, default="en-AU")
     label = db.Column(db.String, default="English")
@@ -240,8 +256,10 @@ class Audio(db.Model):
     The class 'Track' is a track associated with the video (sub, captions etc)
     """
     __tablename__ = 'audio'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
-    parent_id = db.Column(db.Integer, db.ForeignKey('media_item.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('media.media_item.id'))
     file_name = db.Column(db.String, unique=True)
     files = db.relationship('AudioFile', backref='File_Parent')
     tracks = db.relationship('AudioTrack', backref='Audio_Parent')
@@ -286,8 +304,10 @@ class AudioFile(db.Model):
     This file will be part of the set of the class 'Audio'
     """
     __tablename__ = 'audio_file'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
-    parent_audio = db.Column(db.Integer, db.ForeignKey('audio.id'))
+    parent_audio = db.Column(db.Integer, db.ForeignKey('media.audio.id'))
     audio_codec = db.Column(db.Enum('vorbis', 'mp3', 'wav', name='audio_audio_codec'))
     mime_type = db.Column(db.Enum('ogg', 'webm', 'mpeg', 'wav', name='audio_mime_type'))
     extension = db.Column(db.Enum('ogg', 'mp3', 'wav', name='audio_file_extension'))
@@ -309,8 +329,10 @@ class AudioTrack(db.Model):
     Represents a single audio media 'track'
     """
     __tablename__ = 'audio_track'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
-    parent_audio = db.Column(db.Integer, db.ForeignKey('audio.id'))
+    parent_audio = db.Column(db.Integer, db.ForeignKey('media.audio.id'))
     type = db.Column(db.Enum('subtitles', 'captions', 'descriptions', 'chapters', 'metadata', name='audio_track_type'))
     src_lang = db.Column(db.String, default="en-AU")
     label = db.Column(db.String, default="English")
@@ -331,8 +353,10 @@ class Picture(db.Model):
     path, resolution, thumbnail resolution etc
     """
     __tablename__ = 'picture'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
-    parent_id = db.Column(db.Integer, db.ForeignKey('media_item.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('media.media_item.id'))
     file_name = db.Column(db.String, unique=True)
     resolution = db.Column(db.String)
     file_size = db.Column(db.Integer())
@@ -357,8 +381,10 @@ class Code(db.Model):
     path, resolution, thumbnail resolution etc
     """
     __tablename__ = 'code'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
-    parent_id = db.Column(db.Integer, db.ForeignKey('media_item.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('media.media_item.id'))
     language = db.Column(db.String)
     file_name = db.Column(db.String, unique=True)
     file_size = db.Column(db.Integer())
@@ -376,6 +402,8 @@ class Tags(db.Model):
     Tags table
     """
     __tablename__ = 'tags'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String, unique=True, nullable=False)
 
@@ -384,9 +412,11 @@ class Tags(db.Model):
 
 
 tags_joiner = db.Table('tags_joiner',
-                       db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
-                       db.Column('mediaitem_id', db.Integer, db.ForeignKey('media_item.id')),
-                       db.PrimaryKeyConstraint('tag_id', 'mediaitem_id'))
+                       db.Column('tag_id', db.Integer, db.ForeignKey('media.tags.id')),
+                       db.Column('mediaitem_id', db.Integer, db.ForeignKey('media.media_item.id')),
+                       db.PrimaryKeyConstraint('tag_id', 'mediaitem_id'),
+                       schema="media"
+                       )
 
 
 class MediaItem(db.Model):
@@ -394,12 +424,14 @@ class MediaItem(db.Model):
     The model that media items (videos, pictures etc) are parented from
     """
     __tablename__ = "media_item"
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, unique=True)
     about = db.Column(db.String)
     date_published = db.Column(db.Date)
-    licence = db.Column(db.Integer, db.ForeignKey('licence.id'))
-    postcard = db.Column(db.Integer, db.ForeignKey('postcard.id'))
+    licence = db.Column(db.Integer, db.ForeignKey('media.licence.id'))
+    postcard = db.Column(db.Integer, db.ForeignKey('media.postcard.id'))
     tags = db.relationship('Tags', secondary=tags_joiner, backref='media_items')
     videos = db.relationship('Video', backref='Parent', lazy='dynamic')
     audios = db.relationship('Audio', backref='Parent', lazy='dynamic')
@@ -408,12 +440,3 @@ class MediaItem(db.Model):
 
     def __repr__(self):
         return '%r' % self.title
-
-
-class EverydayOrdinary(UUIDModel):
-    """
-    UUID primary key for EDO
-    """
-    __tablename__ = "everyday_ordinary"
-    contents = db.Column(db.String)
-

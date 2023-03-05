@@ -1,0 +1,65 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres:15.1-alpine
+    env_file:
+       - ./docker/db/.env
+       - ./docker/db/credentials.env
+    volumes:
+      - ./docker/db/startup-files/100_create_users.sh:/docker-entrypoint-initdb.d/100_create_users.sh
+      - ./docker/db/startup-files/200_create_databases.sh:/docker-entrypoint-initdb.d/200_create_databases.sh
+      - ./docker/db/startup-files/210_create_schema_functions.sh:/docker-entrypoint-initdb.d/210_create_schema_functions.sh
+      - ./docker/db/startup-files/211_create_schema_com.sh:/docker-entrypoint-initdb.d/211_create_schema_com.sh
+      - ./docker/db/startup-files/212_create_schema_media.sh:/docker-entrypoint-initdb.d/212_create_schema_media.sh
+      - ./docker/db/startup-files/213_create_schema_everyday_ordinary.sh:/docker-entrypoint-initdb.d/213_create_schema_everyday_ordinary.sh
+      - ./docker/db/startup-files/290_finalise_schemas.sh:/docker-entrypoint-initdb.d/290_finalise_schemas.sh
+      - ./docker/db/startup-files/310_populate_com_tables.sh:/docker-entrypoint-initdb.d/310_populate_com_tables.sh
+      - ./docker/db/startup-files/311_populate_com_tables_articles_only.sql:/docker-entrypoint-initdb.d/311_populate_com_tables_articles_only.sql
+      - ./docker/db/startup-files/312_populate_com_tables.sh:/docker-entrypoint-initdb.d/312_populate_com_tables.sh
+      - ./docker/db/startup-files/320_populate_media_tables.sh:/docker-entrypoint-initdb.d/320_populate_media_tables.sh
+      - ./docker/db/startup-files/330_populate_everyday_ordinary_tables.sh:/docker-entrypoint-initdb.d/330_populate_everyday_ordinary_tables.sh
+      - ./docker/db/startup-files/500_setup_hba.sh:/docker-entrypoint-initdb.d/500_setup_hba.sh
+      - ./docker/db/startup-files/510_setup_pgpass.sh:/docker-entrypoint-initdb.d/510_setup_pgpass.sh
+    ports:
+      - "5433:5432"
+    networks:
+      - database
+    restart: unless-stopped
+
+  memcache:
+    container_name: memcached_container
+    image: memcached:1.6.17-alpine
+    ports:
+     - "11211:11211"
+    networks:
+    - cache
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.23.2
+    container_name: nginx_container
+    volumes:
+      - ./docker/web/startup-files/100-setup-apt.sh:/docker-entrypoint.d/100-setup-apt.sh
+      - ./docker/web/startup-files/200-install-python.sh:/docker-entrypoint.d/200-install-python.sh
+      - ./docker/web/startup-files/300-install-uwsgi.sh:/docker-entrypoint.d/300-install-uwsgi.sh
+    ports:
+      - "80:80"
+    networks:
+      - cache
+      - database
+      - apt
+    restart: unless-stopped
+
+networks:
+  database:
+    driver: bridge
+  cache:
+    driver: bridge
+  apt:
+    external: true
+    name: apt
+
+volumes:
+  postgres:
+    driver: local

@@ -1,4 +1,4 @@
-from arrow import utcnow
+from arrow import now
 from sqlalchemy.ext.declarative import declared_attr, has_inherited_table
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy_utils import ArrowType
@@ -10,17 +10,9 @@ from .mixins import QueryMixin
 __all__ = ('UUIDModel', 'IntegerModel')
 
 
-class Model(db.Model, QueryMixin):
+class _Model(db.Model, QueryMixin):
     """Abstract base class for all app models.
-
     Provides an `id`, 'updated_at', `created_at` and ` deleted_at` column to every model.
-
-    To use these, extend this class when defining models:
-
-        from .base import Model
-
-        class MyModel(Model):
-            # model definition
     """
     __abstract__ = True
 
@@ -28,7 +20,7 @@ class Model(db.Model, QueryMixin):
     def created_at(cls):
         return db.Column(
             ArrowType,
-            default=utcnow,
+            default=now,
             server_default=sa_text("(now() at time zone 'utc')"),
             nullable=False,
             index=True
@@ -38,7 +30,7 @@ class Model(db.Model, QueryMixin):
     def updated_at(cls):
         return db.Column(
             ArrowType,
-            default=utcnow,
+            default=now,
             server_default=sa_text("(now() at time zone 'utc')"),
             nullable=False,
             index=True
@@ -83,20 +75,22 @@ class Model(db.Model, QueryMixin):
         return cls.__name__.lower()
 
 
-class UUIDModel(Model):
-    def __init__(self, **kwargs):
-        super(UUIDModel, self).__init__(**kwargs)
+class UUIDModel(_Model):
+    __abstract__ = True
+    __bind_key__ = None
+
+    def __init__(self):
+        super()
 
     id = db.Column(
         UUID(as_uuid=True),
         primary_key=True,
-        server_default=sa_text("uuid_generate_v4()")
+        server_default=sa_text("uuid_generate_v7()")
     )
 
 
-class IntegerModel(Model):
-    def __init__(self, **kwargs):
-        super(IntegerModel, self).__init__(**kwargs)
+class IntegerModel(_Model):
+    __abstract__ = True
 
     id = db.Column(
         db.Integer,

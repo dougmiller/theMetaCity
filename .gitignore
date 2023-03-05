@@ -6,3 +6,5 @@ tmc/home/static/css
 tmc/blog/static/css
 
 tmc/media/static/css
+/docker/db/.env
+/docker/db/credentials.env
