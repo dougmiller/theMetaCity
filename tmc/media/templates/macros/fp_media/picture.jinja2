@@ -1,7 +1,7 @@
 {% macro fp_picture(picture) -%}
 <div class="mediaPoster picture">
     <h1><a href="/picture/{{ picture.id }}">{{ picture.title }}</a></h1>
-        <img src="//assets.localcity.com/video/postcards/{{ picture.postcard.url }}"
+        <img src="//{{ env['ASSETS_PATH'] }}/video/postcards/{{ picture.postcard.url }}"
              title="{{ picture.postcard.title }}"
              alt="{{ picture.postcard.alt_text }}">
     <h3>Published: {{ picture.date_published }}</h3>

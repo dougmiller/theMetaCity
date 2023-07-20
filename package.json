@@ -16,8 +16,9 @@
     "css:blog:prod": "node PCSS-Blog-Production.js",
     "css:media": "npm run css:media:dev",
     "css:media:dev": "node PCSS-Media-Development.js",
+    "css:watch:home": "watch 'npm run css:home' ./pcss/home",
     "css:media:prod": "node PCSS-Media-Production.js",
-    "css:watch:blog": "watch 'npm run css:blog:dev' ./pcss",
+    "css:watch:blog": "watch 'npm run css:blog:dev' ./pcss/blog",
     "deploy": "npm run deploy:local",
     "deploy:local": "node Deploy-local.js",
     "deploy:prod": "node Deploy-prod.js"

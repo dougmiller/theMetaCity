@@ -5,16 +5,16 @@ from tmc.models import Article
 
 
 @home.route('/')
-@cache.cached()
+#@cache.cached()
 def index():
     articles = Article.query.order_by(Article.creation_date.desc()).limit(3).all()
-    return render_template('home/index.html', articles=articles)
+    return render_template('home/index.jinja2', articles=articles)
 
 
 @home.route('/about/')
 @cache.cached()
 def about():
-    return render_template('home/about.html')
+    return render_template('home/about.jinja2')
 
 
 @home.route('/rss/')

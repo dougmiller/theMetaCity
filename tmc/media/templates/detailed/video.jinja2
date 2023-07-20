@@ -22,13 +22,13 @@
 
                 {% for source in video.files %}
                     {% if not source.is_fullscreen %}
-                        <source src="//assets.localcity.com/video/{{ video.file_name }}.{{ source.extension }}"
+                        <source src="//{{ env['ASSETS_PATH'] }}/video/{{ video.file_name }}.{{ source.extension }}"
                             type='video/{{ source.mime_type }}; codecs="{{ source.video_codec }}{% if source.audio_codec != 'nill' %},{{ source.audio_codec }}{% endif %}"' />
                     {% endif %}
                 {% endfor %}
 
                 {% for track in video.tracks %}
-                    <track src="//assets.localcity.com/video/tracks/{{ video.file_name }}.{{ track.src_lang }}.{{ track.type }}.vtt"
+                    <track src="//{{ env['ASSETS_PATH'] }}/video/tracks/{{ video.file_name }}.{{ track.src_lang }}.{{ track.type }}.vtt"
                            srclang="{{ track.src_lang }}" kind="{{ track.type }}" label="{{ track.label }}">
                 {% endfor %}
             </video>

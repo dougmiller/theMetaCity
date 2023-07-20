@@ -181,7 +181,7 @@ $POSTGRES <<-SQL
 
 
   CREATE TABLE media.video_track (
-    id integer NOT NULL,
+    id SERIAL PRIMARY KEY,
     parent_video integer,
     type media.video_track_type,
     src_lang character varying(16),

@@ -1,5 +1,6 @@
 import os
 from tmc import db
+from flask import current_app
 
 
 article_tags = db.Table('article_tags_joiner',
@@ -107,16 +108,17 @@ class Postcards(db.Model):
     items = db.relationship('MediaItem', backref='Postcard', lazy='dynamic')
 
     def __repr__(self):
-        return self.url + ': ' + self.title
+        return f"{self.url}: {self.title}"
 
     def build_picture(self, kind):
-        path = os.path.splitext(self.url)
-        return ' \
+        name = os.path.splitext(self.url)[0]
+        server = current_app.config["ASSETS_PATH"]
+        return f' \
         <picture> \
-            <source type="image/flif" srcset="//assets.localcity.com/{kind}/postcards/{name}.flif"> \
-            <source type="image/webp" srcset="//assets.localcity.com/{kind}/postcards/{name}.webp"> \
-            <img src="//assets.localcity.com/{kind}/postcards/{url}" title="{title}" alt="{alt}">\
-        </picture>'.format(kind=kind, name=path[0], url=self.url, title=self.title, alt=self.alt_text)
+            <source type="image/flif" srcset="//{server}/{kind}/postcards/{name}.flif"> \
+            <source type="image/webp" srcset="//{server}/{kind}/postcards/{name}.webp"> \
+            <img src="//{server}/{kind}/postcards/{self.url}" title="{self.title}" alt="{self.alt_text}">\
+        </picture>'
 
 
 class Video(db.Model):

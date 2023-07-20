@@ -51,9 +51,8 @@ class Config(object):
             cls.SECRET_KEY = config['SETTINGS']['SECRET_KEY']
             cls.CSRF_ENABLED = config['SETTINGS']['CSRF_ENABLED']
             cls.SERVER_NAME = config['SETTINGS']['SERVER_NAME']
-            cls.EDO_UPLOAD_PATH = 'edo_uploads'
-            cls.HOST = "0.0.0.0"
-            cls.PORT = 4000
+            cls.EDO_UPLOAD_PATH = config['EDO']['UPLOAD_PATH']
+            cls.ASSETS_PATH = config['ASSETS']['UPLOAD_PATH']
         except KeyError as key_error:
             print("Could not find key in settings config file: " + key_error.args[0])
             print("Expecting 'DEBUG', 'SECRET_KEY', 'CSRF_ENABLED', 'SERVER_NAME'")

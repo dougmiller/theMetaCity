@@ -2,6 +2,7 @@
     /* Colours */
     --colour-meditate: hsla(0, 0%, 0%, 0);
     --colour-float: hsla(0, 0%, 100%, 1);
+    --colour-slide: hsla(0, 5%, 95%, 1);
     --colour-glide: hsla(0, 5%, 95%, 0.9);
     --colour-mist: hsla(0, 0%, 100%, 0.8);
     --colour-explore: hsla(170, 50%, 45%, 1);
@@ -26,6 +27,8 @@
 
     /* Numbers */
     --width-mid: 80ch;
+
+    --background: black;
 }
 
 @media (prefers-color-scheme: light) {
@@ -41,11 +44,13 @@
         --colour-text-normal: hsl(var(--hue-primary), 30%, 80%);
         --colour-text-highlight: hsl(var(--hue-highlight), 85%, 50%);
         --colour-text-accent: hsl(var(--hue-highlight), 0%, 100%);
+        --colour-text-link: var(--colour-work);
+
 
         --colour-header-text: var(--colour-forgotten);
-        --colour-header-hilight: var(--colour-forgotten);
+        --colour-header-hilight: var(--colour-work);
         --colour-bulk-text: var(--colour-forgotten);
-        --colour-link: var(--colour-work);
+
 
     }
 }
@@ -66,9 +71,9 @@
         --colour-text-highlight: hsl(var(--hue-highlight), 85%, 50%);
         --colour-text-accent: hsl(var(--hue-highlight), 0%, 100%);
 
-        --colour-header-text: var(--colour-forgotten);
-        --colour-header-hilight: var(--colour-forgotten);
-        --colour-bulk-text: var(--colour-forgotten);
+        --colour-header-text: var(--colour-slide);
+        --colour-header-hilight: var(--colour-work);
+        --colour-bulk-text: var(--colour-slide);
         --colour-link: var(--colour-work);
     }
 }

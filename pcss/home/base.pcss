@@ -1,16 +1,59 @@
+:root {
+    /* Font sets */
+    --font-heading: "Orbitron", Verdana, Arial, sans-serif;;
+    --font-lead: "Inconsolata", Verdana, Arial, sans-serif;;
+    --font-bulk: "Droid Sans", serif;
+
+    /* Colours */
+    --colour-deep: hsla(210, 30%, 15%, 1);
+    --colour-explore: hsla(170, 50%, 45%, 1);
+    --colour-known: hsla(170, 50%, 45%, 0.5);
+    --colour-float: hsla(0, 0%, 100%, 1);
+    --colour-glide: hsla(0, 5%, 95%, 0.9);
+    --colour-unforgiving: hsla(180, 20%, 10%, 1);
+    --colour-forgotten: hsla(180, 20%, 10%, 0.4);
+    --colour-forgive: hsla(200, 10%, 30%, 1);
+    --colour-work: hsla(20, 75%, 50%, 1);
+    --colour-rest: hsla(20, 75%, 50%, 0.5);
+    --colour-fight: hsla(10, 85%, 50%, 1);
+    --colour-meditate: hsla(0, 0%, 0%, 0);
+    --colour-mist: hsla(0, 0%, 100%, 0.95);
+}
+
+html {
+    background:url("/images/backgrounds/vapor_wave_city.svg") no-repeat center center / cover;
+}
+
 body {
     margin: 0;
     display: grid;
     height: 100vh;
-    grid-template-columns: 1fr;
-    grid-template-rows: 120px 1fr;
-    grid-row-gap: 10px;
-    grid-template-areas:
+    grid-row-gap: 1em;
+}
+
+@media (min-width: 600px) {
+    body {
+        grid-template-columns: 1fr 600px;
+        grid-template-rows: 1fr 160px auto 1fr auto;
+        grid-template-areas:
+            ". ."
+            ". navigation"
+            ". articles"
+            ". ."
+            ". links";
+    }
+}
+@media (max-width: 600px) {
+    body {
+        grid-template-columns: 1fr;
+        grid-template-rows: 160px 1fr;
+        grid-template-areas:
         "navigation"
         "articles"
         "links";
+    }
 }
-
+/*
 h1 {
     margin: 0;
     font-size: 1.1em;
@@ -54,6 +97,7 @@ h3 {
         color: var(--colour-known);
     }
 }
+*/
 
 nav, article, footer {
     background-color: var(--colour-mist);
@@ -64,24 +108,39 @@ nav {
     grid-area: navigation;
 
     display: grid;
-    grid-template-columns: 120px 1fr;
+    grid-template-columns: 160px 1fr;
     grid-column-gap: 1em;
     grid-template-rows: repeat(3, 1fr);
     grid-template-areas:
-        "imglogo name"
-        "imglogo blog"
-        "imglogo workshop";
+        "logo name"
+        "logo nav_links"
+        "logo nav_links";
 
     align-items: center;
 
-    img {
-        grid-area: imglogo;
-        width: 120px;
+    *:nth-child(1) {grid-area: logo;}
+    *:nth-child(2) {grid-area: name; text-align: center;}
+    *:nth-child(3) {grid-area: nav_links; display: flex; justify-content: space-evenly;}
+
+    h1 {
+        font-size: 2em;
+        font-family: Orbitron, "Droid Sans", sans-serif;
+        letter-spacing: 0.1em;
+        margin-bottom: 0;
     }
 
-    a:nth-of-type(1) {grid-area: name; margin-top: 1em;}
-    a:nth-of-type(2) {grid-area: blog;}
-    a:nth-of-type(3) {grid-area: workshop; margin-bottom: 1em;}
+    a {
+        font-family: Roboto, sans-serif;
+        font-size: 2em;
+        text-decoration: underline;
+        text-transform: uppercase;
+        color: #00A000;
+        padding: 1em;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
 }
 
 main {
@@ -98,22 +157,65 @@ main {
     article:last-child {
         margin: 0;
     }
+
+    h1 {
+        font-size: 1.4em;
+        font-family: Roboto, sans-serif;
+        a {
+            color: red;
+            text-decoration-color: purple;
+        }
+
+        a:hover {
+            color: blue;
+        }
+    }
+
+    h2 {
+        font-size: 0.9em;
+        font-weight: normal;
+        font-family: Roboto, sans-serif;
+        letter-spacing: 0.3em;
+    }
+
+    h3 {
+        font-size: 0.8em;
+        letter-spacing: 0.2em;
+
+
+        a {
+            color: red;
+
+        }
+
+        a:hover {
+            color: green;
+        }
+
+    }
 }
 
 footer {
-    padding: 1em;
+    padding: 0.8em;
     text-align: center;
 
     grid-area: links;
     align-self: end;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
 
     h3 {
+        font-size: 1.1em;
+        font-family: Roboto, sans-serif;
+
         a {
             color: var(--colour-alight);
             text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
     }
 }

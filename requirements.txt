@@ -12,3 +12,4 @@ PSYCopg2
 PGPassLib
 arrow
 sqlalchemy
+sqlalchemy_utils

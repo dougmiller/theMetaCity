@@ -1,5 +1,5 @@
 from flask import jsonify, request, current_app
-from . import v1
+from . import v1, api_response
 from ....edo.models import EverydayOrdinary, EverydayOrdinarySelector
 
 
@@ -13,7 +13,8 @@ def edo_index():
             'info': 'Everyday Ordinary api endpoints ',
             'routes': [
                 {"endoint": "/help", "description": "This information"},
-                {"endoint": "/login", "description": "Authenticates the user and their credentials. Returns a JWT for future use"},
+                {"endoint": "/login",
+                 "description": "Authenticates the user and their credentials. Returns a JWT for future use"},
                 {"endoint": "/logout", "description": "De-authenticates the user's JWT so they can no longer login"},
                 {"endoint": "/list", "description": "Return a list of all EDO entries"},
                 {"endoint": "/text", "description": "Add a new text only extry to edo"},
@@ -32,7 +33,7 @@ def login():
     pass
 
 
-@v1.route("logout", methods=["POSTS"])
+@v1.route("logout", methods=["POST"])
 def logout():
     # Get user details from JWT
     # Invalidte JWT
@@ -43,11 +44,13 @@ def logout():
 # Add JWT decorator
 @v1.route("text", methods=['POST'])
 def text():
+    if not request.form.get('text'):
+        return jsonify(["No text supplied"])
+
     text_edo = EverydayOrdinary()
     text_edo.contents = request.form.get('text')
-    print(request.form)
-    print(request.form.get('text'))
-    # text_edo.save()
+    # todo run this through markdown
+    text_edo.save()
     return jsonify(["OK"])
 
 
@@ -57,17 +60,29 @@ def image():
     import os
     from werkzeug.utils import secure_filename
 
-    print(request.files.getlist('file'))
+    if 'image' not in request.files:
+        if 'image' in request.form:
+            api_response['result']['status'] = 'error'
+            api_response['result']['message'] = 'Parameter "image" was not type "file" in request'
+            return jsonify(api_response), 400
 
-    if not request.files.getlist('file'):
-        return jsonify(["No images supplied"])
+        api_response['result']['status'] = 'error'
+        api_response['result']['message'] = 'No "image" in request'
+        return jsonify(api_response), 400
 
-    for uploaded_file in request.files.getlist('file'):
-        uploaded_name = secure_filename(uploaded_file.filename)
-        if uploaded_name != '':
-            print(uploaded_name)
-            uploaded_file.save(os.path.join(current_app.config['EDO_UPLOAD_PATH'], uploaded_name))
-    return jsonify(["OK"])
+    uploaded_image = request.files['image']
+    uploaded_name = secure_filename(uploaded_image.filename)
+
+    if uploaded_name == '':
+        api_response['result']['status'] = 'error'
+        api_response['result']['message'] = 'No image to upload'
+        return jsonify(api_response), 400
+
+    uploaded_image.save(os.path.join(current_app.config['EDO_UPLOAD_PATH'], uploaded_name))
+    api_response['result']['status'] = 'success'
+    api_response['result']['message'] = 'Image uploaded'
+
+    return jsonify(api_response)
 
 
 # Add JWT decorator

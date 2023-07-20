@@ -8,15 +8,16 @@
         <link rel="stylesheet" href="{{ url_for('home.static', filename='css/style.css') }}"/>
         <link rel="icon" type="image/svg+xml" href="{{ url_for('home.static', filename='images/tmc-logo-animated.svg') }}">
         <link type="text/plain" rel="author" href="{{ url_for('home.static', filename='humans.txt') }}" />
-        <style>body{background:url(" {{ url_for('home.static', filename='images/backgrounds') }}/{{ range(1, 17) | random }}.webp") no-repeat center center / cover;}</style>
         {% endautoescape %}
     </head>
     <body>
         <nav>
-            <img alt="The MetaCity Logo" src="{{ url_for('home.static', filename='/images/tmc-logo-animated.svg') }}" width="120" height="120"/>
+            <img alt="The MetaCity Logo" src="{{ url_for('home.static', filename='/images/tmc-logo-animated.svg') }}" width="160" height="160"/>
             <h1>theMetaCity.com</h1>
-            <a href="{{ url_for('blog.home') }}">Blog</a>
-            <a href="{{ url_for('media.home') }}">Media</a>
+            <div>
+                <a href="{{ url_for('blog.home') }}">Blog</a>
+                <a href="{{ url_for('media.home') }}">Media</a>
+            </div>
         </nav>
         <main>
         {% for article in articles %}
@@ -29,17 +30,18 @@
                     </a>
                 </h1>
                 <h2>{{ article.build_date_byline() }}</h2>
-                <h3>
+                <h3>Tags:
                 {% for tag in article.tags %}
                     <a href="{{ url_for('blog.tags_tag', tag=tag.tag) }}">{{ tag.tag }}</a>
+                    {% if not loop.last %}, {% endif %}
                 {% endfor %}
                 </h3>
             </article>
         {% endfor %}
         </main>
         <footer>
-            <h3><a href="https://twitter.com/dougmillertmc">Twitter</a></h3>
-            <h3><a href="{{ url_for('home.about') }}">About</a></h3>
+            <h3><a href="{{ url_for('home.sitemap') }}">Sitemap</a></h3>
+            <h3><a href="https://assets.themetacity.com">Assets</a></h3>
             <h3><a href="https://github.com/dougmiller">GitHub</a></h3>
         </footer>
     </body>

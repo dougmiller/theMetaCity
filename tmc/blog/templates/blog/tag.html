@@ -1,6 +1,6 @@
 {% extends "blog/archive.html" %}
 
-{% from 'blog/macros.html' import article_builder %}
+{% from 'blog/macros.jinja2' import article_builder %}
 
 {% block title %}{{ tag.tag }} - Tags{% endblock %}
 

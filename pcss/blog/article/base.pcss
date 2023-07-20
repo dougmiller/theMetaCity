@@ -1,12 +1,6 @@
 
 body {
-    margin: 0 0 14em 0;
-
-    > h2 {
-        max-width: var(--width-mid);
-        margin: 0 auto;
-        font-size: 1em;
-    }
+    background-color: var(--background);
 
     > header {
         background: var(--background-hilight);
@@ -40,15 +34,6 @@ body {
     }
 
     > footer {
-        height: calc(8em + 64px);
-        position: fixed;
-        width: 100%;
-        bottom: 0;
-        background: repeat-x url('/blog/images/tmc-footer-clouds.svg');
-        background-position-x: center;
-        padding-top: 6em;
-        z-index: -1;
-
         nav {
             display: flex;
             flex-direction: row;
@@ -84,7 +69,7 @@ body {
     }
 }
 
-#container {
+#content {
     display: grid;
     grid-template-columns:  1fr var(--width-mid) 1fr;
 
@@ -93,15 +78,8 @@ body {
          grid-column-end: -2;
      }
 
-    background: var(--background);
-
-    > h2 {
-        text-align: center;
-    }
-
-    > article {
+    article {
         max-width: var(--width-mid);
-        margin: 0 auto;
         line-height: 1.4em;
         font-size: 1.2em;
         padding: 1em;
@@ -119,10 +97,6 @@ body {
         footer {
             margin-top: 1em;
         }
-    }
-
-    &::after {
-        height: 4em;
     }
 }
 
@@ -152,7 +126,7 @@ h1 {
 
 h2, nav, nav a {
     font-size: 0.8em;
-    color: var(--colour-forgotten);
+    color: var(--colour-slide);
 }
 
 h3 {
@@ -163,20 +137,17 @@ p {
     font-family: var(--font-bulk);
     font-size: 1em;
     color: var(--colour-text-normal);
-
 }
 
 a {
-    color: var(--colour-text-highlight)
+    color: var(--colour-text-highlight);
+}
+
+a:hover {
+        color: var(--colour-text-accent);
 }
 
 code {
     font-size: 1em;
     background-color: var(--colour-main-background-accent);
-}
-
-#cityclipdiv {
-    clip-path: url('/blog/images/tmc-logo-cityscape-main-clip.svg#cityScapeClip');
-    height: 4em;
-    background-color: var(--colour-float);
 }
