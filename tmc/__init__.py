@@ -1,14 +1,14 @@
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from tmc.extensions import db, jinja_filters, md
 from flask_migrate import Migrate
 from htmlmin.main import minify
 from flask_caching import Cache
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
+
 cache = Cache(config={'CACHE_TYPE': 'simple', 'CACHE_DEFAULT_TIMEOUT': 3000})
-db = SQLAlchemy()
 migrate = Migrate()
 
 from tmc import models, handlers
@@ -21,13 +21,13 @@ def _setup_url_maps(app):
 
 
 def _setup_blueprints(app):
-    from tmc import blog, media, home, android, api, edo
-    app.register_blueprint(home.home, url_prefix='/')
-    app.register_blueprint(blog.blog, url_prefix='/blog')
-    app.register_blueprint(media.media, subdomain='media')
-    app.register_blueprint(api.api, subdomain='api')
-    app.register_blueprint(android.android, subdomain='android')
-    app.register_blueprint(edo.edo, subdomain='everydayordinary')
+    from tmc.blueprints import home, blog, edo
+    app.register_blueprint(home, url_prefix='/')
+    app.register_blueprint(blog, url_prefix='/blog')
+    #app.register_blueprint(media.media, subdomain='media')
+    #app.register_blueprint(api.api, subdomain='api')
+    #app.register_blueprint(android.android, subdomain='android')
+    app.register_blueprint(edo, subdomain='everydayordinary')
 
 
 def _setup_minification(app):
@@ -70,9 +70,14 @@ def create_app(config_file=None):
         from config import Config
         app.config.from_object(Config())
 
+    app.config['SQLALCHEMY_ECHO'] = True
+    
     db.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
     cache.init_app(app)
+    md.init_app(app)
+    app.jinja_env.filters["markdown"] = md.render
+    jinja_filters.register_filters(app)
 
     _setup_url_maps(app)
     _setup_blueprints(app)

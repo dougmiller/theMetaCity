@@ -19,6 +19,7 @@ class Config(object):
     def __init__(cls):
         cls.__read_settings_config()
 
+        tmc_master = PSQLDatabaseConfig("database.config", "themetacity.master")
         com_admin = PSQLDatabaseConfig("database.config", "themetacity.com.admin")
         com_selector = PSQLDatabaseConfig("database.config", "themetacity.com.selector")
         media_admin = PSQLDatabaseConfig("database.config", "themetacity.media.admin")
@@ -26,14 +27,14 @@ class Config(object):
         edo = PSQLDatabaseConfig("database.config", "everyday_ordinary.admin")
         edo_selector = PSQLDatabaseConfig("database.config", "everyday_ordinary.selector")
 
-        cls.SQLALCHEMY_DATABASE_URI = com_admin.DATABASE_URI
         cls.SQLALCHEMY_BINDS = {
+            'tmc_master': tmc_master.DATABASE_URI,
             'com': com_admin.DATABASE_URI,
             'com_selector': com_selector.DATABASE_URI,
             'media': media_admin.DATABASE_URI,
             'media_selector': media_selector.DATABASE_URI,
             'edo': edo.DATABASE_URI,
-            'edo_select': edo_selector.DATABASE_URI
+            'edo_selector': edo_selector.DATABASE_URI
         }
 
     @classmethod
@@ -55,7 +56,7 @@ class Config(object):
             cls.ASSETS_PATH = config['ASSETS']['UPLOAD_PATH']
         except KeyError as key_error:
             print("Could not find key in settings config file: " + key_error.args[0])
-            print("Expecting 'DEBUG', 'SECRET_KEY', 'CSRF_ENABLED', 'SERVER_NAME'")
+            print("Expecting 'DEBUG', 'SECRET_KEY', 'CSRF_ENABLED', 'SERVER_NAME', 'EDO_UPLOAD_PATH', 'ASSETS_PATH'")
             sys.exit(6)
 
 

@@ -1,8 +1,7 @@
-version: '3.8'
 services:
   postgres:
-    container_name: postgres_container
-    image: postgres:15.1-alpine
+    container_name: tmc_postgres
+    image: postgres:17.2-alpine
     env_file:
        - ./docker/db/.env
        - ./docker/db/credentials.env
@@ -22,43 +21,53 @@ services:
       - ./docker/db/startup-files/500_setup_hba.sh:/docker-entrypoint-initdb.d/500_setup_hba.sh
       - ./docker/db/startup-files/510_setup_pgpass.sh:/docker-entrypoint-initdb.d/510_setup_pgpass.sh
     ports:
-      - "5433:5432"
+      - "5432:5432"
     networks:
       - database
     restart: unless-stopped
 
+  nginx:
+    image: nginx:1.27.4
+    container_name: tmc_nginx
+    volumes:
+      - ./docker/web/nginx/startup-files/100-setup-apt.sh:/docker-entrypoint.d/100-setup-apt.sh
+      - ./docker/web/nginx/startup-files/200-install-python.sh:/docker-entrypoint.d/200-install-python.sh
+      - ./docker/web/nginx/startup-files/300-install-uwsgi.sh:/docker-entrypoint.d/300-install-uwsgi.sh
+      - ./docker/web/nginx/startup-files/400-setup-nginx.sh:/docker-entrypoint.d/400-setup-nginx.sh
+      - ./docker/web/nginx/startup-files/450-setup-pgpass.sh:/docker-entrypoint.d/450-setup-pgpass.sh
+      - ./docker/web/nginx/startup-files/500-setup-uwsgi.sh:/docker-entrypoint.d/500-setup-uwsgi.sh
+      - ./docker/web/uwsgi/apps-enabled/:/etc/uwsgi/apps-enabled/
+      - ./docker/web/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/web/nginx/snippets/:/etc/nginx/snippets/
+      - ./docker/web/nginx/sites-enabled/:/etc/nginx/sites-enabled/
+      - ./:/srv/http/www.themetacity.test
+    ports:
+      - "80:80"
+    env_file:
+     - ./docker/db/credentials.env
+    networks:
+      - cache
+      - database
+    restart: no
+    depends_on:
+      - postgres
+
   memcache:
-    container_name: memcached_container
-    image: memcached:1.6.17-alpine
+    container_name: tmc_memcached
+    image: memcached:1.6.36-alpine
     ports:
      - "11211:11211"
     networks:
     - cache
     restart: unless-stopped
-
-  nginx:
-    image: nginx:1.23.2
-    container_name: nginx_container
-    volumes:
-      - ./docker/web/startup-files/100-setup-apt.sh:/docker-entrypoint.d/100-setup-apt.sh
-      - ./docker/web/startup-files/200-install-python.sh:/docker-entrypoint.d/200-install-python.sh
-      - ./docker/web/startup-files/300-install-uwsgi.sh:/docker-entrypoint.d/300-install-uwsgi.sh
-    ports:
-      - "80:80"
-    networks:
-      - cache
-      - database
-      - apt
-    restart: unless-stopped
+    depends_on:
+    - nginx
 
 networks:
   database:
     driver: bridge
   cache:
     driver: bridge
-  apt:
-    external: true
-    name: apt
 
 volumes:
   postgres:

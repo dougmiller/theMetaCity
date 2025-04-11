@@ -22,7 +22,7 @@ class PSQLDatabaseConfig(object):
         self.__read_password()
         self.__test_psql_connection()
 
-        self.DATABASE_URI = f'postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}'
+        self.DATABASE_URI = f'postgresql+psycopg://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}'
 
     @classmethod
     def __read_db_config(cls, config_file, config_path):
@@ -83,10 +83,10 @@ class PSQLDatabaseConfig(object):
         """
         Attempts to connect to the database with provided config files
         """
-        import psycopg2
+        import psycopg
 
         try:
-            psycopg2.connect(
+            psycopg.connect(
                 host=cls.host,
                 port=cls.port,
                 dbname=cls.name,
@@ -94,7 +94,7 @@ class PSQLDatabaseConfig(object):
                 password=cls.password
             )
             print(f"Successfully connected to the {cls.name} database with user: {cls.user}")
-        except psycopg2.OperationalError:
+        except psycopg.OperationalError as e:
             print(f"I am unable to connect to the {cls.name} database")
             print(
                 cls.host,
@@ -102,4 +102,5 @@ class PSQLDatabaseConfig(object):
                 cls.user,
                 cls.password
             )
+            print(f"{e}")
             sys.exit(7)

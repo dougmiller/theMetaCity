@@ -1,6 +1,12 @@
 #!/bin/sh
 POSTGRES="psql --username ${POSTGRES_USER}"
 
+echo "Setting up authentication settings"
+echo "======"
+$POSTGRES <<-SQL
+SET password_encryption  = 'scram-sha-256';
+SQL
+
 echo "Creating users"
 echo "======"
 
