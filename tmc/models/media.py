@@ -2,7 +2,6 @@ import os
 from tmc import db
 from flask import current_app
 
-from blog import Article, Tag, ArticleTags
 
 def format_size_to_human_readable(size):
     """
@@ -14,7 +13,7 @@ def format_size_to_human_readable(size):
         return str(int(round(size / 1024))) + 'KB'
     if size < 1073741824:
         return str(int(round(size / 1048576))) + 'MB'
-    if size 1< 1099511627776:
+    if size < 1099511627776:
         return str(int(round(size / 1073741824))) + 'GB'
     return "Huge fucking file"
 

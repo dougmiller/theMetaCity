@@ -24,12 +24,13 @@
             <article class="{{ article.type }}">
                 <h1>
                     {% if article.type == 'blog' %}
-                        <a href="{{ url_for('blog.title', url=article.url) }}">
-                    {% endif %}
+                        <a href="{{ url_for('blog.title', url=article.url) }}">{{ article.title }}</a>
+                    {% else %}
                         {{ article.title }}
-                    </a>
+                    {% endif %}
+                        
                 </h1>
-                <h2>{{ article.build_date_byline() }}</h2>
+                <h2>{{ article.dateline }}</h2>
                 <h3>Tags:
                 {% for tag in article.tags %}
                     <a href="{{ url_for('blog.tags_tag', tag=tag.tag) }}">{{ tag.tag }}</a>

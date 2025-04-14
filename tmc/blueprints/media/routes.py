@@ -1,7 +1,7 @@
 from flask import render_template, abort, make_response
 from tmc import db, cache
-from tmc.media import media
-from tmc.models import Video, Audio, Code, Picture, MediaItem, Tags
+from . import media
+from tmc.models.media import Video, Audio, Code, Picture, MediaItem, Tags
 
 
 @media.route('/')

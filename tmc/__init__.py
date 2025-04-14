@@ -1,17 +1,7 @@
 import os
 from flask import Flask
-from tmc.extensions import db, ma, jinja_filters, md
-from flask_migrate import Migrate
-from htmlmin.main import minify
-from flask_caching import Cache
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
-
-
-cache = Cache(config={'CACHE_TYPE': 'simple', 'CACHE_DEFAULT_TIMEOUT': 3000})
-migrate = Migrate()
-
-from tmc import models, handlers
+from tmc.extensions import db, ma, jinja_filters, md, cache
+from tmc import handlers
 
 
 def _setup_url_maps(app):
@@ -21,16 +11,18 @@ def _setup_url_maps(app):
 
 
 def _setup_blueprints(app):
-    from tmc.blueprints import home, blog, edo, api
+    from tmc.blueprints import home, blog, media, edo, api
     app.register_blueprint(home, url_prefix='/')
     app.register_blueprint(blog, url_prefix='/blog')
-    #app.register_blueprint(media.media, subdomain='media')
+    app.register_blueprint(media, subdomain='media')
     app.register_blueprint(api, subdomain='api', url_prefix='/')
     #app.register_blueprint(android.android, subdomain='android')
     app.register_blueprint(edo, subdomain='everydayordinary')
 
 
 def _setup_minification(app):
+    from htmlmin.main import minify
+
     @app.after_request
     def response_minify(response):
         """
@@ -46,6 +38,9 @@ def _setup_minification(app):
 
 
 def _setup_admin(app):
+    from tmc import models
+    from flask_admin import Admin
+    from flask_admin.contrib.sqla import ModelView
     admin = Admin(app, name='TheMetaCity Media')
     admin.add_view(ModelView(models.MediaItem, db.session, 'Media Items'))
     admin.add_view(ModelView(models.VideoFile, db.session, 'Video Files'))
@@ -73,7 +68,6 @@ def create_app(config_file=None):
     app.config['SQLALCHEMY_ECHO'] = True
     
     db.init_app(app)
-    migrate.init_app(app, db, render_as_batch=True)
     cache.init_app(app)
     md.init_app(app)
     ma.init_app(app)

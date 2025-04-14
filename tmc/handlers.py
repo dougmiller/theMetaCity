@@ -10,7 +10,6 @@ def page_not_found():
 
 
 class Handlers(object):
-
     def __init__(self, app):
         app.register_error_handler(400, page_not_found)
         app.register_error_handler(500, error_page)

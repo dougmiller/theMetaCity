@@ -7,7 +7,11 @@ from tmc.models.blog import Article, Blog, Workshop, Tag
 @home.route('/')
 #@cache.cached()
 def index():
-    articles = db.session.execute(db.select(Article)).scalars()
+    articles = db.session.execute(
+        db.select(Article)
+          .order_by(Article.created_at.desc())
+          .limit(3)
+    ).scalars().all()
     return render_template('home/index.jinja2', articles=articles)
 
 
