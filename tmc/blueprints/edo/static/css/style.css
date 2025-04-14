@@ -1,0 +1,67 @@
+
+/* Start dark and go light if people are sadists */
+:root {
+
+    --size-mid: 80ch;
+
+    --colour-fill: #2E3436; /* Backgrounds? */
+    --colour-build: #A9B7C6; /* Outlines etc? */
+    --colour-communicate: #A9B7C6; /* Words? */
+    --colour-arise: #ff2424; /* Highlights? */
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --colour-fill: left; // Backgrounds?
+        --colour-build: asdas; // Outlines etc?
+        --colour-communicate: 13123; //Words?
+        --colour-arise: sadasd; // Highlights?
+    }
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Open Sans'), url(/fonts/OpenSans.woff2) format('woff2');
+}
+
+@font-face {
+    font-family: 'Proza Libre';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Proza Libre'), url(/fonts/ProzaLibre.woff2) format('woff2');
+}
+
+
+html {
+    background-color: var(--colour-fill);
+}
+
+body {
+    display: grid;
+    grid-template-columns:  1fr var(--size-mid) 1fr;
+}
+
+body > * {
+    grid-column-start: 2;
+    grid-column-end: -2;
+
+    font-family: 'Open Sans', sans-serif;
+ }
+
+h1 {
+    text-align: center;
+    color: var(--colour-build);
+    font-family: 'Proza Libre', sans-serif;
+}
+
+h2, p {
+    color: var(--colour-build);
+}
+
+a {
+    color: var(--colour-arise);
+}

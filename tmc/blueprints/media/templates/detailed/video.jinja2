@@ -1,0 +1,125 @@
+{% extends "detailed/media_base.html" %}
+
+{% block title %}{{ video.Parent.title }}{% endblock %}
+{% block includes %}
+    <script src="{{ url_for('media.static', filename='javascript/video.js') }}"></script>
+{% endblock %}
+
+{% block media %}
+<main class="mediaItem video">
+    <h1 id="mediaTitle"><a href="/video/{{ video.id }}">{{ video.Parent.title }}</a></h1>
+    <div id="videoContainer" class="mediaContainer">
+        <div id="videoBox" class="mediaBox">
+            <video height="{{ video.get_height() }}"
+                   width="{{ video.get_width() }}"
+                   controls
+                   data-filename="{{ video.file_name }}"
+                   data-startposter="{{ video.has_start_poster }}"
+                   data-endposter="{{ video.has_end_poster_url }}"
+                   data-hasfullscreen="{{ video.has_fullscreen }}"
+                   preload="auto"
+                   id="detailedVideo">
+
+                {% for source in video.files %}
+                    {% if not source.is_fullscreen %}
+                        <source src="//{{ env['ASSETS_PATH'] }}/video/{{ video.file_name }}.{{ source.extension }}"
+                            type='video/{{ source.mime_type }}; codecs="{{ source.video_codec }}{% if source.audio_codec != 'nill' %},{{ source.audio_codec }}{% endif %}"' />
+                    {% endif %}
+                {% endfor %}
+
+                {% for track in video.tracks %}
+                    <track src="//{{ env['ASSETS_PATH'] }}/video/tracks/{{ video.file_name }}.{{ track.src_lang }}.{{ track.type }}.vtt"
+                           srclang="{{ track.src_lang }}" kind="{{ track.type }}" label="{{ track.label }}">
+                {% endfor %}
+            </video>
+            <div id="videoControls" class="mediaMeta">
+                <p id="timeBox"><span id="currentTimeSpan" class="timeSpan">0m 00s</span> / <span id="runningTimeSpan" class="timeSpan">{{ video.format_running_time_to_human_readable() }}</span></p>
+
+                <input type="range" id="playProgress" min="0" max="1000" value="0">
+
+                <div id="audioControls" class="mediaControls">
+
+                    {{ import_svg("icon-fullscreen") }}
+
+                    <div id="tracksControl" class="video-icon">
+                        {{  import_svg("icon-tracks") }}
+                        <ul id="tracksList">
+                            <li class="active">No track</li>
+                            {% for track in video.tracks %}
+                                <li>{{ track.get_description() }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    {{ import_svg("icon-play-pause") }}
+
+                    <div id="soundControl">
+                        {{ import_svg("icon-sound") }}
+                        <input id="soundSlider" type="range" min="0" max="10" value="10">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mediaInfo" itemscope itemtype="http://schema.org/VideoObject">
+        <h2 itemprop="name">{{ video.Parent.title }}</h2>
+
+        <h3>Published:
+            <time itemprop="uploadDate" datetime="{{ video.Parent.date_published }}">{{ video.Parent.date_published }}</time>
+        </h3>
+        <div class="aboutContainer" itemprop="description">
+            {% autoescape false %}
+                {{ video.Parent.about }}
+            {% endautoescape %}
+        </div>
+    </div>
+
+    <div id="videoMeta" class="mediaInfo">
+        <h2>Downloads:</h2>
+        <h3>Files:</h3>
+        <ul>
+            {% for file in video.files %}
+                {% if file.is_fullscreen %}
+                    <li>
+                        <a href="//assets.localcity.com/video/{{ video.file_name }}.fullscreen.{{ file.extension }}">{{ video.file_name }}.fullscreen.{{ file.extension }}</a><br>
+                        {{ file.resolution }} {{ file.Video_Codec }} {{ file.get_audio_codec_if_present() }} {{ file.human_readable_size() }}
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="//assets.localcity.com/video/{{ video.file_name }}.{{ file.extension }}">{{ video.file_name }}.{{ file.extension }}</a><br>
+                        {{ file.resolution }} {{ file.video_codec }}{{ file.get_audio_codec_if_present() }} {{ file.human_readable_size() }}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <h3>
+            {% if not video.has_start_poster %}
+                No start poster,
+            {% else %}
+                <a href="//assets.localcity.com/video/startposters/{{ video.file_name }}.startposter.svg">Start poster</a>
+            {% endif %}
+
+            {% if not video.has_end_poster %}
+                No end poster
+            {% else %}
+                <a href="//assets.localcity.com/video/endposters/{{ video.file_name }}.endposter.svg">End poster</a>
+            {% endif %}
+        </h3>
+
+        {% if video.tracks %}
+            <h3>Tracks</h3>
+            <ul>
+                {% for track in video.tracks %}
+                    <li><a href="//assets.localcity.com/video/tracks/{{ video.file_name }}{{ track.get_url() }}">{{ track.get_description() }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h3>No tracks</h3>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}
+
+{% block licence %}{{ video.Parent.title }}{% endblock %}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>theMetaCity.com Media</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+        <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href="{{ url_for('media.static', filename='css/style.css') }}" rel="stylesheet"/>
+    </head>
+    <body>
+        <header>
+            <h1>theMetaCity<wbr><span class="titleHighlight">Media</span></h1>
+            {% block extraTopNav%}{%  endblock %}
+        </header>
+        <main class="mediaEntries">
+            {% for element in media %}
+                {% if element.media_type == 'video' %}
+                    {% from 'macros/fp_media/video.jinja2' import fp_video %}
+                    {{ fp_video(element) }}
+                {% elif element.media_type == 'audio' %}
+                    {% from 'macros/fp_media/audio.jinja2' import fp_audio %}
+                    {{ fp_audio(element) }}
+                {% elif element.media_type == 'code' %}
+                    {% from 'macros/fp_media/code.jinja2' import fp_code %}
+                    {{ fp_code(element) }}
+                {% elif element.media_type == 'picture' %}
+                    {% from 'macros/fp_media/picture.jinja2' import fp_picture %}
+                    {{ fp_picture(element) }}
+                {% endif %}
+            {% endfor %}
+        </main>
+        {% block extraBottomNav%}{%  endblock %}
+        <footer class="licence frontPage">
+            <p>Work is by <a href="https://www.themetacity.com" rel="home">
+                Douglas Miller</a> and is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a> unless explicitly stated otherwise.</p>
+        </footer>
+    </body>
+</html>

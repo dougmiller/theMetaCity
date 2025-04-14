@@ -1,0 +1,11 @@
+{% for article in articles %}
+    <h1>{{ article.title }}</h1>
+    <h2>{{ article.dateline }}</h2>
+    <h3>{{ article.article_type.value }}</h3>
+    {{ article.blurb|default("No blurb", true)|markdown }}
+    
+    {% for tag in article.tags %}
+        <span>{{ tag.tag }}</span>
+        {% if not loop.last %}, {% endif %}
+    {% endfor %}
+{% endfor %}

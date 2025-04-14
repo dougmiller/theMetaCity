@@ -1,0 +1,9 @@
+{% extends "blog/base.html" %}
+
+{% block title %}theMetaCity.com Blog Tags{% endblock %}
+
+{% block body_content %}
+    {% for tag in tags %}
+        <a href="{{ url_for('tags_tag', tag=tag.tag) }}">{{ tag.tag }}</a>
+    {% endfor %}
+{% endblock %}

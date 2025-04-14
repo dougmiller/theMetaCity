@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" id="playPauseButton" width="60px" height="60px" viewBox="0 0 30 30">
+    <title>Play</title>
+    <description>Click to toggle between playing and pausing this media file.</description>
+    <circle id="playCircle" r="14" cx="15" cy="15" style="fill:none;stroke:hsla(0, 0%, 100%, 1);stroke-width:1;"/>
+    <path id="playSymbol" d="M1,15 l15,0 0,0 0,0 0,-10 0,0 0,0 10,10 0,0 0,0 -10,10 0,0;" fill="none" stroke="white" stroke-width="1px">
+        <animate id="transitionToPause" dur="0.1s" attributeName="d"
+                 values="M1,15 l15,0 0,0 0,0 0,-10 0,0 0,0 10,10 0,0 0,0 -10,10 0,0;
+                         M1,15 l6,0 0,-7 4,0 0,14 4,0 0,-14 4,0 0,14 4,0 0,-7 6,0;"
+                 fill="freeze"
+                 begin="never"/>
+
+         <animate id="transitionToPlay" dur="0.1s" attributeName="d"
+                  values="M1,15 l6,0 0,-7 4,0 0,14 4,0 0,-14 4,0 0,14 4,0 0,-7 6,0;
+                          M1,15 l15,0 0,0 0,0 0,-10 0,0 0,0 10,10 0,0 0,0 -10,10 0,0;"
+                  fill="freeze"
+                  begin="never"/>
+
+         <animate id="transitionPlayToPlay" dur="0.1s" attributeName="d"
+                  values="M1,15 l15,0 0,0 0,0 0,-10 0,0 0,0 10,10 0,0 0,0 -10,10 0,0;
+                          M1,15 l15,0 0,0 0,0 0,-10 0,0 0,0 10,10 0,0 0,0 -10,10 0,0;"
+                  fill="freeze"
+                  begin="never"/>
+
+        <set id="setDashArray" attributeName="stroke-dasharray" to="8 2"
+                 dur="indefinite" begin="indefinite" />
+
+        <animate id="setDashOffset" attributeName="stroke-dashoffset" values="100%; 0%"
+                 dur="3s" begin="indefinite" repeatCount="indefinite"/>
+    </path>
+</svg>

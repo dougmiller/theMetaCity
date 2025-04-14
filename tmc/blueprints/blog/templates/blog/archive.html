@@ -1,0 +1,23 @@
+{% extends "blog/article_base.html" %}
+
+{% block title %}Blog Archive{% endblock %}
+
+{% block body_content %}
+    {% for article in articles %}
+        <article>
+            <h1><a href="{{ url_for('blog.title', url=article.url) }}">{{ article.title }}</a></h1>
+            <h2>{{ article.dateline }}</h2>
+            <nav>
+                {% if article.tags|length %}
+                    Tags:
+                    {% for tag in article.tags %}
+                        <a href="{{ url_for('blog.tags_tag', tag=tag.tag) }}">{{ tag.tag }}</a>
+                    {% endfor %}
+                {% else %}
+                    No tags
+                {% endif %}
+            </nav>
+            {{ article.blurb|markdown }}
+        </article>
+    {% endfor %}
+{% endblock %}

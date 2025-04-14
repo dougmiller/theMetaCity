@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from tmc.extensions import db, jinja_filters, md
+from tmc.extensions import db, ma, jinja_filters, md
 from flask_migrate import Migrate
 from htmlmin.main import minify
 from flask_caching import Cache
@@ -21,11 +21,11 @@ def _setup_url_maps(app):
 
 
 def _setup_blueprints(app):
-    from tmc.blueprints import home, blog, edo
+    from tmc.blueprints import home, blog, edo, api
     app.register_blueprint(home, url_prefix='/')
     app.register_blueprint(blog, url_prefix='/blog')
     #app.register_blueprint(media.media, subdomain='media')
-    #app.register_blueprint(api.api, subdomain='api')
+    app.register_blueprint(api, subdomain='api', url_prefix='/')
     #app.register_blueprint(android.android, subdomain='android')
     app.register_blueprint(edo, subdomain='everydayordinary')
 
@@ -76,6 +76,7 @@ def create_app(config_file=None):
     migrate.init_app(app, db, render_as_batch=True)
     cache.init_app(app)
     md.init_app(app)
+    ma.init_app(app)
     app.jinja_env.filters["markdown"] = md.render
     jinja_filters.register_filters(app)
 
