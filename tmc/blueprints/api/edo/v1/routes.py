@@ -1,6 +1,7 @@
 from flask import jsonify, request, current_app
 from . import v1, api_response
 from tmc.models.edo import EDO, EDOSchema
+from tmc.utils.responses import api_response
 from tmc import db
 
 
@@ -105,7 +106,9 @@ def list_edo():
     
     EDO_schema = EDOSchema(many=True)
         
-    return EDO_schema.jsonify(all_list)
+    return api_response(
+        data=EDO_schema.dump(all_list)
+    )
 
 
 @v1.route("list/<uuid:record>/", methods=["GET"])
@@ -113,8 +116,17 @@ def one_edo(record):
     one = db.session.execute(
         db.select(EDO)
             .where(EDO.id == record)
-    ).scalars().one()
+    ).scalars().one_or_none()
+    
+    if one is None:
+        return api_response(
+            message="No matching record found",
+            success=False,
+            status=404
+        )
     
     EDO_schema = EDOSchema()
         
-    return EDO_schema.jsonify(one)
+    return api_response(
+        data=EDO_schema.dump(one)
+    )
