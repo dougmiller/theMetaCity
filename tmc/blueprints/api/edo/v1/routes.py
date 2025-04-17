@@ -1,6 +1,7 @@
 from flask import jsonify, request, current_app
 from . import v1, api_response
-from tmc.models.edo import EDO, EDOSchema
+from tmc.models.edo import EDO
+from tmc.models.schemas.edo import EDOSchema
 from tmc.utils.responses import api_response
 from tmc import db
 

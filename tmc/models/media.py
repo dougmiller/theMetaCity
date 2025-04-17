@@ -1,7 +1,8 @@
 import os
 from tmc import db
 from flask import current_app
-
+from tmc.extensions.marshmallow import ma
+from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
 def format_size_to_human_readable(size):
     """
@@ -31,7 +32,7 @@ class Licence(db.Model):
     licence_text = db.Column(db.String, unique=True)
     licence_url = db.Column(db.String, unique=True)
     image_url = db.Column(db.String, unique=True)
-    items = db.relationship('MediaItem', backref='Licence', lazy='dynamic')
+    #items = db.relationship('MediaItem', backref='Licence', lazy='dynamic')
 
     def __repr__(self):
         return self.licence_name
@@ -50,7 +51,7 @@ class Postcards(db.Model):
     url = db.Column(db.String, unique=True)
     title = db.Column(db.String, unique=True)
     alt_text = db.Column(db.String, unique=True)
-    items = db.relationship('MediaItem', backref='Postcard', lazy='dynamic')
+    #items = db.relationship('MediaItem', backref='Postcard', lazy='dynamic')
 
     def __repr__(self):
         return f"{self.url}: {self.title}"
@@ -58,75 +59,12 @@ class Postcards(db.Model):
     def build_picture(self, kind):
         name = os.path.splitext(self.url)[0]
         server = current_app.config["ASSETS_PATH"]
-        return f' \
-        <picture> \
-            <source type="image/flif" srcset="//{server}/{kind}/postcards/{name}.flif"> \
-            <source type="image/webp" srcset="//{server}/{kind}/postcards/{name}.webp"> \
-            <img src="//{server}/{kind}/postcards/{self.url}" title="{self.title}" alt="{self.alt_text}">\
-        </picture>'
-
-
-class Video(db.Model):
-    """
-    This is a collection of files that make up the different
-    encodings, resolutions, formats and metadata of a single video
-    The class 'VideoFile' is a single file in that set
-    The class 'Track' is a track associated with the video (sub, captions etc)
-    """
-    __tablename__ = 'video'
-    __table_args__ = {"schema": "media"}
-    __bind_key__ = "media"
-    id = db.Column(db.Integer, primary_key=True)
-    parent_id = db.Column(db.Integer, db.ForeignKey('media.media_item.id'))
-    file_name = db.Column(db.String, unique=True)
-    files = db.relationship('VideoFile', backref='File_Parent')
-    tracks = db.relationship('VideoTrack', backref='Track_Parent')
-    running_time = db.Column(db.Float)
-    has_start_poster = db.Column(db.Boolean)
-    has_end_poster = db.Column(db.Boolean)
-    has_fullscreen = db.Column(db.Boolean)
-    resolution = db.Column(db.String)
-    media_type = 'video'
-
-    def __repr__(self):
-        return 'video: ' + str(self.id)
-
-    def get_width(self):
-        return self.resolution.split('x')[0]
-
-    def get_height(self):
-        return self.resolution.split('x')[1]
-
-    def format_running_time_to_human_readable(self):
-        return "{0}m {1}s".format(str(int((int(self.running_time) / 60))), str(int(self.running_time) % 60))
-
-    def format_time_to_progress_format(self):
-        return "{0}:{1}".format(str(int((int(self.running_time) / 60))), str(int(self.running_time) % 60))
-
-    def get_largest_filesize(self):
-        return max(video_file.file_size for video_file in self.files)
-
-    def get_smallest_filesize(self):
-        return min(video_file.file_size for video_file in self.files)
-
-    def get_smallest_filesize_formatted(self):
-        return format_size_to_human_readable(min(video_file.file_size for video_file in self.files))
-
-    def get_largest_filesize_formatted(self):
-        return format_size_to_human_readable(max(video_file.file_size for video_file in self.files))
-
-    def difference_between_max_and_min_filesize(self):
-        return self.get_largest_filesize() - self.get_smallest_filesize()
-
-    def format_filesizes(self):
-        if self.difference_between_max_and_min_filesize():
-            return self.get_smallest_filesize_formatted() + " - " + self.get_largest_filesize_formatted()
-        else:
-            return self.get_largest_filesize_formatted()
-
-    def get_mime_types(self):
-        temp = list(set(video_file.mime_type for video_file in self.files))
-        return temp
+        return f'''
+        <picture>
+            <source type="image/flif" srcset="//{server}/{kind}/postcards/{name}.flif">
+            <source type="image/webp" srcset="//{server}/{kind}/postcards/{name}.webp">
+            <img src="//{server}/{kind}/postcards/{self.url}" title="{self.title}" alt="{self.alt_text}">
+        </picture>'''
 
 
 class VideoFile(db.Model):
@@ -193,6 +131,80 @@ class VideoTrack(db.Model):
 
     def get_description(self):
         return self.type.title() + ': (' + self.label + ') ' + self.src_lang
+
+
+class Video(db.Model):
+    """
+    This is a collection of files that make up the different
+    encodings, resolutions, formats and metadata of a single video
+    The class 'VideoFile' is a single file in that set
+    The class 'Track' is a track associated with the video (sub, captions etc)
+    """
+    __tablename__ = 'video'
+    __table_args__ = {"schema": "media"}
+    __bind_key__ = "media"
+    id = db.Column(db.Integer, primary_key=True)
+    parent_id = db.Column(db.Integer, db.ForeignKey('media.media_item.id'))
+    file_name = db.Column(db.String, unique=True)
+    files = db.relationship('VideoFile', backref='File_Parent')
+    tracks = db.relationship('VideoTrack', backref='Track_Parent')
+    running_time = db.Column(db.Float)
+    has_start_poster = db.Column(db.Boolean)
+    has_end_poster = db.Column(db.Boolean)
+    has_fullscreen = db.Column(db.Boolean)
+    resolution = db.Column(db.String)
+    media_type = 'video'
+
+    def __repr__(self):
+        return 'video: ' + str(self.id)
+
+    def get_width(self):
+        return self.resolution.split('x')[0]
+
+    def get_height(self):
+        return self.resolution.split('x')[1]
+
+    def format_running_time_to_human_readable(self):
+        return "{0}m {1}s".format(str(int((int(self.running_time) / 60))), str(int(self.running_time) % 60))
+
+    def format_time_to_progress_format(self):
+        return "{0}:{1}".format(str(int((int(self.running_time) / 60))), str(int(self.running_time) % 60))
+
+    def get_largest_filesize(self):
+        return max(video_file.file_size for video_file in self.files)
+
+    def get_smallest_filesize(self):
+        return min(video_file.file_size for video_file in self.files)
+
+    def get_smallest_filesize_formatted(self):
+        return format_size_to_human_readable(min(video_file.file_size for video_file in self.files))
+
+    def get_largest_filesize_formatted(self):
+        return format_size_to_human_readable(max(video_file.file_size for video_file in self.files))
+
+    def difference_between_max_and_min_filesize(self):
+        return self.get_largest_filesize() - self.get_smallest_filesize()
+
+    def format_filesizes(self):
+        if self.difference_between_max_and_min_filesize():
+            return self.get_smallest_filesize_formatted() + " - " + self.get_largest_filesize_formatted()
+        else:
+            return self.get_largest_filesize_formatted()
+
+    def get_mime_types(self):
+        temp = list(set(video_file.mime_type for video_file in self.files))
+        return temp
+
+
+class VideoSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Video
+        load_instance = False  # Optional: deserialize to model instances
+        
+    id = auto_field()
+    #created_at = auto_field()
+    #updated_at = auto_field()
+
 
 
 class Audio(db.Model):
@@ -377,7 +389,7 @@ class MediaItem(db.Model):
     title = db.Column(db.String, unique=True)
     about = db.Column(db.String)
     date_published = db.Column(db.Date)
-    licence = db.Column(db.Integer, db.ForeignKey('media.licence.id'))
+    #licence = db.Column(db.Integer, db.ForeignKey('media.licence.id'))
     postcard = db.Column(db.Integer, db.ForeignKey('media.postcard.id'))
     tags = db.relationship('MediaItemTag', backref='media_items')
     videos = db.relationship('Video', backref='Parent', lazy='dynamic')

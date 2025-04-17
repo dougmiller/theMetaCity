@@ -13,15 +13,3 @@ class EDO(UUIDModel, TimestampsMixin):
 	__bind_key__ = "edo_selector"
 	
 	contents: Mapped[str]
-
-
-
-class EDOSchema(ma.SQLAlchemyAutoSchema):
-	class Meta:
-		model = EDO
-		load_instance = True  # Optional: deserialize to model instances
-
-	id = auto_field()
-	contents = auto_field()
-	created_at = auto_field()
-	updated_at = auto_field()
