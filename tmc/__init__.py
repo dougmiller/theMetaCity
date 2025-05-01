@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from tmc.extensions import db, ma, jinja_filters, md, cache
+from tmc.extensions import db, ma, jinja_filters, cache
 from tmc import handlers
 
 
@@ -69,9 +69,6 @@ def create_app(config_file=None):
     
     db.init_app(app)
     cache.init_app(app)
-    md.init_app(app)
-    ma.init_app(app)
-    app.jinja_env.filters["markdown"] = md.render
     jinja_filters.register_filters(app)
 
     _setup_url_maps(app)
