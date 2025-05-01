@@ -4,7 +4,7 @@ from .extensions.mixins import TimestampsMixin
 from tmc.extensions.marshmallow import ma
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
-__all__ = ('EDO', 'EDOSchema')
+__all__ = ('EDO')
 
 
 class EDO(UUIDModel, TimestampsMixin):

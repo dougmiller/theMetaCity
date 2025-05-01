@@ -1,0 +1,15 @@
+meta {
+  name: NoMatchingFormat
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{Protocol}}{{Domain}}{{Port}}/{{Namespace}}/{{Version}}/list/badUUIDFormat
+  body: none
+  auth: none
+}
+
+docs {
+  The URL does NOT have a valid UUID.
+}

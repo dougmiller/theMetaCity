@@ -102,7 +102,7 @@ def add_one():
 def list_edo():
     all_list = db.session.execute(
         db.select(EDO)
-            .order_by(EDO.created_at.desc())
+            .order_by(EDO.id.desc())
     ).scalars().all()
     
     EDO_schema = EDOSchema(many=True)

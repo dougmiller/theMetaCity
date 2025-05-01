@@ -1,0 +1,15 @@
+meta {
+  name: One
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{Protocol}}{{Domain}}{{Port}}/{{Namespace}}/{{Version}}/list/{{Record}}/
+  body: none
+  auth: none
+}
+
+docs {
+  Get a specific entry.
+}
