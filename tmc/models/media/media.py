@@ -1,9 +1,8 @@
 import os
-from tmc import db
 from enum import Enum as PyEnum
-from tmc.models.extensions import IntegerModel, UUIDModel
+from tmc.models.extensions import IntegerModel
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, Integer, ForeignKey, Enum as SQLEnum
+from sqlalchemy import String, ForeignKey, Enum as SQLEnum
 
 
 class Licence(IntegerModel):

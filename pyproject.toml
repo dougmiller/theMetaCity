@@ -1,0 +1,27 @@
+[tool.black]
+line-length = 150
+target-version = ["py312"]
+skip-string-normalization = false
+preview = true  # Use latest formatting behaviour
+
+[tool.ruff]
+line-length = 150
+target-version = "py312"
+exclude = ["env", "venv", ".venv", "__pycache__"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "TID252"]
+# E = pycodestyle (style errors, e.g. indentation, spacing, line length, etc.)
+# F = Logic issues (e.g., unused imports, undefined variables)
+# I = isort (Import sorting and grouping)
+# UP = pyupgrade (Upgrade syntax to modern Python (e.g., f-strings, type hints))
+# B = flake8-bugbear (Potential bugs and design issues (e.g., mutable defaults, bad comparisons))
+# TID252 = Disallow relative imports (forces absolute imports for clarity)
+
+[tool.ruff.lint.isort]
+known-first-party = ["tmc"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+preview = true
