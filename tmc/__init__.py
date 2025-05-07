@@ -65,7 +65,7 @@ def create_app(config_file=None):
         from config import Config
         app.config.from_object(Config())
 
-    app.config['SQLALCHEMY_ECHO'] = True
+    app.config['SQLALCHEMY_ECHO'] = False
     
     db.init_app(app)
     cache.init_app(app)

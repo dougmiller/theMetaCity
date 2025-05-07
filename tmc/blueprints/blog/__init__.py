@@ -9,4 +9,4 @@ blog = Blueprint(
     static_url_path='',
 )
 
-from . import routes, helpers
+from . import routes, helpers, cli
