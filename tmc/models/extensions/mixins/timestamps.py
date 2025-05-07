@@ -1,4 +1,5 @@
 import arrow
+from sqlalchemy import Computed
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy_utils import ArrowType
 from sqlalchemy.ext.declarative import declared_attr
@@ -17,6 +18,7 @@ class TimestampsMixin(object):
 		"""
 		return mapped_column(
 			ArrowType,
+			Computed("functions.extract_timestamp_from_uuid_v7(id)", persisted=True),
 			nullable=False,
 			index=True
 		)
@@ -31,6 +33,7 @@ class TimestampsMixin(object):
 		"""
 		return mapped_column(
 			ArrowType,
+			Computed("functions.extract_timestamp_from_uuid_v7(id)", persisted=True),
 			nullable=False
 		)
 		

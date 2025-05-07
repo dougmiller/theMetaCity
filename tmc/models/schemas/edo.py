@@ -11,6 +11,6 @@ class EDOSchema(ma.SQLAlchemyAutoSchema):
 		load_instance = True
 
 	id = auto_field()
-	contents = auto_field()
+	content = auto_field()
 	created_at = auto_field()
 	updated_at = auto_field()

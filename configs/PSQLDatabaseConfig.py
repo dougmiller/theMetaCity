@@ -93,7 +93,7 @@ class PSQLDatabaseConfig(object):
                 user=cls.user,
                 password=cls.password
             )
-            print(f"Successfully connected to the {cls.name} database with user: {cls.user}")
+            #print(f"Successfully connected to the {cls.name} database with user: {cls.user}")
         except psycopg.OperationalError as e:
             print(f"I am unable to connect to the {cls.name} database")
             print(

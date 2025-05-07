@@ -25,7 +25,7 @@ $POSTGRES <<-SQL
   SET ROLE ${EDO_ADMIN_USER};
   CREATE TABLE everyday_ordinary.everyday_ordinary (
     id uuid NOT NULL DEFAULT functions.uuid_generate_v7(),
-    contents varchar,
+    content varchar,
     created_at timestamp DEFAULT (now() AT TIME ZONE 'utc'),
     updated_at timestamp DEFAULT (now() AT TIME ZONE 'utc'),
     deleted_at timestamp DEFAULT (now() AT TIME ZONE 'utc')

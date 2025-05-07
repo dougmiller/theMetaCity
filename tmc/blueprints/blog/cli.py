@@ -1,3 +1,4 @@
+import click
 from tmc import db
 from . import blog
 from tmc.models.blog import Blog
@@ -13,5 +14,3 @@ def list():
 	).scalars().all()
 
 	pprint.pp(blog_list)
-
-

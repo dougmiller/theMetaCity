@@ -24,7 +24,7 @@ class Config(object):
         com_selector = PSQLDatabaseConfig("database.config", "themetacity.com.selector")
         media_admin = PSQLDatabaseConfig("database.config", "themetacity.media.admin")
         media_selector = PSQLDatabaseConfig("database.config", "themetacity.media.selector")
-        edo = PSQLDatabaseConfig("database.config", "everyday_ordinary.admin")
+        edo_admin = PSQLDatabaseConfig("database.config", "everyday_ordinary.admin")
         edo_selector = PSQLDatabaseConfig("database.config", "everyday_ordinary.selector")
 
         cls.SQLALCHEMY_BINDS = {
@@ -33,7 +33,7 @@ class Config(object):
             'com_selector': com_selector.DATABASE_URI,
             'media': media_admin.DATABASE_URI,
             'media_selector': media_selector.DATABASE_URI,
-            'edo': edo.DATABASE_URI,
+            'edo_admin': edo_admin.DATABASE_URI,
             'edo_selector': edo_selector.DATABASE_URI
         }
 

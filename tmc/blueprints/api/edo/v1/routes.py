@@ -50,7 +50,7 @@ def text():
         return jsonify(["No text supplied"])
 
     text_edo = EverydayOrdinary()
-    text_edo.contents = request.form.get('text')
+    text_edo.content = request.form.get('text')
     # todo run this through markdown
     text_edo.save()
     return jsonify(["OK"])
