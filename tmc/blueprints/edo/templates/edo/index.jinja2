@@ -23,7 +23,7 @@
                 {% endif %}
 
                 <h3>{{ edo.created_at.humanize(locale='en-au') }}</h3>
-                <p>{{ edo.contents }}</p>
+                {{ edo.contents|tmc_markdown }}
             {% endfor %}
         </article>
         <footer>

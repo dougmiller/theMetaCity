@@ -10,8 +10,8 @@ def home():
         db.select(EDO)
             .order_by(EDO.created_at.desc())
             .limit(10)
-    ).scalars()
-    
+    ).scalars().all()
+
     return render_template('edo/index.jinja2', **locals())
 
 

@@ -1,4 +1,6 @@
-import re
-from .GIFV import GifVM
+import markdown
+
+from .GIFV import GifV
 
 
+md = markdown.Markdown(extensions=[GifV()])
