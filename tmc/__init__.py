@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from tmc.extensions import db, ma, jinja_filters, cache
+from tmc.extensions import db, ma, jinja_filters, cache, configs
 from tmc import handlers
 
 
@@ -56,17 +56,13 @@ def _setup_admin(app):
     admin.add_view(ModelView(models.Licence, db.session, 'Licences'))
 
 
-def create_app(config_file=None):
+def create_app():
     app = Flask(__name__, static_url_path='', subdomain_matching=True)
 
-    if config_file is not None:
-        app.config.from_pyfile(config_file, silent=True)
-    else:
-        from config import Config
-        app.config.from_object(Config())
-
-    app.config['SQLALCHEMY_ECHO'] = False
+    from config import Config
+    app.config.from_object(Config())
     
+    configs.init_app(app)
     db.init_app(app)
     cache.init_app(app)
     jinja_filters.register_filters(app)

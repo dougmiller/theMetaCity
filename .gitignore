@@ -1,6 +1,9 @@
 settings.config
 database.config
 
+.env.basic
+.env.database
+
 tmc/home/static/css
 
 tmc/blog/static/css
