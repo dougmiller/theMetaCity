@@ -58,10 +58,7 @@ def _setup_admin(app):
 
 def create_app():
     app = Flask(__name__, static_url_path='', subdomain_matching=True)
-
-    from config import Config
-    app.config.from_object(Config())
-    
+   
     configs.init_app(app)
     db.init_app(app)
     cache.init_app(app)

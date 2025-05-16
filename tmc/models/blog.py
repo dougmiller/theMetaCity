@@ -6,13 +6,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .extensions import IntegerModel, UUIDModel, BasicModel
 from .extensions.mixins import TimestampsMixin, SoftDeleteMixin
 
-__all__ = ('Article', 'Blog', 'Workshop', 'Tag')
+__all__ = ('Article', 'Blog', 'Workshop', 'TagSelector', 'TagAdmin')
 
+class ArticleTagsBase(BasicModel):
+	__abstract__ = True
 
-class ArticleTags(BasicModel):
-	__tablename__ = "article_tags_joiner"
-	__table_args__ = {"schema": "com"}
-	__bind_key__ = "com_selector"
 	tag_id: Mapped[int] = mapped_column(ForeignKey("com.tags.id"), primary_key=True)
 	article_id: Mapped[int] = mapped_column(ForeignKey("com.articles.id"), primary_key=True)
 	
@@ -20,34 +18,32 @@ class ArticleTags(BasicModel):
 		return f"[ArticleTags: Article {self.article_id} - Tag {self.tag_id}]"
 
 
+class ArticleTagsSelector(ArticleTagsBase):
+	__tablename__ = "article_tags_joiner"
+	__table_args__ = {"schema": "com"}
+	__bind_key__ = "com_selector"
+
+
+class ArticleTagsAdmin(ArticleTagsBase):
+	__tablename__ = "article_tags_joiner"
+	__table_args__ = {"schema": "com"}
+	__bind_key__ = "com_admin"
+
+
 class ArticleType(PyEnum):
 	blog = 'blog'
 	workshop = 'workshop'
 
 
-class Article(IntegerModel, TimestampsMixin, SoftDeleteMixin):
-	__tablename__ = 'articles'
-	__table_args__ = {"schema": "com"}
-	__bind_key__ = "com_selector"
-	
+class ArticleBase(IntegerModel, TimestampsMixin, SoftDeleteMixin):
+	__abstract__ = True
+
 	title: Mapped[str] = mapped_column(unique=True)
 	url: Mapped[str] = mapped_column(unique=True)	
 	blurb: Mapped[Optional[str]]
 	text: Mapped[str]
 	parent_id: Mapped[int] = mapped_column(ForeignKey("com.articles.id"), nullable=True)
-	parent: Mapped["Article"] = relationship(
-		"Article",
-		remote_side="Article.id",
-		backref="children",
-		order_by="Article.id",
-		lazy="selectin"
-	)
-	tags: Mapped[list["Tag"]] = relationship(
-		"Tag",
-		secondary=ArticleTags.__table__,
-		back_populates="articles",
-		lazy="subquery"
-	)
+
 	article_type: Mapped[ArticleType] = mapped_column(
 		SQLEnum(
 			ArticleType,
@@ -67,31 +63,100 @@ class Article(IntegerModel, TimestampsMixin, SoftDeleteMixin):
 		return f"[Article {self.id}: {self.title} ({self.article_type.name})]"
 
 
-class Blog(Article):
+class ArticleSelector(ArticleBase):
+	__tablename__ = 'articles'
+	__table_args__ = {"schema": "com"}
+	__bind_key__ = "com_selector"
+	
+	parent: Mapped["Article"] = relationship(
+		"ArticleSelector",
+		remote_side="ArticleSelector.id",
+		backref="children",
+		order_by="ArticleSelector.id",
+		lazy="selectin"
+	)
+
+	tags: Mapped[list["Tag"]] = relationship(
+		"TagSelector",
+		secondary=ArticleTagsSelector.__table__,
+		back_populates="articles",
+		lazy="subquery"
+	)
+
+
+class ArticleAdmin(ArticleBase):
+	__tablename__ = 'articles'
+	__table_args__ = {"schema": "com"}
+	__bind_key__ = "com_admin"
+
+	parent: Mapped["Article"] = relationship(
+		"ArticleAdmin",
+		remote_side="ArticleAdmin.id",
+		backref="children",
+		order_by="ArticleAdmin.id",
+		lazy="selectin"
+	)
+	
+	tags: Mapped[list["Tag"]] = relationship(
+		"TagAdmin",
+		secondary=ArticleTagsAdmin.__table__,
+		back_populates="articles",
+		lazy="subquery"
+	)
+
+class BlogSelector(ArticleSelector):
+	__mapper_args__ = {
+		'polymorphic_identity': ArticleType.blog
+	}
+	
+class BlogAdmin(ArticleAdmin):
 	__mapper_args__ = {
 		'polymorphic_identity': ArticleType.blog
 	}
 
+class WorkshopSelector(ArticleSelector):
+	__mapper_args__ = {
+		'polymorphic_identity': ArticleType.workshop
+	}
 
-class Workshop(Article):
+class WorkshopAdmin(ArticleAdmin):
 	__mapper_args__ = {
 		'polymorphic_identity': ArticleType.workshop
 	}
 
 
-class Tag(BasicModel):
+class TagBase(BasicModel):
+	__abstract__ = True
+
+	id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+	tag: Mapped[str] = mapped_column(unique=True)
+	blurb: Mapped[str] = mapped_column()
+
+	def __repr__(self):
+		return f"[Tag {self.id}: {repr(self.tag)}]"
+
+
+class TagSelector(TagBase):
 	__tablename__ = 'tags'
 	__table_args__ = {"schema": "com"}
 	__bind_key__ = "com_selector"
 	
-	id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-	tag: Mapped[str] = mapped_column(unique=True)
-	blurb: Mapped[str] = mapped_column()
 	articles: Mapped[list["Article"]] = relationship(
-		"Article",
-		secondary=ArticleTags.__table__,
+		"ArticleSelector",
+		secondary=ArticleTagsSelector.__table__,
 		back_populates="tags",
 		lazy="subquery"
 	)
-	def __repr__(self):
-		return f"[Tag {self.id}: {repr(self.tag)}]"
+
+
+class TagAdmin(TagBase):
+	__tablename__ = 'tags'
+	__table_args__ = {"schema": "com"}
+	__bind_key__ = "com_admin"
+	
+	articles: Mapped[list["Article"]] = relationship(
+		"ArticleAdmin",
+		secondary=ArticleTagsAdmin.__table__,
+		back_populates="tags",
+		lazy="subquery"
+	)

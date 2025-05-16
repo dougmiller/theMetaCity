@@ -1,7 +1,7 @@
 from flask import render_template, make_response
 from tmc import db, cache
 from . import blog
-from tmc.models.blog import Blog, Tag
+from tmc.models.blog import BlogSelector as Blog, TagSelector as Tag
 
 
 @blog.route('/')

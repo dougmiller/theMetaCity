@@ -1,7 +1,7 @@
 from flask import render_template, make_response
 from tmc.extensions import db, cache
 from . import home
-from tmc.models.blog import Article, Blog, Workshop, Tag
+from tmc.models.blog import ArticleSelector as Article
 
 @home.route('/')
 #@cache.cached()

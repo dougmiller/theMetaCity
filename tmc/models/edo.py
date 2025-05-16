@@ -1,3 +1,4 @@
+import arrow
 from sqlalchemy.orm import Mapped
 from .extensions import UUIDModel
 from .extensions.mixins import TimestampsMixin
@@ -11,11 +12,19 @@ class EDO_Mixin(UUIDModel, TimestampsMixin):
 	
 	content: Mapped[str]
 	
+	def command_line_str(self):
+		cd = arrow.get(self.created_at)
+		return f"{cd.humanize()} - {self.content}"
+
+	def command_line_listing_str(self):
+		cd = arrow.get(self.created_at)
+		return f"{self.id} - {cd.humanize()} - {self.content}"		
+    
 	def __str__(self):
-		return f"[{self.id} – {self.created_at} - {self.content[:50]}]"
+		return f"{self.id} – {self.created_at} - {self.content}"
 	
 	def __repr__(self):
-		return f'[{self.id} – {self.content[:50]}]'
+		return f'{self.id} – {self.content}'
 
 
 class EDO(EDO_Mixin):
