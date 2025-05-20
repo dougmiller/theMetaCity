@@ -6,9 +6,9 @@ class DatabaseConfig:
 
 	REQUIRED_BIND_NAMES = [
         'tmc_master',
-        'com',
+        'com_admin',
         'com_selector',
-        'media',
+        'media_admin',
         'media_selector',
         'edo_admin',
         'edo_selector',
