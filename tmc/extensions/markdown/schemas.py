@@ -1,18 +1,20 @@
 import re
 from marshmallow import Schema, fields, ValidationError, validates, validates_schema, pre_load
+from tmc.models.blog import ArticleType
 
 
 class TMCBlogMetadataSchema(Schema):
     id = fields.String(allow_none=True)
     title = fields.String(required=True)
     url = fields.String(required=True)
-    type = fields.String(load_default="blog")
+    variant = fields.Enum(ArticleType, load_default=ArticleType.blog)
     blurb = fields.String(required=True)
 
     @pre_load
     def normalize_type(self, data, **kwargs):
-        if "type" in data and isinstance(data["type"], str):
-            data["type"] = data["type"].lower().strip()
+        if "variant" in data and isinstance(data["variant"], str):
+            raw_variant = data["variant"].lower().strip()
+            data["variant"] = ArticleType(raw_variant)
         return data
 
     @validates("title")
@@ -34,9 +36,9 @@ class TMCBlogMetadataSchema(Schema):
         if not slug_pattern.match(value):
             raise ValidationError("URL must be a valid slug (lowercase, no spaces, use hyphens)")
 
-    @validates("type")
+    @validates("variant")
     def validate_type(self, value, **kwargs):
-        if value not in {"blog", "workshop"}:
+        if value not in {ArticleType.blog, ArticleType.workshop}:
             raise ValidationError("Type must be either 'blog' or 'workshop'.")
 
     @validates_schema

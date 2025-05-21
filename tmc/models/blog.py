@@ -44,7 +44,7 @@ class ArticleBase(IntegerModel, TimestampsMixin, SoftDeleteMixin):
 	text: Mapped[str]
 	parent_id: Mapped[int] = mapped_column(ForeignKey("com.articles.id"), nullable=True)
 
-	article_type: Mapped[ArticleType] = mapped_column(
+	variant: Mapped[ArticleType] = mapped_column(
 		SQLEnum(
 			ArticleType,
 			name="article_type_enum",
@@ -56,11 +56,11 @@ class ArticleBase(IntegerModel, TimestampsMixin, SoftDeleteMixin):
 	)
 	
 	__mapper_args__ = {
-		'polymorphic_on': article_type,
+		'polymorphic_on': variant,
 	}
 	
 	def __repr__(self):
-		return f"[Article {self.id}: {self.title} ({self.article_type.name})]"
+		return f"[Article {self.id}: {self.title} ({self.variant.name})]"
 
 
 class ArticleSelector(ArticleBase):

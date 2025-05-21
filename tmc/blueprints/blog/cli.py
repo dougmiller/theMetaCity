@@ -9,7 +9,7 @@ from flask.cli import with_appcontext
 
 from tmc import db
 from . import blog
-from tmc.models.blog import BlogSelector as Blog, BlogAdmin
+from tmc.models.blog import ArticleSelector as Article, ArticleAdmin
 from tmc.extensions import md
 from tmc.extensions.markdown import TMCBlogMetadataSchema
 
@@ -22,8 +22,8 @@ blog.cli.short_help = "Manage blog posts"
 def list_articles(count):
     """List the latest blog articles and their types."""
     blog_list = db.session.execute(
-        db.select(Blog)
-        .order_by(Blog.created_at.desc())
+        db.select(Article)
+        .order_by(Article.created_at.desc())
         .limit(count)
     ).scalars().all()
 
@@ -101,23 +101,45 @@ def process(file):
         click.echo(f'File looks OK. Proceeding...')
 
         if meta.get("id"):
-            click.echo(f"Updating: {meta["id"]}")
-            blog_entry = BlogAdmin.query.get(meta["id"])
-            blog_entry.title = meta["title"]
-            blog_entry.url = meta["url"]
-            blog_entry.blurb = meta["blurb"]
-            blog_entry.type = meta["type"]
-            blog_entry.text = article_without_meta
-            db.session.commit()
-            click.echo(f"Updated article: {blog_entry.id}")
+            blog_entry = db.session.get(ArticleAdmin, int(meta["id"]))
+            
+            if blog_entry.variant != meta["variant"]:
+                # Save the new values
+                updated_fields = {
+                    "id": meta["id"],
+                    "title": meta["title"],
+                    "url": meta["url"],
+                    "blurb": meta["blurb"],
+                    "variant": meta["variant"],
+                    "text": article_without_meta,
+                }
+        
+                # Delete the old entry
+                db.session.delete(blog_entry)
+                db.session.commit()
+        
+                # Recreate using the appropriate polymorphic class
+                new_entry = ArticleAdmin(**updated_fields)
+                db.session.add(new_entry)
+                db.session.commit()
+        
+                click.echo(f"Replaced article {meta['id']} with new variant: {meta['variant'].value}")
+            else:
+                # Safe to update in place
+                blog_entry.title = meta["title"]
+                blog_entry.url = meta["url"]
+                blog_entry.blurb = meta["blurb"]
+                blog_entry.text = article_without_meta
+                db.session.commit()
+                click.echo(f"Updated article: {blog_entry.id}")
         else:
             click.echo(f"Inserting new article")
 
-            blog_entry = BlogAdmin(
+            blog_entry = ArticleAdmin(
                 title=meta["title"],
                 url=meta["url"],
                 blurb=meta["blurb"],
-                type = meta["type"],
+                variant = meta["variant"],
                 text=article_without_meta
             )
 
