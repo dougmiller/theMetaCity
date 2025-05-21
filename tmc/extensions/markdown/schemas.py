@@ -6,7 +6,7 @@ class TMCBlogMetadataSchema(Schema):
     id = fields.String(allow_none=True)
     title = fields.String(required=True)
     url = fields.String(required=True)
-    type = fields.String(missing="blog")
+    type = fields.String(load_default="blog")
     blurb = fields.String(required=True)
 
     @pre_load
