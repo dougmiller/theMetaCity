@@ -1,5 +1,0 @@
-[DATABASE]
-hostname = localhost
-port = 5432
-name = dev_db
-user = user_name

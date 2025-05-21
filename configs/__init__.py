@@ -1,2 +1,0 @@
-from configs.PSQLDatabaseConfig import PSQLDatabaseConfig
-from configs.SQLiteDatabaseConfig import SQLiteDatabaseConfig

@@ -1,3 +1,0 @@
-FLASK_APP=theMetaCity.py
-FLASK_ENV=development
-FLASK_DEBUG=on
