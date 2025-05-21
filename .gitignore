@@ -1,3 +1,5 @@
+.flaskenv
+
 .env.basic
 .env.database
 
