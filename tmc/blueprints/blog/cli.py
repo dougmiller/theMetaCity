@@ -43,6 +43,23 @@ def check_file_in_subdirectory(filename, base_dir=None):
             return os.path.join(root, filename)
     return None
 
+def strip_metadata(markdown_text):
+    """
+    Removes YAML-style metadata lines (key: value) from the beginning of a Markdown string.
+    Stops stripping after the first non-meta line.
+    """
+    lines = markdown_text.splitlines()
+    body_lines = []
+
+    meta_done = False
+    for line in lines:
+        if not meta_done and (line.strip() == "" or ":" in line):
+            continue  # Skip metadata
+        else:
+            meta_done = True
+            body_lines.append(line)
+
+    return "\n".join(body_lines)
 
 @blog.cli.command("process")
 @with_appcontext
@@ -67,9 +84,10 @@ def process(file):
         with open(full_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
-        text = md.convert(content)
+        md.convert(content)
+        article_without_meta = strip_metadata(content)
         schema = TMCBlogMetadataSchema()
-
+        
         try:
             meta_raw = {k: v[0] for k, v in md.Meta.items() if v}
             meta = schema.load(meta_raw)
@@ -80,21 +98,27 @@ def process(file):
                     click.echo(click.style(f"{message}", fg="red"))
             return
 
-        click.echo(f'Processing: {meta["title"]}')
+        click.echo(f'File looks OK. Proceeding...')
 
         if meta.get("id"):
+            click.echo(f"Updating: {meta["id"]}")
             blog_entry = BlogAdmin.query.get(meta["id"])
             blog_entry.title = meta["title"]
             blog_entry.url = meta["url"]
             blog_entry.blurb = meta["blurb"]
-            blog_entry.text = text
+            blog_entry.type = meta["type"]
+            blog_entry.text = article_without_meta
             db.session.commit()
+            click.echo(f"Updated article: {blog_entry.id}")
         else:
+            click.echo(f"Inserting new article")
+
             blog_entry = BlogAdmin(
                 title=meta["title"],
                 url=meta["url"],
                 blurb=meta["blurb"],
-                text=text
+                type = meta["type"],
+                text=article_without_meta
             )
 
             # Commit first so the ID is assigned
@@ -103,7 +127,8 @@ def process(file):
 
             # Prepend the new ID to the markdown file
             new_id = str(blog_entry.id)
-
+            click.echo(f"Inserted article: {blog_entry.id}")
+            
             with open(full_path, 'r', encoding='utf-8') as f:
                 original_content = f.read()
 
