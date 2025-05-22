@@ -114,7 +114,7 @@ def process(file):
         click.echo(f"File looks OK. Proceeding...")
 
         if meta.get("id"):
-            blog_entry = db.session.get(ArticleAdmin, int(meta["id"]))
+            blog_entry = db.session.get(ArticleAdmin, meta["id"])
 
             if blog_entry.variant != meta["variant"]:
                 # Save the new values
