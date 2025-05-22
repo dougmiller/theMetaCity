@@ -1,5 +1,6 @@
 from flask import render_template, make_response
 from tmc import db, cache
+from tmc.extensions import md
 from . import blog
 from tmc.models.blog import BlogSelector as Blog, TagSelector as Tag
 
@@ -32,6 +33,8 @@ def title(url: str) -> str:
         db.select(Blog)
             .filter_by(url=url)
     )
+    
+    article.content = md.convert(article.content)
 
     return render_template('blog/article.html', article=article)
 

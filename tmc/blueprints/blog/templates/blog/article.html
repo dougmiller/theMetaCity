@@ -13,7 +13,7 @@
             <h3>Articles in this series:</h3>
             {{ other_blog_articles_list(article)|safe }}
         {% endif %}
-        {{ article.content|markdown }}
+        {{ article.content|safe }}
         <footer>
             <h2><a href="{{ url_for('blog.home') }}">Back to blog</a></h2>
         </footer>
