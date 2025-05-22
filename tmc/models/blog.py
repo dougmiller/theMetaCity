@@ -1,3 +1,4 @@
+import uuid
 from typing import Optional
 from enum import Enum as PyEnum
 import arrow
@@ -12,7 +13,7 @@ class ArticleTagsBase(BasicModel):
 	__abstract__ = True
 
 	tag_id: Mapped[int] = mapped_column(ForeignKey("com.tags.id"), primary_key=True)
-	article_id: Mapped[int] = mapped_column(ForeignKey("com.articles.id"), primary_key=True)
+	article_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("com.articles.id"), primary_key=True)
 	
 	def __repr__(self):
 		return f"[ArticleTags: Article {self.article_id} - Tag {self.tag_id}]"
@@ -35,14 +36,14 @@ class ArticleType(PyEnum):
 	workshop = 'workshop'
 
 
-class ArticleBase(IntegerModel, TimestampsMixin, SoftDeleteMixin):
+class ArticleBase(UUIDModel, TimestampsMixin):
 	__abstract__ = True
 
 	title: Mapped[str] = mapped_column(unique=True)
 	url: Mapped[str] = mapped_column(unique=True)	
 	blurb: Mapped[Optional[str]]
-	text: Mapped[str]
-	parent_id: Mapped[int] = mapped_column(ForeignKey("com.articles.id"), nullable=True)
+	content: Mapped[str]
+	parent_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("com.articles.id"), nullable=True)
 
 	variant: Mapped[ArticleType] = mapped_column(
 		SQLEnum(
