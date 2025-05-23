@@ -146,7 +146,7 @@ def process(file):
                 blog_entry = ArticleAdmin(id=meta["id"])
             else:
                 populate_entry(blog_entry, meta)
-                click.echo(f"Updated article: {blog_entry.id}")
+                click.echo(f"Updating article: {blog_entry.id}")
         else:
             click.echo("Inserting new article")
             blog_entry = ArticleAdmin()
