@@ -90,7 +90,8 @@ def process(file):
 
     full_path = check_file_in_subdirectory(file)
     if not full_path:
-        click.echo(f"Error: File '{file}' not found in the documents directory " f"({current_app.config.get('DOCUMENTS_FOLDER_PATH', '.')}).")
+        click.echo(f"Error: File '{file}' not found in the documents directory "
+                   f"({current_app.config.get('DOCUMENTS_FOLDER_PATH', '.')}).")
         return
 
     try:
@@ -111,121 +112,72 @@ def process(file):
                     click.echo(click.style(f"{message}", fg="red"))
             return
 
-        click.echo(f"File looks OK. Proceeding...")
+        click.echo("File looks OK. Proceeding...")
 
-        if meta.get("id"):
-            blog_entry = db.session.get(ArticleAdmin, meta["id"])
-
-            if blog_entry.variant != meta["variant"]:
-                # Save the new values
-                updated_fields = {
-                    "id": meta.get("id"),
-                    "title": meta.get("title"),
-                    "url": meta.get("url"),
-                    "blurb": meta.get("blurb"),
-                    "variant": meta.get("variant"),
-                    "parent_id": meta.get("parent"),
-                    "content": article_without_meta,
-                }
-
-                # Delete the old entry
-                db.session.delete(blog_entry)
-                db.session.commit()
-
-                # Recreate using the appropriate polymorphic class
-                new_entry = ArticleAdmin(**updated_fields)
-                
-                entry_tags = []
-                tag_names = meta.get("tags")
-                for name in tag_names:
-                    tag = db.session.execute(
-                        db.select(Tag).filter_by(tag=name)
-                    ).scalar_one_or_none()
-                    if not tag:
-                        tag = TagAdmin(tag=name)
-                        db.session.add(tag)
-                    entry_tags.append(tag)
-                    
-                new_entry.tags = entry_tags
-
-                db.session.add(new_entry)
-                db.session.commit()
-
-                click.echo(f"Replaced article {meta['id']} with new variant: {meta['variant'].value}")
-            else:
-                # Safe to update in place
-                blog_entry.title = meta["title"]
-                blog_entry.url = meta["url"]
-                blog_entry.blurb = meta["blurb"]
-                blog_entry.parent_id = meta.get("parent")
-                blog_entry.content = article_without_meta
-                 
-                entry_tags = []
-                tag_names = meta.get("tags")
-                for name in tag_names:
-                    tag = db.session.execute(
-                        db.select(Tag).filter_by(tag=name)
-                    ).scalar_one_or_none()
-                    if not tag:
-                        tag = TagAdmin(tag=name)
-                        db.session.add(tag)
-                    entry_tags.append(tag)
-                
-                blog_entry.tags = entry_tags
-                
-                db.session.commit()
-                click.echo(f"Updated article: {blog_entry.id}")
-        else:
-            click.echo(f"Inserting new article")
-
-            blog_entry = ArticleAdmin(
-                title=meta["title"],
-                url=meta["url"],
-                blurb=meta["blurb"],
-                variant=meta["variant"],
-                parent_id=meta.get("parent"),
-                content=article_without_meta
-            )
-
-            entry_tags = []
-            tag_names = meta.get("tags")
+        def get_or_create_tags(tag_names):
+            tags = []
             for name in tag_names:
                 tag = db.session.execute(
-                    db.select(Tag).filter_by(tag=name)
+                    db.select(TagAdmin).filter_by(tag=name)
                 ).scalar_one_or_none()
                 if not tag:
                     tag = TagAdmin(tag=name)
                     db.session.add(tag)
-                entry_tags.append(tag)
-                
-            blog_entry.tags = entry_tags
+                tags.append(tag)
+            return tags
 
-            # Commit first so the ID is assigned
+        def populate_entry(entry, meta):
+            entry.title = meta["title"]
+            entry.url = meta["url"]
+            entry.blurb = meta["blurb"]
+            entry.variant = meta["variant"]
+            entry.parent_id = meta.get("parent")
+            entry.content = article_without_meta
+            entry.tags = get_or_create_tags(meta.get("tags"))
+
+        blog_entry = None
+        if meta.get("id"):
+            blog_entry = db.session.get(ArticleAdmin, meta["id"])
+
+            if blog_entry.variant != meta["variant"]:
+                db.session.delete(blog_entry)
+                db.session.commit()
+
+                blog_entry = ArticleAdmin(id=meta["id"])
+            else:
+                populate_entry(blog_entry, meta)
+                click.echo(f"Updated article: {blog_entry.id}")
+        else:
+            click.echo("Inserting new article")
+            blog_entry = ArticleAdmin()
+            populate_entry(blog_entry, meta)
             db.session.add(blog_entry)
-            db.session.commit()
 
+        db.session.commit()
+
+        if not meta.get("id"):
             # Prepend the new ID to the markdown file
             new_id = str(blog_entry.id)
-            click.echo(f"Inserted article: {blog_entry.id}")
+            click.echo(f"Inserted article: {new_id}")
 
             with open(full_path, "r", encoding="utf-8") as f:
                 original_content = f.read()
 
             updated_content = f"id: {new_id}\n" + original_content
-
             with open(full_path, "w", encoding="utf-8") as f:
                 f.write(updated_content)
 
         click.echo("Finished processing.")
+
     except IntegrityError as err:
         if isinstance(err.orig, UniqueViolation):
             db.session.rollback()
-
-            # Try to extract the field name from the error message
             match = re.search(r"Key \((.*?)\)=", str(err.orig))
             if match:
                 field_name = match.group(1)
-                click.echo(click.style(f"Error: The {field_name} '{meta.get(field_name, '')}' already exists (must be unique).", fg="red"))
+                click.echo(click.style(
+                    f"Error: The {field_name} '{meta.get(field_name, '')}' already exists (must be unique).", fg="red"
+                ))
             else:
                 click.echo(click.style("Error: Duplicate value violates a unique constraint.", fg="red"))
         else:
