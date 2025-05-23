@@ -184,3 +184,22 @@ def process(file):
             raise
     except Exception as e:
         click.echo(click.style(f"An error occurred: {e}", fg="red"))
+
+
+
+@blog.cli.command("rm")
+@click.argument('record', nargs=1, type=click.UUID, required=True)
+def rm(record):
+	"""Removes a Blog record"""
+	click.echo(click.style(f'Going to rm: {record}', fg='red'))
+	blog_entry = db.session.get(ArticleAdmin, record)
+	
+	if not blog_entry:
+		click.echo(click.style(f"No record found with ID: {record}", fg='yellow'))
+		return
+	
+	confirm = click.confirm(click.style(f"Are you sure you want to delete '{blog_entry.id}'?", fg="yellow"), abort=True)
+	
+	db.session.delete(blog_entry)
+	db.session.commit()
+	click.echo(click.style(f"Deleted Blog article: {record}", fg='red'))
