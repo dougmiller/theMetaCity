@@ -9,12 +9,26 @@ class TMCBlogMetadataSchema(Schema):
     url = fields.String(required=True)
     variant = fields.Enum(ArticleType, load_default=ArticleType.blog)
     blurb = fields.String(required=True)
+    tags = fields.List(fields.String(), load_default=[])
+    parent = fields.String(allow_none=True)
+
+    @pre_load
+    def normalize_keys(self, data, **kwargs):
+        # Convert keys to lowercase
+        return {k.lower(): v for k, v in data.items()}
 
     @pre_load
     def normalize_type(self, data, **kwargs):
         if "variant" in data and isinstance(data["variant"], str):
             raw_variant = data["variant"].lower().strip()
             data["variant"] = ArticleType(raw_variant)
+        return data
+
+    @pre_load
+    def parse_tags(self, data, **kwargs):
+        if isinstance(data.get("tags"), str):
+            # Split by comma and strip whitespace
+            data["tags"] = [tag.strip() for tag in data["tags"].split(",") if tag.strip()]
         return data
 
     @validates("title")

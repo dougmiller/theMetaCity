@@ -9,7 +9,7 @@ from flask.cli import with_appcontext
 
 from tmc import db
 from . import blog
-from tmc.models.blog import ArticleSelector as Article, ArticleAdmin
+from tmc.models.blog import ArticleSelector as Article, ArticleAdmin, TagSelector as Tag, TagAdmin
 from tmc.extensions import md
 from tmc.extensions.markdown import TMCBlogMetadataSchema
 
@@ -119,11 +119,12 @@ def process(file):
             if blog_entry.variant != meta["variant"]:
                 # Save the new values
                 updated_fields = {
-                    "id": meta["id"],
-                    "title": meta["title"],
-                    "url": meta["url"],
-                    "blurb": meta["blurb"],
-                    "variant": meta["variant"],
+                    "id": meta.get("id"),
+                    "title": meta.get("title"),
+                    "url": meta.get("url"),
+                    "blurb": meta.get("blurb"),
+                    "variant": meta.get("variant"),
+                    "parent_id": meta.get("parent"),
                     "content": article_without_meta,
                 }
 
@@ -133,6 +134,20 @@ def process(file):
 
                 # Recreate using the appropriate polymorphic class
                 new_entry = ArticleAdmin(**updated_fields)
+                
+                entry_tags = []
+                tag_names = meta.get("tags")
+                for name in tag_names:
+                    tag = db.session.execute(
+                        db.select(Tag).filter_by(tag=name)
+                    ).scalar_one_or_none()
+                    if not tag:
+                        tag = TagAdmin(tag=name)
+                        db.session.add(tag)
+                    entry_tags.append(tag)
+                    
+                new_entry.tags = entry_tags
+
                 db.session.add(new_entry)
                 db.session.commit()
 
@@ -142,13 +157,48 @@ def process(file):
                 blog_entry.title = meta["title"]
                 blog_entry.url = meta["url"]
                 blog_entry.blurb = meta["blurb"]
+                blog_entry.parent_id = meta.get("parent")
                 blog_entry.content = article_without_meta
+                 
+                entry_tags = []
+                tag_names = meta.get("tags")
+                for name in tag_names:
+                    tag = db.session.execute(
+                        db.select(Tag).filter_by(tag=name)
+                    ).scalar_one_or_none()
+                    if not tag:
+                        tag = TagAdmin(tag=name)
+                        db.session.add(tag)
+                    entry_tags.append(tag)
+                
+                blog_entry.tags = entry_tags
+                
                 db.session.commit()
                 click.echo(f"Updated article: {blog_entry.id}")
         else:
             click.echo(f"Inserting new article")
 
-            blog_entry = ArticleAdmin(title=meta["title"], url=meta["url"], blurb=meta["blurb"], variant=meta["variant"], content=article_without_meta)
+            blog_entry = ArticleAdmin(
+                title=meta["title"],
+                url=meta["url"],
+                blurb=meta["blurb"],
+                variant=meta["variant"],
+                parent_id=meta.get("parent"),
+                content=article_without_meta
+            )
+
+            entry_tags = []
+            tag_names = meta.get("tags")
+            for name in tag_names:
+                tag = db.session.execute(
+                    db.select(Tag).filter_by(tag=name)
+                ).scalar_one_or_none()
+                if not tag:
+                    tag = TagAdmin(tag=name)
+                    db.session.add(tag)
+                entry_tags.append(tag)
+                
+            blog_entry.tags = entry_tags
 
             # Commit first so the ID is assigned
             db.session.add(blog_entry)
