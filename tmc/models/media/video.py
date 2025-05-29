@@ -1,5 +1,6 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
+from tmc.models.extensions.mixins import BoundQueryMixin
 from tmc.models.media import MediaItem, MediaType
 
 
@@ -15,14 +16,14 @@ class Video(MediaItem):
 	}
 
 
-class VideoSelector(Video):
+class VideoSelector(BoundQueryMixin, Video):
     __bind_key__ = "media_selector"
     __mapper_args__ = {
         "polymorphic_abstract": True,
     }
 
 
-class VideoAdmin(Video):
+class VideoAdmin(BoundQueryMixin, Video):
     __bind_key__ = "media_admin"
     __mapper_args__ = {
         "polymorphic_abstract": True,

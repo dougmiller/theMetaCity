@@ -56,6 +56,7 @@ def _setup_admin(app):
     admin.add_view(ModelView(models.Licence, db.session, 'Licences'))
 
 
+
 def create_app():
     app = Flask(__name__, static_url_path='', subdomain_matching=True)
    
@@ -66,7 +67,7 @@ def create_app():
 
     _setup_url_maps(app)
     _setup_blueprints(app)
-
+    
     #if os.environ['FLASK_ENV'] == 'development':
     #    _setup_admin(app)
 

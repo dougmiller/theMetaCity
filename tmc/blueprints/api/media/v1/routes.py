@@ -2,7 +2,8 @@ import json
 from flask import jsonify, request, current_app
 from sqlalchemy.sql.expression import func
 from . import v1, api_response
-from tmc.models.media import MediaItem, Video
+from tmc.models.media import MediaItem
+from tmc.models.media.video import Video, VideoSelector
 from tmc.models.schemas.media import MediaItemSchema
 
 from tmc.utils.responses import api_response
@@ -40,21 +41,23 @@ def all():
 
 @v1.route("/video/<int:video>/")
 def video_details(video=None):
-	one = db.session.execute(
-		db.select(Video)
-		.where(Video.id == video)
-	).scalars().one_or_none()
-	
-	if one is None:
-		return api_response(
-			message="No matching record found",
-			success=False,
-			status=404
-		)
-			
-	return api_response(
-		data=jsonify(one)
-	)
+    one = db.session.execute(
+        VideoSelector.select()
+        .where(VideoSelector.id == video)
+    ).scalars().one_or_none()
+    
+    if one is None:
+        return api_response(
+            message="No matching record found",
+            success=False,
+            status=404
+        )
+    
+    media_item_schema = MediaItemSchema()
+    
+    return api_response(
+        data=media_item_schema.dump(one)
+    )
 
 
 @v1.route("/follow_on/<int:video>/")

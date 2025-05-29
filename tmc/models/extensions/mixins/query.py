@@ -1,7 +1,24 @@
 from flask import abort
 from tmc.extensions import db
 
-__all__ = ('QueryMixin')
+__all__ = ('QueryMixin', 'BoundQueryMixin')
+
+
+class BoundQueryMixin:
+    @classmethod
+    def select(cls):
+        from tmc.models.extensions.bind_mappers import select_with_bind
+        return select_with_bind(cls)
+
+    @classmethod
+    def update(cls):
+        from tmc.models.extensions.bind_mappers import update_with_bind
+        return update_with_bind(cls)
+
+    @classmethod
+    def delete(cls):
+        from tmc.models.extensions.bind_mappers import delete_with_bind
+        return delete_with_bind(cls)
 
 
 class QueryMixin(object):
