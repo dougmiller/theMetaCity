@@ -68,9 +68,10 @@ def video_follow_on(video=None):
 	follow_ons = db.session.execute(
 		v_query
 	).scalars().all()
-	
-		
+
+	media_item_schema = MediaItemSchema(many=True)
+
 	return api_response(
-		data=follow_ons
+		data=media_item_schema.dump(follow_ons)
 	)
 
