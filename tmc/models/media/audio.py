@@ -5,7 +5,6 @@ from tmc.models.media import MediaItem, MediaType
 
 
 class Audio(MediaItem):
-    #__abstract__ = True
     __tablename__ = "audio"
     __table_args__ = {"schema": "media"}
     

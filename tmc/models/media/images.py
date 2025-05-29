@@ -9,9 +9,7 @@ class Gallery(MediaItem):
 	__tablename__ = "gallery"
 	__table_args__ = {"schema": "media"}
 	__bind_key__ = "media_selector"
-	__mapper_args__ = {
-		"polymorphic_identity": MediaType.gallery
-	}
+
 
 	id: Mapped[int] = mapped_column(
 		ForeignKey("media.media_item.id"),
@@ -24,6 +22,24 @@ class Gallery(MediaItem):
 		cascade="save-update, merge",
 		lazy="select"
 	)
+
+	__mapper_args__ = {
+		"polymorphic_identity": MediaType.gallery
+	}
+
+
+class GallerySelector(Gallery):
+    __bind_key__ = "media_selector"
+    __mapper_args__ = {
+        "polymorphic_abstract": True,
+    }
+
+
+class GalleryAdmin(Gallery):
+    __bind_key__ = "media_admin"
+    __mapper_args__ = {
+        "polymorphic_abstract": True,
+    }
 
 
 class Image(UUIDModel):

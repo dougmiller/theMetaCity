@@ -7,8 +7,23 @@ class Video(MediaItem):
 	__tablename__ = "video"
 	__table_args__ = {"schema": "media"}
 	__bind_key__ = "media_selector"
+	
+	id: Mapped[int] = mapped_column(ForeignKey("media.media_item.id"), primary_key=True)
+
 	__mapper_args__ = {
 		'polymorphic_identity': MediaType.video
 	}
-	
-	id: Mapped[int] = mapped_column(ForeignKey("media.media_item.id"), primary_key=True)
+
+
+class VideoSelector(Video):
+    __bind_key__ = "media_selector"
+    __mapper_args__ = {
+        "polymorphic_abstract": True,
+    }
+
+
+class VideoAdmin(Video):
+    __bind_key__ = "media_admin"
+    __mapper_args__ = {
+        "polymorphic_abstract": True,
+    }
