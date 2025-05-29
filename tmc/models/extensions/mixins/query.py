@@ -1,3 +1,4 @@
+from sqlalchemy import and_, or_, select
 from flask import abort
 from tmc.extensions import db
 
@@ -37,11 +38,13 @@ class QueryMixin(object):
 
     @classmethod
     def all(cls):
-        return cls.query.order_by(cls.created_at.desc()).all()
-
+        stmt = select(cls).order_by(cls.created_at.desc())
+        return db.session.scalars(stmt).all()
+        
     @classmethod
-    def latest(cls, latest=5):
-        return cls.query.order_by(cls.created_at.desc()).limit(latest).all()
+    def first(cls, **kwargs):
+        stmt = select(cls).filter_by(**kwargs).limit(1)
+        return db.session.scalars(stmt).first()
 
     # Query helpers
     @classmethod
@@ -148,16 +151,7 @@ class QueryMixin(object):
 
         Returns instance or `None`.
         """
-        return cls.query.get(pk)
-
-    @classmethod
-    def get_active_or_404(cls, pk):
-        """Get item by primary key or 404 only if it is active."""
-        item = cls.query.get_or_404(pk)
-        if item.active:
-            return item
-        else:
-            return abort(404)
+        return db.session.get(cls, pk)
 
     @classmethod
     def get_or_404(cls, pk):
