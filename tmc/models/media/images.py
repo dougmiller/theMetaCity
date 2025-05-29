@@ -8,7 +8,7 @@ from tmc.models.extensions import UUIDModel
 class Gallery(MediaItem):
 	__tablename__ = "gallery"
 	__table_args__ = {"schema": "media"}
-	__bind_key__ = "media"
+	__bind_key__ = "media_selector"
 	__mapper_args__ = {
 		"polymorphic_identity": MediaType.gallery
 	}
@@ -34,7 +34,7 @@ class Image(UUIDModel):
 	"""
 	__tablename__ = "image"
 	__table_args__ = {"schema": "media"}
-	__bind_key__ = "media"
+	__bind_key__ = "media_selector"
 
 	gallery_id: Mapped[int | None] = mapped_column(
 		ForeignKey(

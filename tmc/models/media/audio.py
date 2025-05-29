@@ -7,7 +7,7 @@ from tmc.models.media import MediaItem, MediaType
 class Audio(MediaItem):
     __tablename__ = "audio"
     __table_args__ = {"schema": "media"}
-    __bind_key__ = "media"
+    __bind_key__ = "media_selector"
     __mapper_args__ = {
         "polymorphic_identity": MediaType.audio,
     }

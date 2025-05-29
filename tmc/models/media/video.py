@@ -6,7 +6,7 @@ from tmc.models.media import MediaItem, MediaType
 class Video(MediaItem):
 	__tablename__ = "video"
 	__table_args__ = {"schema": "media"}
-	__bind_key__ = "media"
+	__bind_key__ = "media_selector"
 	__mapper_args__ = {
 		'polymorphic_identity': MediaType.video
 	}

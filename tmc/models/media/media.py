@@ -12,7 +12,7 @@ class Licence(IntegerModel):
     """
     __tablename__ = 'licence'
     __table_args__ = {"schema": "media"}
-    __bind_key__ = "media"
+    __bind_key__ = "media_selector"
     
     name: Mapped[str] = mapped_column(String, unique=True)
     text: Mapped[str] = mapped_column(String, unique=True)
@@ -33,7 +33,7 @@ class Postcard(IntegerModel):  # Renamed to singular for convention
     """
     __tablename__ = 'postcard'
     __table_args__ = {"schema": "media"}
-    __bind_key__ = "media"
+    __bind_key__ = "media_selector"
     
     url: Mapped[str] = mapped_column(String, unique=True)
     title: Mapped[str] = mapped_column(String, unique=True)
@@ -64,7 +64,7 @@ class MediaType(PyEnum):
 class MediaItem(IntegerModel):
     __tablename__ = "media_item"
     __table_args__ = {"schema": "media"}
-    __bind_key__ = "media"
+    __bind_key__ = "media_selector"
 
     title: Mapped[str] = mapped_column(String)
     media_type: Mapped[MediaType] = mapped_column(
