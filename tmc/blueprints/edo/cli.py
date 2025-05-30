@@ -14,10 +14,6 @@ edo.cli.short_help = "EDO record managment"
 @click.option("--filter", help="Filter entries by the starting ID value")
 def list(count, filter):
     """Show the latest (by creation date) (--count==10) number of EDO records"""
-    # query = db.select(EDO).order_by(EDO.created_at.desc()).limit(count)
-
-    # if filter is not None:
-    #    query = query.filter(cast(EDO.id, String).like(f"{filter}%"))
 
     edo_list = EDO.some(limit=count)
 
