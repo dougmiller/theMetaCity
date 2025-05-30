@@ -1,4 +1,3 @@
-from .media import MediaItem, MediaType, Licence, Postcard
-#from .video import Video, VideoSelector, VideoAdmin
+from .media import MediaItem, MediaType
 from .audio import Audio
 from .images import Image, Gallery
