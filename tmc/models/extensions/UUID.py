@@ -1,8 +1,9 @@
 import uuid
+
 from sqlalchemy import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.ext.declarative import declared_attr
+
 from ._base import _BaseModel
 
 __all__ = "UUIDModel"

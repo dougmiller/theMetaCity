@@ -1,4 +1,4 @@
-from sqlalchemy import select, update, delete
+from sqlalchemy import delete, select, update
 from sqlalchemy.orm.util import _class_to_mapper
 
 

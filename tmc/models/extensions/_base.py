@@ -1,9 +1,4 @@
-from arrow import now
-from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.ext.declarative import declared_attr, has_inherited_table
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy_utils import ArrowType
-from sqlalchemy import text as sa_text
 
 from tmc.extensions import db
 from tmc.models.extensions.mixins.query import QueryMixin
