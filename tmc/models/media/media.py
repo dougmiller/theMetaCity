@@ -1,12 +1,15 @@
 from enum import Enum as PyEnum
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from tmc.models.media.licence import Licence
-from tmc.models.media.postcard import Postcard
 from tmc.models.extensions import IntegerModel
+
+if TYPE_CHECKING:
+    from tmc.models.media.licence import Licence
+    from tmc.models.media.postcard import Postcard
 
 
 class MediaType(PyEnum):
@@ -25,7 +28,7 @@ class MediaItem(IntegerModel):
         SQLEnum(
             MediaType,
             name="media_type_enum",
-            schema="media"
+            schema="media",
         ), 
         nullable=False, 
     )
