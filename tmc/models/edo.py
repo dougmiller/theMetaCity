@@ -1,10 +1,9 @@
 import arrow
 from sqlalchemy.orm import Mapped
+
 from tmc.models.extensions import UUIDModel
-from tmc.models.extensions.mixins.timestamps import TimestampsMixin
 from tmc.models.extensions.mixins.query import QueryMixin
-from tmc.extensions.marshmallow import ma
-from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
+from tmc.models.extensions.mixins.timestamps import TimestampsMixin
 
 __all__ = ('EDO', 'EDO_Admin')
 

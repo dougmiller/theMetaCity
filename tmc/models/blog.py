@@ -1,13 +1,23 @@
 import uuid
-from typing import Optional
 from enum import Enum as PyEnum
-import arrow
-from sqlalchemy import ForeignKey, Enum as SQLEnum
+
+from sqlalchemy import Enum as SQLEnum
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from tmc.models.extensions import IntegerModel, UUIDModel, BasicModel
+
+from tmc.models.extensions import BasicModel, UUIDModel
 from tmc.models.extensions.mixins.timestamps import TimestampsMixin
 
-__all__ = ('Article', 'Blog', 'Workshop', 'TagSelector', 'TagAdmin')
+__all__ = (
+    'ArticleSelector',
+    'ArticleAdmin',
+    'BlogSelector',
+    'BlogAdmin',
+    'WorkshopSelector',
+    'WorkshopAdmin',
+    'TagSelector',
+    'TagAdmin',
+)
 
 class ArticleTagsBase(BasicModel):
 	__abstract__ = True
@@ -41,7 +51,7 @@ class ArticleBase(UUIDModel, TimestampsMixin):
 
 	title: Mapped[str] = mapped_column(unique=True)
 	url: Mapped[str] = mapped_column(unique=True)	
-	blurb: Mapped[Optional[str]]
+	blurb: Mapped[str | None]
 	content: Mapped[str]
 	parent_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("com.articles.id"), nullable=True)
 
@@ -69,7 +79,7 @@ class ArticleSelector(ArticleBase):
 	__table_args__ = {"schema": "com"}
 	__bind_key__ = "com_selector"
 	
-	parent: Mapped["Article"] = relationship(
+	parent: Mapped["ArticleSelector"] = relationship(
 		"ArticleSelector",
 		remote_side="ArticleSelector.id",
 		backref="children",
@@ -77,7 +87,7 @@ class ArticleSelector(ArticleBase):
 		lazy="selectin"
 	)
 
-	tags: Mapped[list["Tag"]] = relationship(
+	tags: Mapped[list["TagSelector"]] = relationship(
 		"TagSelector",
 		secondary=ArticleTagsSelector.__table__,
 		back_populates="articles",
@@ -90,7 +100,7 @@ class ArticleAdmin(ArticleBase):
 	__table_args__ = {"schema": "com"}
 	__bind_key__ = "com_admin"
 
-	parent: Mapped["Article"] = relationship(
+	parent: Mapped["ArticleAdmin"] = relationship(
 		"ArticleAdmin",
 		remote_side="ArticleAdmin.id",
 		backref="children",
@@ -98,7 +108,7 @@ class ArticleAdmin(ArticleBase):
 		lazy="selectin"
 	)
 	
-	tags: Mapped[list["Tag"]] = relationship(
+	tags: Mapped[list["TagAdmin"]] = relationship(
 		"TagAdmin",
 		secondary=ArticleTagsAdmin.__table__,
 		back_populates="articles",
@@ -142,7 +152,7 @@ class TagSelector(TagBase):
 	__table_args__ = {"schema": "com"}
 	__bind_key__ = "com_selector"
 	
-	articles: Mapped[list["Article"]] = relationship(
+	articles: Mapped[list[ArticleSelector]] = relationship(
 		"ArticleSelector",
 		secondary=ArticleTagsSelector.__table__,
 		back_populates="tags",
@@ -155,7 +165,7 @@ class TagAdmin(TagBase):
 	__table_args__ = {"schema": "com"}
 	__bind_key__ = "com_admin"
 	
-	articles: Mapped[list["Article"]] = relationship(
+	articles: Mapped[list[ArticleAdmin]] = relationship(
 		"ArticleAdmin",
 		secondary=ArticleTagsAdmin.__table__,
 		back_populates="tags",
