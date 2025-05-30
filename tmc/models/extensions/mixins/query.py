@@ -45,6 +45,18 @@ class QueryMixin:
         stmt = select(cls).order_by(cls.created_at.desc())
         return db.session.scalars(stmt).all()
 
+
+    @classmethod
+    def some(cls, limit = None):
+        stmt = select(cls).order_by(cls.created_at.desc())
+        
+        if limit:
+            stmt = stmt.limit(limit)
+            
+        return db.session.scalars(stmt).all()
+
+
+
     @classmethod
     def first(cls, **kwargs):
         stmt = select(cls).filter_by(**kwargs).limit(1)
@@ -71,6 +83,15 @@ class QueryMixin:
         Returns result list or None.
         """
         return cls._and_query(kwargs)
+
+
+    @classmethod
+    def find_by_expression(cls, *expressions, order_by=None):
+        stmt = select(cls).filter(*expressions)
+        if order_by is not None:
+            stmt = stmt.order_by(order_by)
+        return db.session.scalars(stmt).all()
+
 
     @classmethod
     def find_or(cls, **kwargs):
@@ -134,12 +155,11 @@ class QueryMixin:
 
     @classmethod
     def first_or_404(cls, **kwargs):
-        """Get first item that matches kwargs or raise 404 error."""
-        item = cls._and_query(kwargs).first()
+        stmt = select(cls).filter_by(**kwargs).limit(1)
+        item = db.session.scalars(stmt).first()
         if item is None:
-            return abort(404)
-        else:
-            return item
+            abort(404)
+        return item
 
     @classmethod
     def get(cls, pk):

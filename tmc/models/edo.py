@@ -7,7 +7,7 @@ from tmc.models.extensions.mixins.timestamps import TimestampsMixin
 
 __all__ = ('EDO', 'EDO_Admin')
 
-class EDO_Base(UUIDModel, TimestampsMixin):
+class EDO_Base(UUIDModel, TimestampsMixin, QueryMixin):
 	__abstract__ = True
 	
 	content: Mapped[str]
@@ -27,13 +27,13 @@ class EDO_Base(UUIDModel, TimestampsMixin):
 		return f'{self.id} – {self.content}'
 
 
-class EDO(EDO_Base, QueryMixin):
+class EDO(EDO_Base):
 	__tablename__ = 'everyday_ordinary'
 	__table_args__ = {"schema": "everyday_ordinary"}
 	__bind_key__ = "edo_selector"
 
 
-class EDO_Admin(EDO_Base, QueryMixin):
+class EDO_Admin(EDO_Base):
 	__tablename__ = 'everyday_ordinary'
 	__table_args__ = {"schema": "everyday_ordinary"}
 	__bind_key__ = "edo_admin"
