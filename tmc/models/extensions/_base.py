@@ -8,13 +8,14 @@ from sqlalchemy import text as sa_text
 from tmc.extensions import db
 from .mixins import QueryMixin
 
-__all__ = ('_BaseModel')
+__all__ = "_BaseModel"
 
 
 class _BaseModel(db.Model, QueryMixin):
-    """ Abstract base class for all CRUD models.
+    """Abstract base class for all CRUD models.
     Provides an 'created_at', `updated_at` and `deleted_at` column to every model.
     """
+
     __abstract__ = True
 
     @property
@@ -32,7 +33,7 @@ class _BaseModel(db.Model, QueryMixin):
 
         This is used by the dynamic model loader to know if it should ignore.
         """
-        return cls.__name__ in ('BasicModel', 'UUIDModel', 'IntegerModel')  # can add more abstract base classes here
+        return cls.__name__ in ("BasicModel", "UUIDModel", "IntegerModel")  # can add more abstract base classes here
 
     def __repr__(self):
         return f"[{self.class_name}: {self.id}]"

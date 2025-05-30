@@ -100,10 +100,7 @@ def add_one():
 
 @v1.route("list/", methods=["GET"])
 def list_edo():
-    all_list = db.session.execute(
-        db.select(EDO)
-            .order_by(EDO.id.desc())
-    ).scalars().all()
+    all_list = EDO.all()
     
     EDO_schema = EDOSchema(many=True)
         
@@ -112,12 +109,9 @@ def list_edo():
     )
 
 
-@v1.route("list/<uuid:record>/", methods=["GET"])
+@v1.route("list/<uuid:record>", methods=["GET"])
 def one_edo(record):
-    one = db.session.execute(
-        db.select(EDO)
-            .where(EDO.id == record)
-    ).scalars().one_or_none()
+    one = EDO.get(record)
     
     if one is None:
         return api_response(

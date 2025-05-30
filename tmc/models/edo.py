@@ -2,12 +2,13 @@ import arrow
 from sqlalchemy.orm import Mapped
 from .extensions import UUIDModel
 from .extensions.mixins import TimestampsMixin
+from tmc.models.extensions.mixins import QueryMixin
 from tmc.extensions.marshmallow import ma
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
 __all__ = ('EDO', 'EDO_Admin')
 
-class EDO_Mixin(UUIDModel, TimestampsMixin):
+class EDO_Base(UUIDModel, TimestampsMixin):
 	__abstract__ = True
 	
 	content: Mapped[str]
@@ -27,13 +28,13 @@ class EDO_Mixin(UUIDModel, TimestampsMixin):
 		return f'{self.id} – {self.content}'
 
 
-class EDO(EDO_Mixin):
+class EDO(EDO_Base, QueryMixin):
 	__tablename__ = 'everyday_ordinary'
 	__table_args__ = {"schema": "everyday_ordinary"}
 	__bind_key__ = "edo_selector"
 
 
-class EDO_Admin(EDO_Mixin):
+class EDO_Admin(EDO_Base, QueryMixin):
 	__tablename__ = 'everyday_ordinary'
 	__table_args__ = {"schema": "everyday_ordinary"}
 	__bind_key__ = "edo_admin"

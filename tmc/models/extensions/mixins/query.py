@@ -2,23 +2,26 @@ from sqlalchemy import and_, or_, select
 from flask import abort
 from tmc.extensions import db
 
-__all__ = ('QueryMixin', 'BoundQueryMixin')
+__all__ = ("QueryMixin", "BoundQueryMixin")
 
 
 class BoundQueryMixin:
     @classmethod
     def select(cls):
         from tmc.models.extensions.bind_mappers import select_with_bind
+
         return select_with_bind(cls)
 
     @classmethod
     def update(cls):
         from tmc.models.extensions.bind_mappers import update_with_bind
+
         return update_with_bind(cls)
 
     @classmethod
     def delete(cls):
         from tmc.models.extensions.bind_mappers import delete_with_bind
+
         return delete_with_bind(cls)
 
 
@@ -40,7 +43,7 @@ class QueryMixin(object):
     def all(cls):
         stmt = select(cls).order_by(cls.created_at.desc())
         return db.session.scalars(stmt).all()
-        
+
     @classmethod
     def first(cls, **kwargs):
         stmt = select(cls).filter_by(**kwargs).limit(1)
@@ -164,7 +167,7 @@ class QueryMixin(object):
     @classmethod
     def _filters(cls, filters):
         """Return filter list from kwargs."""
-        return [getattr(cls, attr)==filters[attr] for attr in filters]
+        return [getattr(cls, attr) == filters[attr] for attr in filters]
 
     @classmethod
     def _filters_in(cls, filters):
