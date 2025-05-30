@@ -6,7 +6,7 @@ from sqlalchemy_utils import ArrowType
 from sqlalchemy import text as sa_text
 
 from tmc.extensions import db
-from .mixins import QueryMixin
+from tmc.models.extensions.mixins.query import QueryMixin
 
 __all__ = "_BaseModel"
 

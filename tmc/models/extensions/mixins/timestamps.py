@@ -1,11 +1,11 @@
 import arrow
 from sqlalchemy import Computed
+from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy_utils import ArrowType
-from sqlalchemy.ext.declarative import declared_attr
 
 
-class TimestampsMixin(object):
+class TimestampsMixin:
     __abstract__ = True
 
     @declared_attr
@@ -45,7 +45,7 @@ class TimestampsMixin(object):
         return f"Published: {created}{updated}"
 
 
-class SoftDeleteMixin(object):
+class SoftDeleteMixin:
     __abstract__ = True
 
     def deleted_at(cls) -> Mapped[ArrowType]:

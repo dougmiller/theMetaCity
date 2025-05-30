@@ -4,8 +4,8 @@ from enum import Enum as PyEnum
 import arrow
 from sqlalchemy import ForeignKey, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from .extensions import IntegerModel, UUIDModel, BasicModel
-from .extensions.mixins import TimestampsMixin, SoftDeleteMixin
+from tmc.models.extensions import IntegerModel, UUIDModel, BasicModel
+from tmc.models.extensions.mixins.timestamps import TimestampsMixin
 
 __all__ = ('Article', 'Blog', 'Workshop', 'TagSelector', 'TagAdmin')
 

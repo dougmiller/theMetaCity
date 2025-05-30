@@ -1,5 +1,6 @@
-from sqlalchemy import and_, or_, select
 from flask import abort
+from sqlalchemy import and_, or_, select
+
 from tmc.extensions import db
 
 __all__ = ("QueryMixin", "BoundQueryMixin")
@@ -25,7 +26,7 @@ class BoundQueryMixin:
         return delete_with_bind(cls)
 
 
-class QueryMixin(object):
+class QueryMixin:
     """Mixin class for database queries."""
 
     # CRUD methods
@@ -128,16 +129,8 @@ class QueryMixin(object):
 
         Returns result list or None.
         """
-        filters = [getattr(cls, attr) != None for attr in args]
+        filters = [getattr(cls, attr) is not None for attr in args]
         return cls.query.filter(*filters)
-
-    @classmethod
-    def first(cls, **kwargs):
-        """Return first result for query.
-
-        Returns instance or None.
-        """
-        return cls._and_query(kwargs).first()
 
     @classmethod
     def first_or_404(cls, **kwargs):
@@ -185,7 +178,7 @@ class QueryMixin(object):
 
         Returns BaseQuery.
         """
-        return cls.query.filter(db.and_(*cls._filters(filters)))
+        return cls.query.filter(and_(*cls._filters(filters)))
 
     @classmethod
     def _and_in_query(cls, filters):
@@ -193,7 +186,7 @@ class QueryMixin(object):
 
         Returns BaseQuery.
         """
-        return cls.query.filter(db.and_(*cls._filters_in(filters)))
+        return cls.query.filter(and_(*cls._filters_in(filters)))
 
     @classmethod
     def _and_not_in_query(cls, filters):
@@ -201,7 +194,7 @@ class QueryMixin(object):
 
         Returns BaseQuery.
         """
-        return cls.query.filter(db.and_(*cls._filters_not_in(filters)))
+        return cls.query.filter(and_(*cls._filters_not_in(filters)))
 
     @classmethod
     def _or_query(cls, filters):
@@ -209,7 +202,7 @@ class QueryMixin(object):
 
         Returns BaseQuery.
         """
-        return cls.query.filter(db.or_(*cls._filters(filters)))
+        return cls.query.filter(or_(*cls._filters(filters)))
 
     @classmethod
     def _or_in_query(cls, filters):
@@ -217,7 +210,7 @@ class QueryMixin(object):
 
         Returns BaseQuery.
         """
-        return cls.query.filter(db.or_(*cls._filters_in(filters)))
+        return cls.query.filter(or_(*cls._filters_in(filters)))
 
     @classmethod
     def _or_not_in_query(cls, filters):
@@ -225,4 +218,4 @@ class QueryMixin(object):
 
         Returns BaseQuery.
         """
-        return cls.query.filter(db.or_(*cls._filters_not_in(filters)))
+        return cls.query.filter(or_(*cls._filters_not_in(filters)))
