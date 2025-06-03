@@ -1,8 +1,7 @@
 import arrow
 from sqlalchemy.orm import Mapped
 
-from tmc.models.extensions.mixins.query import QueryMixin
-from tmc.models.extensions.mixins.timestamps import TimestampsMixin
+from tmc.models.extensions.mixins import TimestampsMixin, QueryMixin
 from tmc.models.extensions import UUIDModel
 
 __all__ = ('EDO', 'EDO_Admin')

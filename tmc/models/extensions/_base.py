@@ -1,7 +1,7 @@
 from sqlalchemy.ext.declarative import declared_attr, has_inherited_table
 
 from tmc.extensions import db
-from tmc.models.extensions.mixins.query import QueryMixin
+from tmc.models.extensions.mixins import QueryMixin
 
 __all__ = "_BaseModel"
 

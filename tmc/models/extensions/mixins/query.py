@@ -1,5 +1,6 @@
 from flask import abort
-from sqlalchemy import and_, or_, select
+from sqlalchemy import and_, delete, or_, select, update
+from sqlalchemy.orm.util import _class_to_mapper
 
 from tmc.extensions import db
 
@@ -8,22 +9,51 @@ __all__ = ("QueryMixin", "BoundQueryMixin")
 
 class BoundQueryMixin:
     @classmethod
-    def select(cls):
-        from tmc.models.extensions.bind_mappers import select_with_bind
+    def _get_polymorphic_base_and_bind(cls):
+        mapper = _class_to_mapper(cls)
+        base_cls = cls
+        while not mapper.polymorphic_identity and mapper.inherits:
+            base_cls = mapper.inherits.class_
+            mapper = _class_to_mapper(base_cls)
 
-        return select_with_bind(cls)
+        bind_key = getattr(cls, "__bind_key__", None)
+        return base_cls, bind_key
+
+    @classmethod
+    def select_with_bind(cls):
+        base_cls, bind_key = cls._get_polymorphic_base_and_bind(cls)
+        stmt = select(base_cls)
+        if bind_key:
+            stmt = stmt.execution_options(bind_key=bind_key)
+        return stmt
+
+    @classmethod
+    def update_with_bind(cls):
+        base_cls, bind_key = cls._get_polymorphic_base_and_bind(cls)
+        stmt = update(base_cls)
+        if bind_key:
+            stmt = stmt.execution_options(bind_key=bind_key)
+        return stmt
+
+    @classmethod
+    def delete_with_bind(cls):
+        base_cls, bind_key = cls._get_polymorphic_base_and_bind(cls)
+        stmt = delete(base_cls)
+        if bind_key:
+            stmt = stmt.execution_options(bind_key=bind_key)
+        return stmt
+
+    @classmethod
+    def select(cls):
+        return cls.select_with_bind(cls)
 
     @classmethod
     def update(cls):
-        from tmc.models.extensions.bind_mappers import update_with_bind
-
-        return update_with_bind(cls)
+        return cls.update_with_bind(cls)
 
     @classmethod
     def delete(cls):
-        from tmc.models.extensions.bind_mappers import delete_with_bind
-
-        return delete_with_bind(cls)
+        return cls.delete_with_bind(cls)
 
 
 class QueryMixin:
@@ -45,17 +75,14 @@ class QueryMixin:
         stmt = select(cls).order_by(cls.created_at.desc())
         return db.session.scalars(stmt).all()
 
-
     @classmethod
-    def some(cls, limit = None):
+    def some(cls, limit=None):
         stmt = select(cls).order_by(cls.created_at.desc())
-        
+
         if limit:
             stmt = stmt.limit(limit)
-            
+
         return db.session.scalars(stmt).all()
-
-
 
     @classmethod
     def first(cls, **kwargs):
@@ -84,14 +111,12 @@ class QueryMixin:
         """
         return cls._and_query(kwargs)
 
-
     @classmethod
     def find_by_expression(cls, *expressions, order_by=None):
         stmt = select(cls).filter(*expressions)
         if order_by is not None:
             stmt = stmt.order_by(order_by)
         return db.session.scalars(stmt).all()
-
 
     @classmethod
     def find_or(cls, **kwargs):

@@ -1,7 +1,7 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
-from tmc.models.extensions.mixins.query import BoundQueryMixin, QueryMixin
+from tmc.models.extensions.mixins import BoundQueryMixin, QueryMixin
 from tmc.models.media import AssetType, MediaAsset
 
 
