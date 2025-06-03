@@ -26,15 +26,3 @@ class Licence(IntegerModel):
 
     def __repr__(self) -> str:
         return self.name
-
-
-class LicenceSchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = Licence
-        load_instance = True
-
-    id = auto_field()
-    name = auto_field()
-    text = auto_field()
-    url = auto_field()
-    image = auto_field()

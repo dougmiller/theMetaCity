@@ -37,13 +37,3 @@ class Postcard(IntegerModel):  # Renamed to singular for convention
             <source type="image/webp" srcset="///{kind}/postcards/{name}.webp">
             <img src="///{kind}/postcards/{self.url}" title="{self.title}" alt="{self.alt_text}">
         </picture>"""
-
-
-class PostcardSchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = Postcard
-        load_instance = True
-
-    id = auto_field()
-    title = auto_field()
-    url = auto_field()

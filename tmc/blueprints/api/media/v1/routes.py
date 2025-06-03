@@ -4,7 +4,7 @@ from sqlalchemy.sql.expression import func
 from . import v1, api_response
 from tmc.models.media.media import MediaItem
 from tmc.models.media.video import Video, VideoSelector
-from tmc.models.schemas.media import MediaItemSchema
+from tmc.schemas.media import BaseSchema
 
 from tmc.utils.responses import api_response
 from tmc import db
@@ -32,7 +32,7 @@ def all():
 		db.select(MediaItem)
 	).scalars().all()
 
-	media_item_schema = MediaItemSchema(many=True)
+	media_item_schema = BaseSchema(many=True)
 		
 	return api_response(
 		data=media_item_schema.dump(all)
@@ -53,7 +53,7 @@ def video_details(video=None):
             status=404
         )
     
-    media_item_schema = MediaItemSchema()
+    media_item_schema = BaseSchema()
     
     return api_response(
         data=media_item_schema.dump(one)
@@ -72,7 +72,7 @@ def video_follow_on(video=None):
 		v_query
 	).scalars().all()
 
-	media_item_schema = MediaItemSchema(many=True)
+	media_item_schema = BaseSchema(many=True)
 
 	return api_response(
 		data=media_item_schema.dump(follow_ons)
