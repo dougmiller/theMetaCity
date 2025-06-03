@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from tmc.models.extensions import UUIDModel
-from tmc.models.media import MediaAsset, AssetType
+from tmc.models.media import AssetType, MediaAsset
 
 
 class Gallery(MediaAsset):
