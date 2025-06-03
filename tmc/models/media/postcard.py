@@ -1,13 +1,10 @@
 import os
-from typing import TYPE_CHECKING
 
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from tmc.models.extensions import IntegerModel
 
-if TYPE_CHECKING:
-    from tmc.models.media import MediaItem
 
 class Postcard(IntegerModel):  # Renamed to singular for convention
     """
@@ -23,7 +20,8 @@ class Postcard(IntegerModel):  # Renamed to singular for convention
     title: Mapped[str] = mapped_column(String, unique=True)
     alt_text: Mapped[str] = mapped_column(String, unique=True)
     
-    media_items: Mapped[list["MediaItem"]] = relationship(back_populates="postcard", lazy="dynamic")
+    #Backref sorts this out
+    #media_items: Mapped[list["MediaItem"]] = relationship(back_populates="postcard", lazy="dynamic")
 
     def __repr__(self) -> str:
         return f"{self.url}: {self.title}"
@@ -36,4 +34,3 @@ class Postcard(IntegerModel):  # Renamed to singular for convention
             <source type="image/webp" srcset="///{kind}/postcards/{name}.webp">
             <img src="///{kind}/postcards/{self.url}" title="{self.title}" alt="{self.alt_text}">
         </picture>'''
-

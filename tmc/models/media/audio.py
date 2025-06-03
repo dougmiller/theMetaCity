@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from tmc.models.extensions.mixins.query import BoundQueryMixin, QueryMixin
-from tmc.models.media import MediaItem, MediaType
+from tmc.models.media.media import MediaItem, MediaType
 
 
 class Audio(MediaItem):

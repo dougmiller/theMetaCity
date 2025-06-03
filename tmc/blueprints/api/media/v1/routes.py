@@ -2,7 +2,7 @@ import json
 from flask import jsonify, request, current_app
 from sqlalchemy.sql.expression import func
 from . import v1, api_response
-from tmc.models.media import MediaItem
+from tmc.models.media.media import MediaItem
 from tmc.models.media.video import Video, VideoSelector
 from tmc.models.schemas.media import MediaItemSchema
 

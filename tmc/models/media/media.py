@@ -1,15 +1,12 @@
 from enum import Enum as PyEnum
-from typing import TYPE_CHECKING
 
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from tmc.models.extensions import IntegerModel
-
-if TYPE_CHECKING:
-    from tmc.models.media.licence import Licence
-    from tmc.models.media.postcard import Postcard
+from tmc.models.media.licence import Licence
+from tmc.models.media.postcard import Postcard
 
 
 class MediaType(PyEnum):
@@ -33,10 +30,10 @@ class MediaItem(IntegerModel):
         nullable=False, 
     )
     licence_id: Mapped[int] = mapped_column(ForeignKey("media.licence.id"))
-    licence: Mapped["Licence"] = relationship(back_populates="media_items")
+    licence: Mapped["Licence"] = relationship(backref="media_items")
     
     postcard_id: Mapped[int] = mapped_column(ForeignKey("media.postcard.id"))
-    postcard: Mapped["Postcard"] = relationship(back_populates="media_items")
+    postcard: Mapped["Postcard"] = relationship(backref="media_items")
 
     __mapper_args__ = {
         "polymorphic_on": media_type,
