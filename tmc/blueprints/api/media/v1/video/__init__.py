@@ -1,7 +1,5 @@
 from flask import Blueprint
 
-from .video import video
-
 api_response = {
 	'result': {
 		'status': None,
@@ -9,11 +7,9 @@ api_response = {
 	}
 }
 
-v1 = Blueprint(
-	'v1',
+video = Blueprint(
+	'video',
 	__name__
 )
-
-v1.register_blueprint(video, url_prefix="/video")
 
 from . import routes
