@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from tmc.models.extensions import BasicModel, UUIDModel
 from tmc.models.extensions.mixins.timestamps import TimestampsMixin
 
+
 __all__ = (
     'ArticleSelector',
     'ArticleAdmin',
