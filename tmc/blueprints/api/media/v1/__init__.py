@@ -2,12 +2,6 @@ from flask import Blueprint
 
 from .video import video
 
-api_response = {
-	'result': {
-		'status': None,
-		'message': None
-	}
-}
 
 v1 = Blueprint(
 	'v1',

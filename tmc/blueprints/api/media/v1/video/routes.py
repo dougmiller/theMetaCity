@@ -1,7 +1,8 @@
 import json
 from flask import jsonify, request, current_app
 from sqlalchemy.sql.expression import func
-from . import video, api_response
+from tmc.utils.responses import api_response
+from . import video
 from tmc.models.media import MediaAsset
 from tmc.models.media.video import Video, VideoSelector
 from tmc.schemas.media import MediaAssetSchema
@@ -10,7 +11,7 @@ from tmc.utils.responses import api_response
 from tmc import db
 
 
-@video.route("/video/")
+@video.route("/")
 def all_videos():
     all = db.session.execute(
         VideoSelector.all()
@@ -30,7 +31,7 @@ def all_videos():
     )
 
 
-@video.route("/video/<int:video>/")
+@video.route("/<int:video>")
 def video_details(video=None):
     one = db.session.execute(
         VideoSelector.select()
