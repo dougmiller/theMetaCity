@@ -1,10 +1,8 @@
 import os
 
-from marshmallow_sqlalchemy import auto_field
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from tmc.extensions.marshmallow import ma
 from tmc.models.extensions import IntegerModel
 
 
@@ -24,7 +22,7 @@ class Postcard(IntegerModel):  # Renamed to singular for convention
     alt_text: Mapped[str] = mapped_column(String, unique=True)
 
     # Backref sorts this out
-    # media_items: Mapped[list["MediaItem"]] = relationship(back_populates="postcard", lazy="dynamic")
+    # media_items: Mapped[list["MediaAsset"]] = relationship(back_populates="postcard", lazy="dynamic")
 
     def __repr__(self) -> str:
         return f"{self.url}: {self.title}"

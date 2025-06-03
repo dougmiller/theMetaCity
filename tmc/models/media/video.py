@@ -2,10 +2,10 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from tmc.models.extensions.mixins.query import BoundQueryMixin, QueryMixin
-from tmc.models.media.media import MediaItem, MediaType
+from tmc.models.media import MediaAsset, AssetType
 
 
-class Video(MediaItem):
+class Video(MediaAsset):
 	__tablename__ = "video"
 	__table_args__ = {"schema": "media"}
 	__bind_key__ = "media_selector"
@@ -13,7 +13,7 @@ class Video(MediaItem):
 	id: Mapped[int] = mapped_column(ForeignKey("media.media_item.id"), primary_key=True)
 
 	__mapper_args__ = {
-		'polymorphic_identity': MediaType.video
+		'polymorphic_identity': AssetType.video
 	}
 
 

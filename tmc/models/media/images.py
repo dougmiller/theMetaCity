@@ -1,11 +1,11 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from tmc.models.media import MediaItem, MediaType
 from tmc.models.extensions import UUIDModel
+from tmc.models.media import MediaAsset, AssetType
 
 
-class Gallery(MediaItem):
+class Gallery(MediaAsset):
 	__tablename__ = "gallery"
 	__table_args__ = {"schema": "media"}
 	__bind_key__ = "media_selector"
@@ -24,7 +24,7 @@ class Gallery(MediaItem):
 	)
 
 	__mapper_args__ = {
-		"polymorphic_identity": MediaType.gallery
+		"polymorphic_identity": AssetType.gallery
 	}
 
 

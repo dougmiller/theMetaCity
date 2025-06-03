@@ -1,1 +1,1 @@
-from .base import BaseSchema
+from .base import MediaAssetSchema

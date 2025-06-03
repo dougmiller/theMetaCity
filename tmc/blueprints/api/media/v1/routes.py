@@ -2,9 +2,9 @@ import json
 from flask import jsonify, request, current_app
 from sqlalchemy.sql.expression import func
 from . import v1, api_response
-from tmc.models.media.media import MediaItem
+from tmc.models.media import MediaAsset
 from tmc.models.media.video import Video, VideoSelector
-from tmc.schemas.media import BaseSchema
+from tmc.schemas.media import MediaAssetSchema
 
 from tmc.utils.responses import api_response
 from tmc import db
@@ -29,13 +29,13 @@ def media_v1_index():
 @v1.route("/all")
 def all():
 	all = db.session.execute(
-		db.select(MediaItem)
+		db.select(MediaAsset)
 	).scalars().all()
 
-	media_item_schema = BaseSchema(many=True)
+	media_asset_schema = MediaAssetSchema(many=True)
 		
 	return api_response(
-		data=media_item_schema.dump(all)
+		data=media_asset_schema.dump(all)
 	)
 
 
@@ -53,7 +53,7 @@ def video_details(video=None):
             status=404
         )
     
-    media_item_schema = BaseSchema()
+    media_item_schema = MediaAssetSchema()
     
     return api_response(
         data=media_item_schema.dump(one)
@@ -72,7 +72,7 @@ def video_follow_on(video=None):
 		v_query
 	).scalars().all()
 
-	media_item_schema = BaseSchema(many=True)
+	media_item_schema = MediaAssetSchema(many=True)
 
 	return api_response(
 		data=media_item_schema.dump(follow_ons)

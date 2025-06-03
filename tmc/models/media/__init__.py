@@ -1,1 +1,3 @@
-from .media import MediaItem
+from .base import MediaAsset, AssetType
+
+__all__ = ("MediaAsset", "AssetType")

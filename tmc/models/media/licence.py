@@ -1,8 +1,6 @@
-from marshmallow_sqlalchemy import auto_field
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from tmc.extensions.marshmallow import ma
 from tmc.models.extensions import IntegerModel
 
 
@@ -21,8 +19,8 @@ class Licence(IntegerModel):
     url: Mapped[str] = mapped_column(String, unique=True)
     image: Mapped[str] = mapped_column(String, unique=True)
 
-    # Back ref on MediaItem sorts this out
-    # media_items: Mapped[list["MediaItem"]] = relationship(back_populates="licence")
+    # Back ref on MediaAsset sorts this out
+    # media_items: Mapped[list["MediaAsset"]] = relationship(back_populates="licence")
 
     def __repr__(self) -> str:
         return self.name
