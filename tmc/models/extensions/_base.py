@@ -6,7 +6,7 @@ from tmc.models.extensions.mixins import QueryMixin
 __all__ = "_BaseModel"
 
 
-class _BaseModel(db.Model, QueryMixin):
+class _BaseModel(db.Model):
     """Abstract base class for all CRUD models.
     Provides an 'created_at', `updated_at` and `deleted_at` column to every model.
     """

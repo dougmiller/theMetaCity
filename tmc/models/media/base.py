@@ -2,6 +2,7 @@ from enum import Enum as PyEnum
 
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import ForeignKey, String
+from sqlalchemy_utils import ArrowType
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from tmc.models.extensions import IntegerModel
@@ -29,6 +30,9 @@ class MediaAsset(IntegerModel):
         ), 
         nullable=False, 
     )
+
+    date_published: Mapped[ArrowType] = mapped_column(ArrowType)
+
     licence_id: Mapped[int] = mapped_column(ForeignKey("media.licence.id"))
     licence: Mapped["Licence"] = relationship(backref="media_items")
     
@@ -38,6 +42,8 @@ class MediaAsset(IntegerModel):
     __mapper_args__ = {
         "polymorphic_on": media_type,
     }
+    
+    __default_order_by__ = date_published.desc()
     
     def __repr__(self):
         return f"<MediaAsset {self.id} - {self.media_type}>"

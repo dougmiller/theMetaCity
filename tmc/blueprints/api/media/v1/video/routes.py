@@ -13,9 +13,7 @@ from tmc import db
 
 @video.route("/")
 def all_videos():
-    all = db.session.execute(
-        VideoSelector.all()
-    ).scalars().all()
+    all = VideoSelector.all()
     
     if all is None:
         return api_response(
@@ -24,7 +22,7 @@ def all_videos():
             status=404
         )
     
-    media_item_schema = MediaAssetSchema()
+    media_item_schema = MediaAssetSchema(many=True)
     
     return api_response(
         data=media_item_schema.dump(all)
