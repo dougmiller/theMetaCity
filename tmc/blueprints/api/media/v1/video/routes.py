@@ -4,7 +4,7 @@ from sqlalchemy.sql.expression import func
 from tmc.utils.responses import api_response
 from . import video
 from tmc.models.media import Asset, VideoAdmin, VideoSelector
-from tmc.schemas.media import AssetSchema
+from tmc.schemas.media.video import VideoSchema
 
 from tmc.utils.responses import api_response
 from tmc import db
@@ -21,7 +21,7 @@ def all_videos():
             status=404
         )
     
-    media_item_schema = AssetSchema(many=True)
+    media_item_schema = VideoSchema(many=True)
     
     return api_response(
         data=media_item_schema.dump(all)
@@ -31,12 +31,7 @@ def all_videos():
 @video.route("/<int:video>")
 def video_details(video=None):
     one = VideoSelector.get(video)
-    
-    print("video")
-    print(int(video))
-    print(video)
-    print(one)
-    
+       
     if one is None:
         return api_response(
             message="No matching record found",
@@ -44,10 +39,10 @@ def video_details(video=None):
             status=404
         )
     
-    media_item_schema = AssetSchema()
+    video_item_schema = VideoSchema()
     
     return api_response(
-        data=media_item_schema.dump(one)
+        data=video_item_schema.dump(one)
     )
 
 
