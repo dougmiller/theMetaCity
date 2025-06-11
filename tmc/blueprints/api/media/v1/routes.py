@@ -3,9 +3,8 @@ from flask import jsonify, request, current_app
 from sqlalchemy.sql.expression import func
 from . import v1
 from tmc.utils.responses import api_response
-from tmc.models.media import MediaAsset
-from tmc.models.media.video import Video, VideoSelector
-from tmc.schemas.media import MediaAssetSchema
+from tmc.models.media import Asset
+from tmc.schemas.media import AssetSchema
 
 from tmc.utils.responses import api_response
 from tmc import db
@@ -30,10 +29,10 @@ def media_v1_index():
 @v1.route("/all")
 def all():
 	all = db.session.execute(
-		db.select(MediaAsset)
+		db.select(Asset)
 	).scalars().all()
 
-	media_asset_schema = MediaAssetSchema(many=True)
+	media_asset_schema = AssetSchema(many=True)
 		
 	return api_response(
 		data=media_asset_schema.dump(all)

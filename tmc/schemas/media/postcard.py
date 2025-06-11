@@ -1,7 +1,7 @@
 from marshmallow_sqlalchemy import auto_field
 
 from tmc.extensions.marshmallow import ma
-from tmc.models.media.postcard import Postcard
+from tmc.models.media import Postcard
 
 
 class PostcardSchema(ma.SQLAlchemySchema):

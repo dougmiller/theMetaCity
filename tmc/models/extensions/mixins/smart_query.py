@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Any, TypeVar
+import uuid
 
 from flask import abort
 from sqlalchemy import and_, or_
@@ -93,7 +94,31 @@ class SmartQueryMixin:
 
     @classmethod
     def get(cls: type[T], pk: Any) -> T | None:
-        return db.session.get(cls, pk)
+        pk_col = cls.__mapper__.primary_key[0]
+        pk_type = getattr(pk_col.type, "python_type", None)
+    
+        # Optional: detect if the PK is a UUID column
+        is_uuid = isinstance(pk_type, type) and issubclass(pk_type, uuid.UUID)
+    
+        try:
+            if isinstance(pk, str):
+                if is_uuid:
+                    pk = uuid.UUID(pk)
+                elif pk.isdigit():
+                    pk = int(pk)
+            elif isinstance(pk, float):
+                return None  # floats should not be allowed as primary keys
+    
+            # Range check for PostgreSQL INTEGER
+            if isinstance(pk, int) and isinstance(pk_type, type) and issubclass(pk_type, int):
+                if not -(2**31) <= pk <= 2**31 - 1:
+                    return None
+    
+        except (ValueError, TypeError, OverflowError):
+            return None
+    
+        stmt = cls._select_stmt().filter(pk_col == pk).limit(1)
+        return db.session.scalars(stmt).first()
 
     @classmethod
     def get_or_404(cls: type[T], pk: Any) -> T:

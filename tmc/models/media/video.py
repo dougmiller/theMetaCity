@@ -2,10 +2,10 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from tmc.models.extensions.mixins import SmartQueryMixin
-from tmc.models.media import AssetType, MediaAsset
+from tmc.models.media.asset import Asset, AssetType
 
 
-class Video(MediaAsset):
+class Video(Asset, SmartQueryMixin):
     __tablename__ = "video"
     __table_args__ = {"schema": "media"}
     __bind_key__ = "media_selector"
@@ -17,14 +17,14 @@ class Video(MediaAsset):
     }
 
 
-class VideoSelector(Video, SmartQueryMixin):
+class VideoSelector(Video):
     __bind_key__ = "media_selector"
     __mapper_args__ = {
         "polymorphic_abstract": True,
     }
 
 
-class VideoAdmin(Video, SmartQueryMixin):
+class VideoAdmin(Video):
     __bind_key__ = "media_admin"
     __mapper_args__ = {
         "polymorphic_abstract": True,

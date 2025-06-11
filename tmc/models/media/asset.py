@@ -16,20 +16,13 @@ class AssetType(PyEnum):
     gallery = 'gallery'
 
 
-class MediaAsset(IntegerModel):
+class Asset(IntegerModel):
     __tablename__ = "media_item"
     __table_args__ = {"schema": "media"}
     __bind_key__ = "media_selector"
 
     title: Mapped[str] = mapped_column(String)
-    media_type: Mapped[AssetType] = mapped_column(
-        SQLEnum(
-            AssetType,
-            name="media_type_enum",
-            schema="media",
-        ), 
-        nullable=False, 
-    )
+    about: Mapped[str] = mapped_column(String)
 
     date_published: Mapped[ArrowType] = mapped_column(ArrowType)
 
@@ -39,12 +32,21 @@ class MediaAsset(IntegerModel):
     postcard_id: Mapped[int] = mapped_column(ForeignKey("media.postcard.id"))
     postcard: Mapped["Postcard"] = relationship(backref="media_items")
 
+    media_type: Mapped[AssetType] = mapped_column(
+        SQLEnum(
+            AssetType,
+            name="media_type_enum",
+            schema="media",
+        ), 
+        nullable=False, 
+    )
+
+    __default_order_by__ = date_published.desc()
+
     __mapper_args__ = {
         "polymorphic_on": media_type,
     }
-    
-    __default_order_by__ = date_published.desc()
-    
+        
     def __repr__(self):
         return f"<MediaAsset {self.id} - {self.media_type}>"
 

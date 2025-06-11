@@ -1,7 +1,7 @@
 from marshmallow_sqlalchemy import auto_field
 
 from tmc.extensions.marshmallow import ma
-from tmc.models.media.licence import Licence
+from tmc.models.media import Licence
 
 
 class LicenceSchema(ma.SQLAlchemySchema):

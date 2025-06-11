@@ -2,10 +2,10 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from tmc.models.extensions.mixins import BoundQueryMixin, QueryMixin
-from tmc.models.media import AssetType, MediaAsset
+from tmc.models.media.asset import Asset, AssetType
 
 
-class Audio(MediaAsset):
+class Audio(Asset):
     __tablename__ = "audio"
     __table_args__ = {"schema": "media"}
     __bind_key__ = "media_selector"
