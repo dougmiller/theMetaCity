@@ -6,6 +6,7 @@ from tmc.models.media.asset import Asset, AssetType
 from tmc.models.media.audio.file import File
 from tmc.models.media.audio.track import Track
 
+__all__ = ("Audio", "AudioAdmin")
 
 class Audio(Asset, SmartQueryMixin):
     __tablename__ = "audio"
@@ -21,15 +22,17 @@ class Audio(Asset, SmartQueryMixin):
     }
 
 
-class AudioSelector(Audio):
-    __bind_key__ = "media_selector"
-    __mapper_args__ = {
-        "polymorphic_abstract": True,
-    }
+
+def bind_specific_audio_class(bind_key: str):
+    class BoundAudio(Audio):
+        __abstract__ = True
+        __bind_key__ = bind_key
+        __mapper_args__ = {
+            "with_polymorphic": "*",
+        }
+    BoundAudio.__name__ = f"Audio_{bind_key.capitalize()}"
+    return BoundAudio
 
 
-class AudioAdmin(Audio):
-    __bind_key__ = "media_admin"
-    __mapper_args__ = {
-        "polymorphic_abstract": True,
-    }
+AudioAdmin = bind_specific_audio_class("media_admin")
+    

@@ -3,7 +3,7 @@ from flask import jsonify, request, current_app
 from sqlalchemy.sql.expression import func
 from tmc.utils.responses import api_response
 from . import video
-from tmc.models.media import Asset, VideoAdmin, VideoSelector
+from tmc.models.media import Asset, Video, VideoAdmin
 from tmc.schemas.media.video import VideoSchema
 
 from tmc.utils.responses import api_response
@@ -12,7 +12,7 @@ from tmc import db
 
 @video.route("/")
 def all_videos():
-    all = VideoSelector.all()
+    all = Video.all()
     
     if all is None:
         return api_response(
@@ -30,7 +30,7 @@ def all_videos():
 
 @video.route("/<int:video>")
 def video_details(video=None):
-    one = VideoSelector.get(video)
+    one = Video.get(video)
        
     if one is None:
         return api_response(

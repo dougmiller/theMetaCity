@@ -1,16 +1,16 @@
 from .asset import Asset, AssetType
-from .audio import AudioAdmin, AudioSelector
+from .audio import Audio, AudioAdmin
 from .licence import Licence
 from .postcard import Postcard
-from .video import VideoAdmin, VideoSelector
+from .video import Video, VideoAdmin
 
 __all__ = (
     "Asset",
     "AssetType",
+    "Audio",
     "AudioAdmin",
-    "AudioSelector",
+    "Video",
     "VideoAdmin",
-    "VideoSelector",
     "Licence",
     "Postcard",
 )

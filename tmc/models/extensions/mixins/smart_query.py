@@ -54,7 +54,7 @@ class SmartQueryMixin:
     @classmethod
     def all(cls: type[T], order_by: Any = None) -> list[T]:
         stmt = cls._select_stmt()
-    
+
         # Use the explicitly passed order_by
         if order_by is not None:
             stmt = stmt.order_by(order_by)
@@ -189,8 +189,8 @@ class SmartQueryMixin:
 
     @classmethod
     def _select_stmt(cls) -> Select:
-        base_cls, bind_key = cls._resolve_bind_and_base()
-        stmt = sa_select(base_cls)
+        bind_key = cls._resolve_bind_and_base()
+        stmt = sa_select(cls)
         return stmt.execution_options(bind_key=bind_key) if bind_key else stmt
 
     # ========== Filter Builders ==========

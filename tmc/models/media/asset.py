@@ -10,7 +10,7 @@ from tmc.models.media.licence import Licence
 from tmc.models.media.postcard import Postcard
 
 
-class AssetType(PyEnum):
+class AssetType(str, PyEnum):
     video = 'video'
     audio = 'audio'
     gallery = 'gallery'

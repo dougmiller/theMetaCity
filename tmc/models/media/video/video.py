@@ -21,15 +21,8 @@ class Video(Asset, SmartQueryMixin):
     }
 
 
-class VideoSelector(Video):
-    __bind_key__ = "media_selector"
-    __mapper_args__ = {
-        "polymorphic_abstract": True,
-    }
-
-
 class VideoAdmin(Video):
     __bind_key__ = "media_admin"
     __mapper_args__ = {
-        "polymorphic_abstract": True,
+        "with_polymorphic": "*",  # or None if you want to skip subtypes
     }
