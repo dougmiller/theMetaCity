@@ -1,7 +1,7 @@
 from marshmallow_sqlalchemy import auto_field
 
 from tmc.extensions.marshmallow import ma
-from tmc.models.media.video.track import Track
+from tmc.models.media.video import Track
 
 __all__ = "TrackSchema"
 
