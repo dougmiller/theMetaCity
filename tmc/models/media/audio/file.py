@@ -1,30 +1,32 @@
+from enum import Enum as PyEnum
+
+from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
-from enum import Enum as PyEnum
+
 from tmc.models.extensions import IntegerModel
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Enum as SQLEnum
 
 __all__ = "File"
 
+
 class AudioCodecType(PyEnum):
-    vorbis = 'vorbis'
-    mp3 = 'mp3'
-    wav = 'wav'
-    
-    
+    vorbis = "vorbis"
+    mp3 = "mp3"
+    wav = "wav"
+
+
 class MimeType(PyEnum):
-    webm = 'webm'
-    mp3 = 'mp3'
-    ogg = 'ogg'  
-    mpeg = 'mpeg'
-    wav = 'wav'  
-    
-    
+    webm = "webm"
+    mp3 = "mp3"
+    ogg = "ogg"
+    mpeg = "mpeg"
+    wav = "wav"
+
+
 class Extension(PyEnum):
-    wav = 'wav'
-    ogg = 'ogg'
-    mp3 = 'mp3'
+    wav = "wav"
+    ogg = "ogg"
+    mp3 = "mp3"
 
 
 class File(IntegerModel):
@@ -42,19 +44,19 @@ class File(IntegerModel):
             AudioCodecType,
             name="audio_audio_codec",
             schema="media",
-        ) 
+        )
     )
     mime_type: Mapped[MimeType] = mapped_column(
         SQLEnum(
             MimeType,
             name="audio_mime_type",
             schema="media",
-        ) 
+        )
     )
     extension: Mapped[Extension] = mapped_column(
         SQLEnum(
             Extension,
             name="audio_file_extension",
             schema="media",
-        ) 
+        )
     )

@@ -1,17 +1,18 @@
+from enum import Enum as PyEnum
+
+from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
-from enum import Enum as PyEnum
+
 from tmc.models.extensions import IntegerModel
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Enum as SQLEnum
 
 
 class AudioTrackType(PyEnum):
-    subtitles = 'subtitles'
-    captions = 'captions'
-    descriptions = 'descriptions'
-    chapters = 'chapters'
-    metadata = 'metadata'
+    subtitles = "subtitles"
+    captions = "captions"
+    descriptions = "descriptions"
+    chapters = "chapters"
+    metadata = "metadata"
 
 
 class Track(IntegerModel):
@@ -27,6 +28,6 @@ class Track(IntegerModel):
             AudioTrackType,
             name="audio_track_type",
             schema="media",
-        ), 
-        nullable=False, 
+        ),
+        nullable=False,
     )
