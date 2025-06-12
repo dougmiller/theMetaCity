@@ -15,7 +15,7 @@ class Video(Asset, SmartQueryMixin):
     id: Mapped[int] = mapped_column(ForeignKey("media.media_item.id"), primary_key=True)
     files: Mapped[list[File]] = relationship(backref="asset")
     tracks: Mapped[list[Track]] = relationship(backref="asset")
-    
+
     __mapper_args__ = {
         "polymorphic_identity": AssetType.video,
     }
