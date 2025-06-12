@@ -1,0 +1,16 @@
+from marshmallow_sqlalchemy.fields import Nested
+
+from tmc.models.media.audio import Audio
+from tmc.schemas.media.base import AssetSchema
+from tmc.schemas.media.audio import FileSchema, TrackSchema
+
+__all__ = "AudioSchema"
+
+
+class AudioSchema(AssetSchema):
+    class Meta:
+        model = Audio
+        load_instance = True
+
+    files = Nested(FileSchema, many=True)
+    tracks = Nested(TrackSchema, many=True)
