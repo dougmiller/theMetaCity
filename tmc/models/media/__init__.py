@@ -1,5 +1,6 @@
 from .asset import Asset, AssetType
 from .audio import Audio, AudioAdmin
+from .gallery import Gallery
 from .licence import Licence
 from .postcard import Postcard
 from .video import Video, VideoAdmin

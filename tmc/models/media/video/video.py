@@ -6,6 +6,8 @@ from tmc.models.media.asset import Asset, AssetType
 from tmc.models.media.video.file import File
 from tmc.models.media.video.track import Track
 
+__all__ = ("Video", "VideoAdmin")
+
 
 class Video(Asset, SmartQueryMixin):
     __tablename__ = "video"
@@ -18,11 +20,21 @@ class Video(Asset, SmartQueryMixin):
 
     __mapper_args__ = {
         "polymorphic_identity": AssetType.video,
+        "with_polymorphic": "*",
     }
 
 
-class VideoAdmin(Video):
-    __bind_key__ = "media_admin"
-    __mapper_args__ = {
-        "with_polymorphic": "*",  # or None if you want to skip subtypes
-    }
+
+def bind_specific_video_class(bind_key: str):
+    class BoundVideo(Video):
+        __abstract__ = True
+        __bind_key__ = bind_key
+        __mapper_args__ = {
+            "with_polymorphic": "*",
+        }
+    BoundVideo.__name__ = f"Video_{bind_key.capitalize()}"
+    return BoundVideo
+
+
+VideoAdmin = bind_specific_video_class("media_admin")
+    
