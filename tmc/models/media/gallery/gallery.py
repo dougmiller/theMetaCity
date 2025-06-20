@@ -12,6 +12,7 @@ class Gallery(Asset, SmartQueryMixin):
     __bind_key__ = "media_selector"
 
     id: Mapped[int] = mapped_column(ForeignKey("media.media_item.id"), primary_key=True)
+    blurb: Mapped[str] = mapped_column()
     images: Mapped[list[Image]] = relationship(backref="gallery")
 
     __mapper_args__ = {

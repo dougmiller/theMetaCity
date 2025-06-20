@@ -14,5 +14,4 @@ class GallerySchema(AssetSchema):
         model = Gallery
         load_instance = True
 
-    id = ma.UUID()
     images = Nested(ImageSchema, many=True)
