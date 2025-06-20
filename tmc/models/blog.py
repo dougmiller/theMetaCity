@@ -6,7 +6,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from tmc.models.extensions import BasicModel, UUIDModel
-from tmc.models.extensions.mixins import TimestampsMixin
+from tmc.models.extensions.mixins import TimestampsMixin, SmartQueryMixin
 
 
 __all__ = (
@@ -137,7 +137,7 @@ class WorkshopAdmin(ArticleAdmin):
 	}
 
 
-class TagBase(BasicModel):
+class TagBase(BasicModel, SmartQueryMixin):
 	__abstract__ = True
 
 	id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

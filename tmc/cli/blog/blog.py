@@ -14,11 +14,16 @@ from tmc.extensions.markdown import TMCBlogMetadataSchema
 from tmc.models.blog import ArticleAdmin, TagAdmin
 from tmc.models.blog import ArticleSelector as Article
 
+from .tags import tags
+
+
 blog = AppGroup(
     'blog',
     help="Manage Blog records (list, add, delete)",
     short_help="Manage blog posts",
 )
+
+blog.add_command(tags, name="tags")
 
 @blog.command("list")
 @click.option("--count", default=10, help="Number of entries to show (default: 10)")
