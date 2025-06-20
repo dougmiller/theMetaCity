@@ -1,15 +1,16 @@
 import click
+from flask.cli import AppGroup
 from sqlalchemy import String, cast
 
 from tmc.models.edo import EDO, EDO_Admin
 
-from . import edo
+edo = AppGroup(
+    'edo',
+    help="Manage EDO records (list, add, delete)",
+    short_help="EDO record managment",
+)
 
-edo.cli.help = "Manage EDO records (list, add, delete)"
-edo.cli.short_help = "EDO record managment"
-
-
-@edo.cli.command("list")
+@edo.command("list")
 @click.option("--count", default=10, help="Number of entries to show (defaults to 10)")
 @click.option("--filter", help="Filter entries by the starting ID value")
 def list(count, filter):
@@ -21,7 +22,7 @@ def list(count, filter):
         click.echo(f"{e.command_line_listing_str()}")
 
 
-@edo.cli.command("find")
+@edo.command("find")
 @click.argument("filter", nargs=-1, type=click.STRING, required=True)
 def find(filter):
     """Show the records which match the supplied filter"""
@@ -40,7 +41,7 @@ def find(filter):
         click.echo(f"{e.command_line_listing_str()}")
 
 
-@edo.cli.command("add")
+@edo.command("add")
 @click.argument("record", nargs=-1, type=click.STRING, required=True)
 def add(record):
     """Adds a new record to EDO"""
@@ -50,7 +51,7 @@ def add(record):
     click.echo(click.style(f"Added EDO: {new_edo.id}", fg="green"))
 
 
-@edo.cli.command("rm")
+@edo.command("rm")
 @click.argument("record", nargs=1, type=click.UUID, required=True)
 def rm(record):
     """Removes an EDO record"""

@@ -20,6 +20,12 @@ def _setup_blueprints(app):
     app.register_blueprint(edo, subdomain='everydayordinary')
 
 
+def _setup_cli(app):
+    from tmc.cli import edo, blog
+    app.cli.add_command(edo)
+    app.cli.add_command(blog)
+
+
 def _setup_minification(app):
     from htmlmin.main import minify
 
@@ -56,7 +62,6 @@ def _setup_admin(app):
     admin.add_view(ModelView(models.Licence, db.session, 'Licences'))
 
 
-
 def create_app():
     app = Flask(__name__, static_url_path='', subdomain_matching=True)
    
@@ -67,6 +72,7 @@ def create_app():
 
     _setup_url_maps(app)
     _setup_blueprints(app)
+    _setup_cli(app)
     
     #if os.environ['FLASK_ENV'] == 'development':
     #    _setup_admin(app)

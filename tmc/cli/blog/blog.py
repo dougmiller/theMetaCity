@@ -1,23 +1,26 @@
 import os
 import re
+
 import click
-from sqlalchemy.exc import IntegrityError
-from psycopg.errors import UniqueViolation
-from marshmallow import ValidationError
 from flask import current_app
-from flask.cli import with_appcontext
+from flask.cli import AppGroup, with_appcontext
+from marshmallow import ValidationError
+from psycopg.errors import UniqueViolation
+from sqlalchemy.exc import IntegrityError
 
 from tmc import db
-from . import blog
-from tmc.models.blog import ArticleSelector as Article, ArticleAdmin, TagSelector as Tag, TagAdmin
 from tmc.extensions import md
 from tmc.extensions.markdown import TMCBlogMetadataSchema
+from tmc.models.blog import ArticleAdmin, TagAdmin
+from tmc.models.blog import ArticleSelector as Article
 
-blog.cli.help = "Blog management commands"
-blog.cli.short_help = "Manage blog posts"
+blog = AppGroup(
+    'blog',
+    help="Manage Blog records (list, add, delete)",
+    short_help="Manage blog posts",
+)
 
-
-@blog.cli.command("list")
+@blog.command("list")
 @click.option("--count", default=10, help="Number of entries to show (default: 10)")
 def list_articles(count):
     """
@@ -77,7 +80,7 @@ def strip_metadata(markdown_text):
     return "\n".join(body_lines)
 
 
-@blog.cli.command("process")
+@blog.command("process")
 @with_appcontext
 @click.argument("file", type=str)
 def process(file):
@@ -95,7 +98,7 @@ def process(file):
         return
 
     try:
-        with open(full_path, "r", encoding="utf-8") as f:
+        with open(full_path, encoding="utf-8") as f:
             content = f.read()
 
         md.convert(content)
@@ -107,7 +110,7 @@ def process(file):
             meta = schema.load(meta_raw)
         except ValidationError as err:
             click.echo("Metadata validation failed:")
-            for field, messages in err.messages.items():
+            for _field, messages in err.messages.items():
                 for message in messages:
                     click.echo(click.style(f"{message}", fg="red"))
             return
@@ -160,7 +163,7 @@ def process(file):
             new_id = str(blog_entry.id)
             click.echo(f"Inserted article: {new_id}")
 
-            with open(full_path, "r", encoding="utf-8") as f:
+            with open(full_path, encoding="utf-8") as f:
                 original_content = f.read()
 
             updated_content = f"id: {new_id}\n" + original_content
@@ -187,7 +190,7 @@ def process(file):
 
 
 
-@blog.cli.command("rm")
+@blog.command("rm")
 @click.argument('record', nargs=1, type=click.UUID, required=True)
 def rm(record):
 	"""Removes a Blog record"""
@@ -198,7 +201,7 @@ def rm(record):
 		click.echo(click.style(f"No record found with ID: {record}", fg='yellow'))
 		return
 	
-	confirm = click.confirm(click.style(f"Are you sure you want to delete '{blog_entry.id}'?", fg="yellow"), abort=True)
+	click.confirm(click.style(f"Are you sure you want to delete '{blog_entry.id}'?", fg="yellow"), abort=True)
 	
 	db.session.delete(blog_entry)
 	db.session.commit()

@@ -10,4 +10,3 @@ edo = Blueprint(
 )
 
 from . import routes
-from . import cli
