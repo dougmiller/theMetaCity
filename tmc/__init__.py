@@ -21,9 +21,10 @@ def _setup_blueprints(app):
 
 
 def _setup_cli(app):
-    from tmc.cli import edo, blog
+    from tmc.cli import edo, blog, assets
     app.cli.add_command(edo)
     app.cli.add_command(blog)
+    app.cli.add_command(assets)
 
 
 def _setup_minification(app):
