@@ -70,3 +70,18 @@ class File(IntegerModel):
             schema="media",
         )
     )
+    
+    def file_size_human_readable(self):
+        if self.file_size == 0:
+            return "0 bytes"
+        
+        file_size = self.file_size
+        
+        units = ["B", "KB", "MB", "GB"]
+        
+        i = 0
+        while file_size >= 1024 and i < len(units) - 1:
+            file_size /= 1024
+            i += 1
+        
+        return f"{file_size:.2f} {units[i]}"
