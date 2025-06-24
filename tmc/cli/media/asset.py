@@ -23,19 +23,11 @@ def list_assets(count):
     """
     assets_list = db.session.execute(db.select(Asset).order_by(Asset.date_published.desc()).limit(count)).scalars().all()
 
-    colour_map = {
-        "blog": "green",
-        "workshop": "blue",
-    }
-
     for asset in assets_list:
         media_type = asset.media_type
-        colour = colour_map.get(media_type, "white")
 
         click.echo(
             click.style(f"{asset.id}", bold=True)
             + ": "
             + click.style(asset.title, fg="green")
-            + " "
-            + click.style(f"({media_type.value})", fg=colour)
         )

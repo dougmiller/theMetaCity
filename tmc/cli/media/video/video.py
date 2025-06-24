@@ -28,3 +28,18 @@ def list_videos(count):
             + ": "
             + click.style(video.title, fg="green")
         )
+
+@video.command("record", help="Specific video meta")
+@click.argument("record", nargs=-1, type=click.STRING, required=True)
+def specific_record(record):
+    """
+    Get the details of a specific video file
+    """
+    
+    #todo get filter for existing video (by id)
+    #todo retrieve the value
+    #todo show the video meta
+    pass
+
+# track info
+# file info
