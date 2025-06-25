@@ -1,17 +1,15 @@
-/* TEAM */
-	Maker: Doug Miller
-	Twitter: @dougmillertmc
-	From: Brisbane, Australia
+PEOPLE
+Doug Miller
+dougmiller@themetacity.com
+Brisbane, Australia
+A UX designer and developer going on two decades.
 
-/* SITE */
-	Language: English
-	Doctype: HTML5
-	IDE: PyCharm, Vim
+Site
+Written in Python -> Flask and PostgreSQL plus various plugins and extentions in the the flask ecosystem.
 
 None of anything here would have been possible without my amazing partner Io Gatto.
 After more than a decade of tolerating my presence, they continue to love and support all that I do.
 I love you more than you could know.
 
 Skiddermancer who is a constant source of joy and energy. They give drive and focus to what happens here.
-
-Trillian who instills hope and promise in every day.
+Smilodon who instills hope and promise in every day.
