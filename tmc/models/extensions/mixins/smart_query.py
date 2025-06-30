@@ -75,7 +75,6 @@ class SmartQueryMixin:
     
         return db.session.scalars(stmt).all()
 
-
     @classmethod
     def some(cls: type[T], limit: int | None = None) -> list[T]:
         stmt = cls._select_stmt().order_by(cls.created_at.desc())

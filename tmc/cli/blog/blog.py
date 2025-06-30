@@ -11,8 +11,7 @@ from sqlalchemy.exc import IntegrityError
 from tmc import db
 from tmc.extensions import md
 from tmc.extensions.markdown import TMCBlogMetadataSchema
-from tmc.models.blog import ArticleAdmin, TagAdmin
-from tmc.models.blog import ArticleSelector as Article
+from tmc.models.blog import Article, ArticleAdmin, TagAdmin
 
 from .tags import tags
 

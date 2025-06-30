@@ -1,0 +1,1 @@
+https://pypi.org/project/flask-talisman/ for CSP headers
