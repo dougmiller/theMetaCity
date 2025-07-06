@@ -1,6 +1,8 @@
+import os
+from werkzeug.utils import secure_filename
 from flask import jsonify, request, current_app
 from . import v1
-from tmc.models.edo import EDO
+from tmc.models.edo import EDO, EDO_Admin
 from tmc.schemas.edo import EDOSchema
 from tmc.utils.responses import api_response
 from tmc import db
@@ -43,6 +45,26 @@ def logout():
     pass
 
 
+@v1.route("appreciate", methods=['POST'])
+def appreciate():
+    text_edo = EDO_Admin()
+    text_edo.content = request.form.get('text')
+    text_edo.save()
+    
+    
+    uploaded_image = request.files['image']
+    uploaded_name = secure_filename(uploaded_image.filename)
+    
+    
+    if uploaded_name is not '':
+        os.mkdir(current_app.config['EDO_UPLOAD_PATH'] + "/" + str(text_edo.id))
+        uploaded_image.save(os.path.join(current_app.config['EDO_UPLOAD_PATH'] + "/" + str(text_edo.id), uploaded_name))
+
+    return api_response(
+        message=text_edo.content
+    )
+
+
 # Add JWT decorator
 @v1.route("text", methods=['POST'])
 def text():
@@ -57,45 +79,52 @@ def text():
 
 
 # Add JWT decorator
+@v1.route("image", methods=['GET'])
+def g_image():
+    return api_response(
+        message='get request'
+    )
+
+# Add JWT decorator
 @v1.route("image", methods=['POST'])
 def image():
-    import os
-    from werkzeug.utils import secure_filename
-
     if 'image' not in request.files:
         if 'image' in request.form:
-            api_response['result']['status'] = 'error'
-            api_response['result']['message'] = 'Parameter "image" was not type "file" in request'
-            return jsonify(api_response), 400
 
-        api_response['result']['status'] = 'error'
-        api_response['result']['message'] = 'No "image" in request'
-        return jsonify(api_response), 400
+            return api_response(
+                message='Parameter "image" was not type "file" in request',
+                success=False,
+                status=400
+            )
+
+        return api_response(
+            message='No "image" in request',
+            success=False,
+            status=400
+        )
+    print(request)
 
     uploaded_image = request.files['image']
     uploaded_name = secure_filename(uploaded_image.filename)
 
     if uploaded_name == '':
-        api_response['result']['status'] = 'error'
-        api_response['result']['message'] = 'No image to upload'
-        return jsonify(api_response), 400
+        return api_response(
+            message='No image to upload',
+            success=False,
+            status=400
+        )
+
 
     uploaded_image.save(os.path.join(current_app.config['EDO_UPLOAD_PATH'], uploaded_name))
-    api_response['result']['status'] = 'success'
-    api_response['result']['message'] = 'Image uploaded'
-
-    return jsonify(api_response)
+    return api_response(
+        message='Image uploaded',
+    )
 
 
 # Add JWT decorator
 @v1.route("video", methods=['POST'])
 def video():
     pass
-
-
-@v1.route("add/", methods=["POST"])
-def add_one():
-    return []
 
 
 @v1.route("list/", methods=["GET"])

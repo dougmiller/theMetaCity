@@ -5,7 +5,15 @@ meta {
 }
 
 post {
-  url: {{Protocol}}{{Domain}}{{Port}}/{{Namespace}}/{{Version}}/add
-  body: none
+  url: {{Protocol}}{{Domain}}{{Port}}/{{Namespace}}/{{Version}}/appreciate
+  body: multipartForm
   auth: none
+}
+
+body:multipart-form {
+  text: This is the initial text
+}
+
+vars:post-response {
+  : 
 }
