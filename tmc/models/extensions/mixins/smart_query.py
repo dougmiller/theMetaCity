@@ -8,6 +8,7 @@ from sqlalchemy import and_, or_
 from sqlalchemy import delete as sa_delete
 from sqlalchemy import select as sa_select
 from sqlalchemy import update as sa_update
+from sqlalchemy.orm import object_session
 from sqlalchemy.orm.util import _class_to_mapper
 from sqlalchemy.sql import Delete, Select, Update
 
@@ -27,29 +28,33 @@ class SmartQueryMixin:
         session = object_session(self) or db.session
         bind_key = self._resolve_bind_and_base()[1]
 
-        if bind_key:
-            bind = session.get_bind(mapper=self.__mapper__, clause=None, bind_key=bind_key)
-            # Use the bind (engine/connection) for the transaction if needed
-            # Usually, db.session is already configured with the binds,
-            # so just add & commit on the session is enough.
-            # But if you want to be explicit:
+        try:
+            if bind_key:
+                # Trigger bind resolution, useful if your session uses multiple binds
+                session.get_bind(mapper=self.__mapper__, bind_key=bind_key)
+
             session.add(self)
-            session.commit()
-        else:
-            session.add(self)
-            session.commit()
+            session.flush()
+        except SQLAlchemyError:
+            session.rollback()
+            raise  # Re-raise the exception to let the caller handle/log it
 
     def delete(self) -> None:
         session = object_session(self) or db.session
         bind_key = self._resolve_bind_and_base()[1]
 
-        if bind_key:
-            bind = session.get_bind(mapper=self.__mapper__, clause=None, bind_key=bind_key)
+        try:
+            if bind_key:
+                session.get_bind(mapper=self.__mapper__, bind_key=bind_key)
+
             session.delete(self)
-            session.commit()
-        else:
-            session.delete(self)
-            session.commit()
+            session.flush()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+
+
+    # ========== Class-based Methods ==========
 
     @classmethod
     def all(cls: type[T], order_by: Any = None) -> list[T]:
@@ -99,8 +104,6 @@ class SmartQueryMixin:
     def get(cls: type[T], pk: Any) -> T | None:
         pk_col = cls.__mapper__.primary_key[0]
         pk_type = getattr(pk_col.type, "python_type", None)
-    
-        # Optional: detect if the PK is a UUID column
         is_uuid = isinstance(pk_type, type) and issubclass(pk_type, uuid.UUID)
     
         try:
@@ -110,16 +113,15 @@ class SmartQueryMixin:
                 elif pk.isdigit():
                     pk = int(pk)
             elif isinstance(pk, float):
-                return None  # floats should not be allowed as primary keys
-    
+                return None
+
             # Range check for PostgreSQL INTEGER
-            if isinstance(pk, int) and isinstance(pk_type, type) and issubclass(pk_type, int):
+            if isinstance(pk, int) and issubclass(pk_type, int):
                 if not -(2**31) <= pk <= 2**31 - 1:
                     return None
-    
         except (ValueError, TypeError, OverflowError):
             return None
-    
+
         stmt = cls._select_stmt().filter(pk_col == pk).limit(1)
         
         identity = getattr(cls.__mapper__, "polymorphic_identity", None)
@@ -177,7 +179,7 @@ class SmartQueryMixin:
         return stmt.execution_options(bind_key=bind_key) if bind_key else stmt
 
     @classmethod
-    def delete(cls) -> Delete:
+    def delete_stmt(cls) -> Delete:
         base_cls, bind_key = cls._resolve_bind_and_base()
         stmt = sa_delete(base_cls)
         return stmt.execution_options(bind_key=bind_key) if bind_key else stmt

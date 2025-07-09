@@ -85,8 +85,8 @@ def strip_metadata(markdown_text):
 
 
 @blog.command("process")
-@with_appcontext
 @click.argument("file", type=str)
+@with_appcontext
 def process(file):
     """
     Process a Markdown file and insert/update a blog record.
@@ -124,12 +124,10 @@ def process(file):
         def get_or_create_tags(tag_names):
             tags = []
             for name in tag_names:
-                tag = db.session.execute(
-                    db.select(TagAdmin).filter_by(tag=name)
-                ).scalar_one_or_none()
+                tag = TagAdmin().first(tag=name)
                 if not tag:
                     tag = TagAdmin(tag=name)
-                    db.session.add(tag)
+                    tag.save()
                 tags.append(tag)
             return tags
 
@@ -140,26 +138,30 @@ def process(file):
             entry.variant = meta["variant"]
             entry.parent_id = meta.get("parent")
             entry.content = article_without_meta
-            entry.tags = get_or_create_tags(meta.get("tags"))
 
         blog_entry = None
         if meta.get("id"):
-            blog_entry = db.session.get(ArticleAdmin, meta["id"])
+            blog_entry = ArticleAdmin.get(meta["id"])
 
-            if blog_entry.variant != meta["variant"]:
-                db.session.delete(blog_entry)
-                db.session.commit()
+            if not blog_entry:
+                click.echo(f"Supplied ID: ({meta.get("id")}) does not match a record")
+                return
 
-                blog_entry = ArticleAdmin(id=meta["id"])
-            else:
-                populate_entry(blog_entry, meta)
-                click.echo(f"Updating article: {blog_entry.id}")
+            click.echo(f"Updating article: {meta.get("id")} - {meta.get("title")}")
+            
+            if blog_entry.variant != meta.get("variant"):
+                click.echo(f"Changing variant: {blog_entry.variant} -> {meta.get("variant")}")
+                blog_entry.delete()
+                blog_entry = ArticleAdmin(id=meta.get("id"))
         else:
             click.echo("Inserting new article")
             blog_entry = ArticleAdmin()
-            populate_entry(blog_entry, meta)
-            db.session.add(blog_entry)
 
+        populate_entry(blog_entry, meta)
+        blog_entry.save()
+        blog_entry.tags = get_or_create_tags(meta.get("tags"))
+        blog_entry.save()
+        
         db.session.commit()
 
         if not meta.get("id"):
@@ -193,13 +195,12 @@ def process(file):
         click.echo(click.style(f"An error occurred: {e}", fg="red"))
 
 
-
 @blog.command("rm")
 @click.argument('record', nargs=1, type=click.UUID, required=True)
 def rm(record):
 	"""Removes a Blog record"""
 	click.echo(click.style(f'Going to rm: {record}', fg='red'))
-	blog_entry = db.session.get(ArticleAdmin, record)
+	blog_entry = ArticleAdmin.get(record)
 	
 	if not blog_entry:
 		click.echo(click.style(f"No record found with ID: {record}", fg='yellow'))
@@ -207,6 +208,7 @@ def rm(record):
 	
 	click.confirm(click.style(f"Are you sure you want to delete '{blog_entry.id}'?", fg="yellow"), abort=True)
 	
-	db.session.delete(blog_entry)
+	blog_entry.delete()
 	db.session.commit()
+    
 	click.echo(click.style(f"Deleted Blog article: {record}", fg='red'))

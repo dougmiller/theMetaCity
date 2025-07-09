@@ -1,7 +1,8 @@
 import click
-from flask.cli import AppGroup
+from flask.cli import AppGroup, with_appcontext
 from sqlalchemy import String, cast
 
+from tmc.extensions import db
 from tmc.models.edo import EDO, EDO_Admin
 
 edo = AppGroup(
@@ -46,13 +47,16 @@ def find(filter):
 def add(record):
     """Adds a new record to EDO"""
     click.echo(click.style(f"Going to add: {' '.join(record)}", fg="yellow"))
+    
     new_edo = EDO_Admin(content=" ".join(record))
     new_edo.save()
     click.echo(click.style(f"Added EDO: {new_edo.id}", fg="green"))
-
+    db.session.commit()
+    db.session.remove()
 
 @edo.command("rm")
 @click.argument("record", nargs=1, type=click.UUID, required=True)
+@with_appcontext
 def rm(record):
     """Removes an EDO record"""
     click.echo(click.style(f"Going to rm: {record}", fg="red"))
@@ -65,5 +69,7 @@ def rm(record):
     click.confirm(click.style(f"Are you sure you want to delete '{edo_record.command_line_str()}'?", fg="yellow"), abort=True)
 
     edo_record.delete()
+    db.session.commit()
+    db.session.remove()
 
     click.echo(click.style(f"Deleted EDO: {record}", fg="red"))

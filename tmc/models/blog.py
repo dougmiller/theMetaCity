@@ -63,7 +63,7 @@ class ArticleType(PyEnum):
     workshop = "workshop"
 
 
-class _ArticleBase(UUIDModel, TimestampsMixin):
+class _ArticleBase(UUIDModel, TimestampsMixin, SmartQueryMixin):
     __abstract__ = True
 
     title: Mapped[str] = mapped_column(unique=True)

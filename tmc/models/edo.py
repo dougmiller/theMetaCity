@@ -1,13 +1,13 @@
 import arrow
 from sqlalchemy.orm import Mapped
 
-from tmc.models.extensions.mixins import TimestampsMixin, QueryMixin
+from tmc.models.extensions.mixins import TimestampsMixin, SmartQueryMixin
 from tmc.models.extensions import UUIDModel
 
 __all__ = ('EDO', 'EDO_Admin')
 
 
-class EDO_Base(UUIDModel, TimestampsMixin, QueryMixin):
+class EDO_Base(UUIDModel, TimestampsMixin, SmartQueryMixin):
 	__abstract__ = True
 	
 	content: Mapped[str]
@@ -37,4 +37,3 @@ class EDO_Admin(EDO_Base):
 	__tablename__ = 'everyday_ordinary'
 	__table_args__ = {"schema": "everyday_ordinary"}
 	__bind_key__ = "edo_admin"
-
