@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from tmc.extensions import db, ma, jinja_filters, cache, configs
+from tmc.extensions import db, ma, jinja_filters, cache, configs, debug_toolbar
 from tmc import handlers
 
 
@@ -50,7 +50,9 @@ def create_app():
     db.init_app(app)
     cache.init_app(app)
     jinja_filters.register_filters(app)
-
+    debug_toolbar.init_app(app)
+    app.config['SQLALCHEMY_RECORD_QUERIES'] = True
+    
     _setup_url_maps(app)
     _setup_blueprints(app)
     _setup_cli(app)

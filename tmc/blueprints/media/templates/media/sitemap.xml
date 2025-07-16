@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% for asset in media %}
+        <url>
+            {% if asset.media_type == 'video' %}
+                <loc>{{ url_for('media.video.single', id=asset.id, _external=True) }}</loc>
+            {% elif asset.media_type == 'audio' %}
+                <loc>{{ url_for('media.audio.single', id=asset.id, _external=True) }}</loc>
+            {% elif asset.media_type == 'code' %}
+                <loc>https://media.themetacity.com{{ url_for('media.show_specific_code', code_id=asset.id) }}</loc>
+            {% elif asset.media_type == 'gallery' %}
+                <loc>https://media.themetacity.com{{ url_for('media.show_specific_picture', picture_id=asset.id) }}</loc>
+            {% endif %}
+            <lastmod>{{ asset.date_published.strftime('%Y-%m-%d') }}</lastmod>
+            <changefreq>never</changefreq>
+        </url>
+    {% endfor %}
+</urlset>

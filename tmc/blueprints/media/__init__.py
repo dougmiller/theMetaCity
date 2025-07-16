@@ -2,6 +2,9 @@ import os
 from flask import Blueprint
 from flask_caching import Cache
 
+from .video import video
+from .audio import audio
+
 cache = Cache(config={'CACHE_TYPE': 'simple', 'CACHE_DEFAULT_TIMEOUT': 0})
 
 media = Blueprint(
@@ -14,6 +17,8 @@ media = Blueprint(
 
 from . import routes
 
+media.register_blueprint(video, url_prefix="/video")
+media.register_blueprint(audio, url_prefix="/audio")
 
 @media.context_processor
 def custom_importer():

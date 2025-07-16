@@ -18,16 +18,16 @@
         <main class="mediaEntries">
             {% for element in media %}
                 {% if element.media_type == 'video' %}
-                    {% from 'macros/fp_media/video.jinja2' import fp_video %}
+                    {% from 'media/macros/fp_media/video.jinja2' import fp_video %}
                     {{ fp_video(element) }}
                 {% elif element.media_type == 'audio' %}
-                    {% from 'macros/fp_media/audio.jinja2' import fp_audio %}
+                    {% from 'media/macros/fp_media/audio.jinja2' import fp_audio %}
                     {{ fp_audio(element) }}
                 {% elif element.media_type == 'code' %}
-                    {% from 'macros/fp_media/code.jinja2' import fp_code %}
+                    {% from 'media/macros/fp_media/code.jinja2' import fp_code %}
                     {{ fp_code(element) }}
                 {% elif element.media_type == 'picture' %}
-                    {% from 'macros/fp_media/picture.jinja2' import fp_picture %}
+                    {% from 'media/macros/fp_media/picture.jinja2' import fp_picture %}
                     {{ fp_picture(element) }}
                 {% endif %}
             {% endfor %}

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <sitemap>
-      <loc>{{ url_for('blog.sitemap') }}</loc>
+      <loc>{{ url_for('blog.sitemap', _external=True) }}</loc>
    </sitemap>
    <sitemap>
-      <loc>{{ url_for('media.sitemap') }}</loc>
+      <loc>{{ url_for('media.sitemap', _external=True) }}</loc>
    </sitemap>
 </sitemapindex>

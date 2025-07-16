@@ -30,7 +30,7 @@ def rss():
 
 
 @home.route('/sitemap.xml')
-@cache.cached()
+#@cache.cached()
 def sitemap():
     template = render_template('home/sitemap.xml', **locals())
     response = make_response(template)

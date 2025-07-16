@@ -23,6 +23,9 @@ class Audio(Asset, SmartQueryMixin):
     id: Mapped[int] = mapped_column(ForeignKey("media.media_item.id"), primary_key=True)
     files: Mapped[list[File]] = relationship(backref="asset")
     tracks: Mapped[list[Track]] = relationship(backref="asset")
+    
+    def format_running_time_to_human_readable(self):
+        return "123"
 
     __mapper_args__ = {
         "polymorphic_identity": AssetType.audio,

@@ -1,13 +1,13 @@
 {% extends "detailed/media_base.html" %}
 
-{% block title %}{{ audio.Parent.title }}{% endblock %}
+{% block title %}{{ audio.title }}{% endblock %}
 {% block includes %}
     <script src="/static/javascript/audio.js"></script>
 {% endblock %}
 
 {% block media %}
 <main class="mediaItem audio">
-    <h1 id="mediaTitle"><a href="/audio/{{ audio.id }}">{{ audio.Parent.title }}</a></h1>
+    <h1 id="mediaTitle"><a href="/audio/{{ audio.id }}">{{ audio.title }}</a></h1>
     <div id="audioContainer" class="mediaContainer">
         <div id="audioBox" class="mediaBox">
             <audio controls
@@ -29,7 +29,7 @@
                 {% endfor %}
             </audio>
             <div id="audioPoster" class="mediaPoster">
-                <img id="audioPosterImg" src="//assets.localcity.com/audio/postcards/{{ audio.Parent.Postcard.url }}"/>
+                <img id="audioPosterImg" src="//assets.localcity.com/audio/postcards/{{ audio.Postcard.url }}"/>
             </div>
             <div id="audioMeta" class="mediaMeta">
                 <p id="timeBox"><span id="currentTimeSpan" class="timeSpan">0m 00s</span> / <span id="runningTimeSpan" class="timeSpan">{{ audio.format_running_time_to_human_readable() }}</span></p>
@@ -60,14 +60,14 @@
     </div>
 
     <div id="" class="mediaInfo" itemscope itemtype="http://schema.org/audioObject">
-        <h2 itemprop="name">{{ audio.Parent.title }}</h2>
+        <h2 itemprop="name">{{ audio.title }}</h2>
 
         <h3>Published:
-            <time itemprop="uploadDate" datetime="{{ audio.Parent.date_published }}">{{ audio.Parent.date_published }}</time>
+            <time itemprop="uploadDate" datetime="{{ audio.date_published }}">{{ audio.date_published }}</time>
         </h3>
         <div class="aboutContainer" itemprop="description">
             {% autoescape false %}
-                {{ audio.Parent.about }}
+                {{ audio.about }}
             {% endautoescape %}
         </div>
     </div>
@@ -112,4 +112,4 @@
 </main>
 {% endblock %}
 
-{% block licence %}{{ audio.Parent.title }}{% endblock %}
+{% block licence %}{{ audio.title }}{% endblock %}

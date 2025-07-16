@@ -1,13 +1,13 @@
 import re
 from marshmallow import Schema, fields, ValidationError, validates, validates_schema, pre_load
-from tmc.models.blog import ArticleType
+from tmc.models.blog import Variant
 
 
 class TMCBlogMetadataSchema(Schema):
     id = fields.String(allow_none=True)
     title = fields.String(required=True)
     url = fields.String(required=True)
-    variant = fields.Enum(ArticleType, load_default=ArticleType.blog)
+    variant = fields.Enum(Variant, load_default=Variant.blog)
     blurb = fields.String(required=True)
     tags = fields.List(fields.String(), load_default=[])
     parent = fields.String(allow_none=True)
@@ -21,7 +21,7 @@ class TMCBlogMetadataSchema(Schema):
     def normalize_type(self, data, **kwargs):
         if "variant" in data and isinstance(data["variant"], str):
             raw_variant = data["variant"].lower().strip()
-            data["variant"] = ArticleType(raw_variant)
+            data["variant"] = Variant(raw_variant)
         return data
 
     @pre_load
@@ -52,7 +52,7 @@ class TMCBlogMetadataSchema(Schema):
 
     @validates("variant")
     def validate_type(self, value, **kwargs):
-        if value not in {ArticleType.blog, ArticleType.workshop}:
+        if value not in {Variant.blog, Variant.workshop}:
             raise ValidationError("Type must be either 'blog' or 'workshop'.")
 
     @validates_schema

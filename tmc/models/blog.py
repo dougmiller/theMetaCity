@@ -52,7 +52,7 @@ Articles (Blog, Workshop)
 """
 
 
-class ArticleType(PyEnum):
+class Variant(PyEnum):
     """
     Articles Type enum.
     Used to differentiate the article type.
@@ -72,8 +72,8 @@ class _ArticleBase(UUIDModel, TimestampsMixin, SmartQueryMixin):
     content: Mapped[str]
     parent_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("com.articles.id"), nullable=True)
 
-    variant: Mapped[ArticleType] = mapped_column(
-        SQLEnum(ArticleType, name="article_type_enum", schema="com"), nullable=False, default=ArticleType.blog, server_default=ArticleType.blog.value
+    variant: Mapped[Variant] = mapped_column(
+        SQLEnum(Variant, name="variant_enum", schema="com"), nullable=False, default=Variant.blog, server_default=Variant.blog.value
     )
 
     __mapper_args__ = {
@@ -107,19 +107,19 @@ class ArticleAdmin(_ArticleBase):
 
 
 class Blog(Article):
-    __mapper_args__ = {"polymorphic_identity": ArticleType.blog}
+    __mapper_args__ = {"polymorphic_identity": Variant.blog}
 
 
 class BlogAdmin(ArticleAdmin):
-    __mapper_args__ = {"polymorphic_identity": ArticleType.blog}
+    __mapper_args__ = {"polymorphic_identity": Variant.blog}
 
 
 class Workshop(Article):
-    __mapper_args__ = {"polymorphic_identity": ArticleType.workshop}
+    __mapper_args__ = {"polymorphic_identity": Variant.workshop}
 
 
 class WorkshopAdmin(ArticleAdmin):
-    __mapper_args__ = {"polymorphic_identity": ArticleType.workshop}
+    __mapper_args__ = {"polymorphic_identity": Variant.workshop}
 
 
 """

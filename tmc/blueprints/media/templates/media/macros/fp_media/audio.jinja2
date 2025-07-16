@@ -1,0 +1,16 @@
+{% macro fp_audio(audio) -%}
+    <article class="mediaEntry audio">
+        <a href="/audio/{{ audio.id }}">{{ audio.postcard.build_picture('audio') }}</a>
+        <h1><a href="/audio/{{ audio.id }}">{{ audio.title }}</a></h1>
+        <div class="metaEntry">
+            <h2 class="published">{{ audio.date_published }}</h2>
+            <h2 class="running_time">{{ audio.format_running_time_to_human_readable() }}</h2>
+            <ul class="tags">
+                {% for tag in audio.tags %}
+                    <li><a href="/tag/{{ tag }}">{{ tag }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% autoescape false %}{{ audio.about }}{% endautoescape %}
+    </article>
+{%- endmacro %}

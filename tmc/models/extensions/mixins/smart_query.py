@@ -94,8 +94,7 @@ class SmartQueryMixin:
 
     @classmethod
     def first_or_404(cls: type[T], **kwargs: Any) -> T:
-        stmt = cls._select_stmt().filter_by(**kwargs).limit(1)
-        item = db.session.scalars(stmt).first()
+        item = cls.first(**kwargs)
         if item is None:
             abort(404)
         return item
@@ -106,6 +105,8 @@ class SmartQueryMixin:
         pk_type = getattr(pk_col.type, "python_type", None)
         is_uuid = isinstance(pk_type, type) and issubclass(pk_type, uuid.UUID)
     
+        print([pk_col, pk_type, is_uuid])
+    
         try:
             if isinstance(pk, str):
                 if is_uuid:
@@ -114,6 +115,8 @@ class SmartQueryMixin:
                     pk = int(pk)
             elif isinstance(pk, float):
                 return None
+            
+            print(pk)
 
             # Range check for PostgreSQL INTEGER
             if isinstance(pk, int) and issubclass(pk_type, int):
@@ -124,6 +127,8 @@ class SmartQueryMixin:
 
         stmt = cls._select_stmt().filter(pk_col == pk).limit(1)
         
+        print(stmt)
+        
         identity = getattr(cls.__mapper__, "polymorphic_identity", None)
         if identity:
             stmt = stmt.where(cls.media_type == identity)
@@ -132,7 +137,10 @@ class SmartQueryMixin:
 
     @classmethod
     def get_or_404(cls: type[T], pk: Any) -> T:
-        return cls.query.get_or_404(pk)
+        obj = cls.get(pk)
+        if obj is None:
+            abort(404)
+        return obj
 
     @classmethod
     def exists(cls, **kwargs: Any) -> bool:

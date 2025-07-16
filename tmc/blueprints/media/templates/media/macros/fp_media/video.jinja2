@@ -1,0 +1,18 @@
+{% macro fp_video(video) -%}
+<article class="mediaEntry video">
+    <a href="{{ url_for('media.video.single', id=video.id) }}">
+        {{ video.postcard.build_picture('video') }}
+    </a>
+    <h1><a href="{{ url_for('media.video.single', id=video.id) }}">{{ video.title }}</a></h1>
+    <div class="metaEntry">
+        <h2 class="published">{{ video.date_published }}</h2>
+        {#<h2 class="running_time">{{ video.format_running_time_to_human_readable() }}</h2>#}
+        <ul class="tags">{#
+            {% for tag in video.tags %}
+                <li><a href="{{ url_for('media.show_specific_tag', tag=tag) }}">{{ tag }}</a></li>
+            {% endfor %}#}
+
+    </div>
+    {% autoescape false %}{{ video.about }}{% endautoescape %}
+</article>
+{%- endmacro %}

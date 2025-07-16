@@ -5,7 +5,6 @@
   "private": true,
   "author": "Douglas Miller",
   "scripts": {
-    "lint": "jshint theMetaCityFlask/static/javascript/*.js",
     "ts": "tsc typescript/*.ts",
     "css": "npm run css:fp & npm run css:main",
     "css:home": "npm run css:home:dev",

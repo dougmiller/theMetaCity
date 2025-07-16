@@ -6,6 +6,7 @@ from sqlalchemy_utils import ArrowType
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from tmc.models.extensions import IntegerModel
+from tmc.models.extensions.mixins import SmartQueryMixin
 from tmc.models.media.licence import Licence
 from tmc.models.media.postcard import Postcard
 
@@ -16,7 +17,7 @@ class AssetType(str, PyEnum):
     gallery = 'gallery'
 
 
-class Asset(IntegerModel):
+class Asset(IntegerModel, SmartQueryMixin):
     __tablename__ = "media_item"
     __table_args__ = {"schema": "media"}
     __bind_key__ = "media_selector"
