@@ -4,7 +4,7 @@ from tmc.extensions import db, handlers, jinja_filters, cache, configs, debug_to
 
 
 def _setup_url_maps(app):
-    from .util import DateConverter
+    from .utils.converters import DateConverter
     app.url_map.default_subdomain = "www"
     app.url_map.converters['date'] = DateConverter
 
