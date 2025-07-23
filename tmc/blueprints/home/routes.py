@@ -1,6 +1,6 @@
 from flask import make_response, render_template
 
-from tmc.extensions import cache, db
+from tmc.extensions import cache
 from tmc.models.blog import Article
 
 from . import home
@@ -9,11 +9,7 @@ from . import home
 @home.route('/')
 #@cache.cached()
 def index():
-    articles = db.session.execute(
-        db.select(Article)
-          .order_by(Article.created_at.desc())
-          .limit(3)
-    ).scalars().all()
+    articles = Article.some(3)
     return render_template('home/index.jinja2', articles=articles)
 
 

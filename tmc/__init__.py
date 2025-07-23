@@ -50,15 +50,14 @@ def create_app():
         subdomain_matching=True,
         template_folder="templates",
     )
-   
+
     configs.init_app(app)
+    debug_toolbar.init_app(app)
     db.init_app(app)
     cache.init_app(app)
     jinja_filters.register_filters(app)
     handlers.init_app(app)
-    debug_toolbar.init_app(app)
-    app.config['SQLALCHEMY_RECORD_QUERIES'] = True
-    
+
     _setup_url_maps(app)
     _setup_blueprints(app)
     _setup_cli(app)

@@ -8,8 +8,9 @@ class Configs:
     def __init__(self, app = None):
         if app is not None:
             pass
-	
-    def init_app(self, app):
+
+    @staticmethod
+    def init_app(app):
         raw_config = {
             **dotenv_values(".env.basic"),  # load shared development variables
             **dotenv_values(".env.database"),  # load sensitive variables

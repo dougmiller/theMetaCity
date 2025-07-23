@@ -8,6 +8,7 @@ from sqlalchemy import and_, or_
 from sqlalchemy import delete as sa_delete
 from sqlalchemy import select as sa_select
 from sqlalchemy import update as sa_update
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import object_session
 from sqlalchemy.orm.util import _class_to_mapper
 from sqlalchemy.sql import Delete, Select, Update
@@ -104,9 +105,7 @@ class SmartQueryMixin:
         pk_col = cls.__mapper__.primary_key[0]
         pk_type = getattr(pk_col.type, "python_type", None)
         is_uuid = isinstance(pk_type, type) and issubclass(pk_type, uuid.UUID)
-    
-        print([pk_col, pk_type, is_uuid])
-    
+
         try:
             if isinstance(pk, str):
                 if is_uuid:
@@ -115,8 +114,6 @@ class SmartQueryMixin:
                     pk = int(pk)
             elif isinstance(pk, float):
                 return None
-            
-            print(pk)
 
             # Range check for PostgreSQL INTEGER
             if isinstance(pk, int) and issubclass(pk_type, int):
@@ -126,8 +123,6 @@ class SmartQueryMixin:
             return None
 
         stmt = cls._select_stmt().filter(pk_col == pk).limit(1)
-        
-        print(stmt)
         
         identity = getattr(cls.__mapper__, "polymorphic_identity", None)
         if identity:
@@ -207,7 +202,7 @@ class SmartQueryMixin:
 
     @classmethod
     def _select_stmt(cls) -> Select:
-        bind_key = cls._resolve_bind_and_base()
+        base_cls, bind_key = cls._resolve_bind_and_base()
         stmt = sa_select(cls)
         return stmt.execution_options(bind_key=bind_key) if bind_key else stmt
 
