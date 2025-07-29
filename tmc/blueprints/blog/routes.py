@@ -7,23 +7,14 @@ from tmc.models.blog import Blog, Tag
 
 @blog.route('/')
 def home() -> str:
-    articles = db.session.execute(
-        db.select(Blog)
-            .order_by(Blog.created_at.desc())
-            .limit(10)
-    ).scalars()
-        
-    return render_template('blog/index.html', **locals())
+    articles = Blog.latest()
+    return render_template('blog/index.jinja2', **locals())
 
 
 @blog.route('/archive/')
 def archive() -> str:
-    articles = db.session.execute(
-        db.select(Blog)
-        .order_by(Blog.created_at.desc())
-    ).scalars()
-
-    return render_template('blog/archive.html', **locals())
+    articles = Blog.all()
+    return render_template('blog/archive.jinja2', **locals())
 
 
 @blog.route('/<string:url>/')
@@ -36,7 +27,7 @@ def title(url: str) -> str:
     
     article.content = md.convert(article.content)
 
-    return render_template('blog/article.html', article=article)
+    return render_template('blog/article.jinja2', article=article)
 
 
 @blog.route('/<int:year>/')
@@ -50,7 +41,7 @@ def year(year) -> str:
     
     print(articles)
 
-    return render_template('blog/index.html', articles=articles)
+    return render_template('blog/index.jinja2', articles=articles)
 
 
 @blog.route('/<int:year>/<string:url>/')
@@ -62,7 +53,7 @@ def year_and_title(year, url):
             .filter(db.func.extract('year', Blog.created_at) == year)
     )
     
-    return render_template('blog/article.html', article=article)
+    return render_template('blog/article.jinja2', article=article)
 
 
 @blog.route('/<int:year>/<int:month>/')
@@ -70,7 +61,7 @@ def year_and_month(year, month):
     articles = Blog.query\
         .filter(db.func.extract('year', Blog.creation_date) == year)\
         .filter(db.func.extract('month', Blog.creation_date) == month).all()
-    return render_template('blog/index.html', articles=articles)
+    return render_template('blog/index.jinja2', articles=articles)
 
 
 @blog.route('/<int:year>/<int:month>/<string:url>/')
@@ -79,13 +70,13 @@ def year_and_month_and_title(year, month, url):
         .filter(db.func.extract('year', Blog.creation_date) == year)\
         .filter(db.func.extract('month', Blog.creation_date) == month)\
         .filter_by(url=url).first_or_404()
-    return render_template('blog/article.html', article=article)
+    return render_template('blog/article.jinja2', article=article)
 
 
 @blog.route('/tags/')
 def tags():
     tags = Tag.query.all()
-    return render_template('blog/tags.html', tags=tags)
+    return render_template('blog/tags.jinja2', tags=tags)
 
 
 @blog.route('/tags/<string:tag>/')
@@ -93,7 +84,7 @@ def tags_tag(tag):
     tag = Tag.query\
         .filter_by(tag=tag)\
         .first_or_404()
-    return render_template('blog/tag.html', tag=tag)
+    return render_template('blog/tag.jinja2', tag=tag)
 
 
 @blog.route('/sitemap.xml')

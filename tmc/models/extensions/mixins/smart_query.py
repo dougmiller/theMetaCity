@@ -63,7 +63,7 @@ class SmartQueryMixin:
 
         identity = getattr(cls.__mapper__, "polymorphic_identity", None)
         if identity:
-            stmt = stmt.where(cls.media_type == identity)
+            stmt = stmt.where(cls.variant == identity)
 
         # Use the explicitly passed order_by
         if order_by is not None:
@@ -82,10 +82,8 @@ class SmartQueryMixin:
         return db.session.scalars(stmt).all()
 
     @classmethod
-    def some(cls: type[T], limit: int | None = None) -> list[T]:
-        stmt = cls._select_stmt().order_by(cls.created_at.desc())
-        if limit:
-            stmt = stmt.limit(limit)
+    def latest(cls: type[T], limit: int = 10) -> list[T]:
+        stmt = cls._select_stmt().order_by(cls.created_at.desc()).limit(limit)
         return db.session.scalars(stmt).all()
 
     @classmethod

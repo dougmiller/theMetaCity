@@ -1,7 +1,7 @@
 {% macro article_builder(article) %}
     <article>
         <h1><a href="{{ url_for('blog.title', url=article.url) }}">{{ article.title }}</a></h1>
-        <h2>{{ article.build_date_byline() }}</h2>
+        <h2>{{ article.dateline }}</h2>
         <nav>
             Tags:
             {% if article.tags|length %}
