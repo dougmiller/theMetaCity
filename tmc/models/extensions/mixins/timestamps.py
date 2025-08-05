@@ -44,6 +44,11 @@ class TimestampsMixin:
         updated = f"; Updated {arrow.get(self.updated_at).humanize()}" if self.created_at < self.updated_at else ""
         return f"Published: {created}{updated}"
 
+    @property
+    def sitemap_lastmod(self):
+        """ sitemap.xml <lastmod> format """
+        return arrow.get(self.updated_at).format('YYYY-MM-DDTHH:mm:ssZZ') if self.created_at < self.updated_at else self.created_at.format('YYYY-MM-DDTHH:mm:ssZZ')
+
 
 class SoftDeleteMixin:
     __abstract__ = True

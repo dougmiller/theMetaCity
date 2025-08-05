@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://www.themetacity.com{{ url_for('blog.home') }}</loc>
-        <lastmod>{{ articles[0].update_date.strftime('%Y-%m-%d') }}</lastmod>
+        <loc>{{ url_for('blog.home', _external=True) }}</loc>
+        <lastmod>{{ articles[0].sitemap_lastmod }}</lastmod>
         <changefreq>monthly</changefreq>
     </url>
 
     {% for article in articles %}
         <url>
-            <loc>https://www.themetacity.com{{ url_for('blog.title', url=article.url) }}</loc>
-            <lastmod>{{ article.update_date.strftime('%Y-%m-%d') }}</lastmod>
+            <loc>{{ url_for('blog.title', url=article.url, _external=True) }}</loc>
+            <lastmod>{{ article.sitemap_lastmod }}</lastmod>
             <changefreq>never</changefreq>
         </url>
     {% endfor %}
 
     <url>
-        <loc>https://www.themetacity.com{{ url_for('blog.tags') }}</loc>
+        <loc>{{ url_for('blog.tags', _external=True) }}</loc>
         <changefreq>monthly</changefreq>
     </url>
 
     {% for article_tag in article_tags %}
         <url>
-            <loc>https://www.themetacity.com{{ url_for('blog.tags_tag', tag=article_tag.tag) }}</loc>
+            <loc>{{ url_for('blog.tags_tag', tag=article_tag.tag, _external=True) }}</loc>
             <changefreq>monthly</changefreq>
         </url>
     {% endfor %}

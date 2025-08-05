@@ -89,11 +89,8 @@ def tags_tag(tag):
 
 @blog.route('/sitemap.xml')
 def sitemap():
-    articles = Blog.query\
-        .order_by(Blog.creation_date.desc())\
-        .all()
-    article_tags = Tag.query\
-        .all()
+    articles = Blog.all()
+    article_tags = Tag.all()
 
     template = render_template('blog/sitemap.xml', **locals())
     response = make_response(template)
