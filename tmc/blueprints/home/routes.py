@@ -9,7 +9,7 @@ from . import home
 @home.route('/')
 #@cache.cached()
 def index():
-    articles = Article.latest(3)
+    articles = Article.latest_by_id(3)
     return render_template('home/index.jinja2', articles=articles)
 
 

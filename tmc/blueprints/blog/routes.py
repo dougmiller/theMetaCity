@@ -7,7 +7,7 @@ from tmc.models.blog import Blog, Tag
 
 @blog.route('/')
 def home() -> str:
-    articles = Blog.latest()
+    articles = Blog.latest_by_id()
     return render_template('blog/index.jinja2', **locals())
 
 
@@ -19,7 +19,6 @@ def archive() -> str:
 
 @blog.route('/<string:url>/')
 def title(url: str) -> str:
- 
     article = db.one_or_404(
         db.select(Blog)
             .filter_by(url=url)
@@ -32,7 +31,6 @@ def title(url: str) -> str:
 
 @blog.route('/<int:year>/')
 def year(year) -> str:
-    
     articles = db.session.execute(
         db.select(Blog)
             .where(db.func.extract('year', Blog.created_at)==year)
@@ -46,7 +44,6 @@ def year(year) -> str:
 
 @blog.route('/<int:year>/<string:url>/')
 def year_and_title(year, url):
-    
     article = db.one_or_404(
         db.select(Blog)
             .where(Blog.url == url)

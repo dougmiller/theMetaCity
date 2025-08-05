@@ -87,6 +87,11 @@ class SmartQueryMixin:
         return db.session.scalars(stmt).all()
 
     @classmethod
+    def latest_by_id(cls: type[T], limit: int = 10) -> list[T]:
+        stmt = cls._select_stmt().order_by(cls.id.desc()).limit(limit)
+        return db.session.scalars(stmt).all()
+
+    @classmethod
     def first(cls: type[T], **kwargs: Any) -> T | None:
         stmt = cls._select_stmt().filter_by(**kwargs).limit(1)
         return db.session.scalars(stmt).first()
