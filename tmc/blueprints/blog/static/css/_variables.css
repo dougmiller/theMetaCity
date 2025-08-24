@@ -1,0 +1,10 @@
+@charset "UTF-8";
+:root {
+    --width-mid: 80ch;
+
+    --colour-base-luminance: 80;
+    --colour-base-chroma: 80;
+    --colour-base-hue: 70;
+
+    --colour-base: oklch(--colour-base-luminance --colour-base-chroma --colour-base-hue);    
+}

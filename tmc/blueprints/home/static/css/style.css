@@ -1,0 +1,15 @@
+@charset "UTF-8";
+@import "_variables.css";
+@import "_layout.css";
+
+
+:root { }
+
+html {
+  background: var(--background);
+  color: var(--primary);
+}
+
+a {
+    color: var(--primary-highlight);
+}

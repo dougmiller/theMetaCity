@@ -1,0 +1,76 @@
+body {
+  margin: 0;
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 1fr;
+  grid-template-rows: 120px 1fr;
+  grid-row-gap: 10px;
+  grid-template-areas:
+    "navigation" 
+    "articles  " 
+    "links     ";
+}
+
+@media (min-width: 601px) {
+    body {
+        grid-template-columns: 1fr 400px;
+        grid-template-rows: 1fr 120px auto 1fr auto;
+        grid-row-gap: 1em;
+        grid-template-areas:
+        ". .         " 
+        ". navigation" 
+        ". articles  " 
+        ". .         " 
+        ". links     ";
+    }
+}
+
+nav, article, footer {
+    background-color: var(--colour-mist);
+    border: 1px solid var(--colour-unforgiving);
+}
+
+nav {
+    grid-area: navigation;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    grid-column-gap: 1em;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas:
+        "imglogo name    " 
+        "imglogo blog    " 
+        "imglogo workshop";
+    align-items: center;
+}
+
+main {
+    grid-area: articles;
+}
+footer {
+    padding: 1em;
+    text-align: center;
+    grid-area: links;
+    align-self: end;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav img {
+  grid-area: imglogo;
+  width: 120px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.1em;
+  font-family: var(--font-heading);
+}
+
+nav a:nth-of-type(1) {
+  grid-area: name;
+  margin-top: 1em;
+}
+
+nav a:nth-of-type(2) {
+  grid-area: blog;
+}

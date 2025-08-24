@@ -1,0 +1,5 @@
+body {
+    display: grid;
+    grid-template-columns: 1fr var(--width-mid) 1fr;
+    grid-template-areas: ". header ." ". content ." ". footer .";
+}

@@ -4,6 +4,10 @@ from tmc.extensions import md
 from . import blog
 from tmc.models.blog import Blog, Tag
 
+@blog.after_request
+def add_no_store_header(response):
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 
 @blog.route('/')
 def home() -> str:
