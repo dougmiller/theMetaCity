@@ -1,6 +1,34 @@
 services:
   postgres:
     container_name: tmc_postgres
+    image: postgres:18.0-bookworm
+    env_file:
+      - ./docker/db/.env
+      - ./docker/db/credentials.env
+    volumes:
+      - ./docker/db/startup-files/100_create_users.sh:/docker-entrypoint-initdb.d/100_create_users.sh
+      - ./docker/db/startup-files/110_create_databases.sh:/docker-entrypoint-initdb.d/110_create_databases.sh
+      #- ./docker/db/startup-files/120_create_schema_functions.sh:/docker-entrypoint-initdb.d/120_create_schema_functions.sh
+      - ./docker/db/startup-files/200_com_create_schema.sh:/docker-entrypoint-initdb.d/200_com_create_schema.sh
+      - ./docker/db/startup-files/210_com_create_tables.sh:/docker-entrypoint-initdb.d/210_com_create_tables.sh
+      - ./docker/db/startup-files/220_com_populate_article_tags.sh:/docker-entrypoint-initdb.d/220_com_populate_article_tags.sh
+      - ./docker/db/startup-files/221_com_populate_articles.sql:/docker-entrypoint-initdb.d/221_com_populate_articles.sql
+      - ./docker/db/startup-files/222_com_populate_article_tags_joiner.sh:/docker-entrypoint-initdb.d/222_com_populate_article_tags_joiner.sh
+      - ./docker/db/startup-files/250_com_finish_schema.sh:/docker-entrypoint-initdb.d/250_com_finish_schema.sh
+      - ./docker/db/startup-files/300_create_schema_media.sh:/docker-entrypoint-initdb.d/300_create_schema_media.sh
+      - ./docker/db/startup-files/310_populate_media_tables.sh:/docker-entrypoint-initdb.d/310_populate_media_tables.sh
+      - ./docker/db/startup-files/400_create_schema_everyday_ordinary.sh:/docker-entrypoint-initdb.d/400_create_schema_everyday_ordinary.sh
+      - ./docker/db/startup-files/410_populate_everyday_ordinary_tables.sh:/docker-entrypoint-initdb.d/410_populate_everyday_ordinary_tables.sh
+      - ./docker/db/startup-files/500_setup_hba.sh:/docker-entrypoint-initdb.d/500_setup_hba.sh
+      - ./docker/db/startup-files/510_setup_pgpass.sh:/docker-entrypoint-initdb.d/510_setup_pgpass.sh
+    ports:
+      - "5432:5432"
+    networks:
+      - database
+    restart: unless-stopped
+
+  postgres17:
+    container_name: tmc_postgres_17
     image: postgres:17.2-alpine
     env_file:
        - ./docker/db/.env
@@ -21,7 +49,7 @@ services:
       - ./docker/db/startup-files/500_setup_hba.sh:/docker-entrypoint-initdb.d/500_setup_hba.sh
       - ./docker/db/startup-files/510_setup_pgpass.sh:/docker-entrypoint-initdb.d/510_setup_pgpass.sh
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - database
     restart: unless-stopped

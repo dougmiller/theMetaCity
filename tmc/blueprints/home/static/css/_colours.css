@@ -1,0 +1,32 @@
+root {
+    --colour-base-hue-black: 90;
+    --colour-base-orange: oklch(1 0.4 60);
+    --colour-base-green: oklch(1 0.4 140);
+    --colour-base-hue-green: 140;
+    --colour-base-hue-blue: 240;
+
+    --colour-base-chroma-low: 0.015;
+    --colour-base-chroma-mid: 0.15;
+
+    /* Base colors */
+    --black-base: oklch(0.2 var(--colour-base-chroma-low) var(--colour-base-hue-black));
+    --orange-base: oklch(from var(--colour-base-orange) l c h);
+    --green-base: oklch(from var(--colour-base-green) l c h);
+    --blue-base: oklch(0.6 var(--colour-base-chroma-mid) var(--colour-base-hue-blue));
+
+    /* Derived colors using from() */
+    --black-highlight: oklch(from var(--black-base) calc(l + 0.1) calc(c + 0.005) h);
+    --black-background: oklch(from var(--black-base) calc(l - 0.1) calc(c - 0.005) h);
+
+    --orange-highlight: oklch(from var(--orange-base) calc(l + 0.1) calc(c + 0.05) h);
+    --orange-background: oklch(from var(--orange-base) calc(l + 0.25) calc(c - 0.1) h);
+
+    --green-highlight: oklch(from var(--green-base) calc(l + 0.1) calc(c + 0.05) h);
+    --green-background: oklch(from var(--green-base) calc(l + 0.3) calc(c - 0.1) h);
+
+    --blue-highlight: oklch(from var(--blue-base) calc(l + 0.1) calc(c + 0.05) h);
+    --blue-background: oklch(from var(--blue-base) calc(l + 0.3) calc(c - 0.1) h);
+
+    --base_hue_primary: 90; /* Orange */
+
+}

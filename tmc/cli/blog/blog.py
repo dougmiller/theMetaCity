@@ -139,7 +139,6 @@ def process(file):
             entry.parent_id = meta.get("parent")
             entry.content = article_without_meta
 
-        blog_entry = None
         if meta.get("id"):
             blog_entry = ArticleAdmin.get(meta["id"])
 
@@ -198,17 +197,19 @@ def process(file):
 @blog.command("rm")
 @click.argument('record', nargs=1, type=click.UUID, required=True)
 def rm(record):
-	"""Removes a Blog record"""
-	click.echo(click.style(f'Going to rm: {record}', fg='red'))
-	blog_entry = ArticleAdmin.get(record)
-	
-	if not blog_entry:
-		click.echo(click.style(f"No record found with ID: {record}", fg='yellow'))
-		return
-	
-	click.confirm(click.style(f"Are you sure you want to delete '{blog_entry.id}'?", fg="yellow"), abort=True)
-	
-	blog_entry.delete()
-	db.session.commit()
+    """
+    Removes a Blog record
+    """
+    click.echo(click.style(f'Going to rm: {record}', fg='red'))
+    blog_entry = ArticleAdmin.get(record)
+
+    if not blog_entry:
+        click.echo(click.style(f"No record found with ID: {record}", fg='yellow'))
+        return
+
+    click.confirm(click.style(f"Are you sure you want to delete '{blog_entry.id}'?", fg="yellow"), abort=True)
+
+    blog_entry.delete()
+    db.session.commit()
     
-	click.echo(click.style(f"Deleted Blog article: {record}", fg='red'))
+    click.echo(click.style(f"Deleted Blog article: {record}", fg='red'))
