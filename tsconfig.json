@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "outDir": "tmc/media/static/js",
-    "target": "ES2020"
-  },
-  "include": [
-    "typescript/*"
-  ]
-}

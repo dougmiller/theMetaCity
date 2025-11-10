@@ -1,4 +1,4 @@
-from extensions.configs.database.connectors import PSQLDatabaseConfig, SQLiteDatabaseConfig
+from tmc.extensions.configs.database.connectors import PSQLDatabaseConfig, SQLiteDatabaseConfig
 
 class DatabaseConfig:
     REQUIRED_BIND_NAMES = [

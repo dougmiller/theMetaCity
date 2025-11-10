@@ -17,7 +17,7 @@ edo = AppGroup(
 def list(count, filter):
     """Show the latest (by creation date) (--count==10) number of EDO records"""
 
-    edo_list = EDO.some(limit=count)
+    edo_list = EDO.latest(limit=count)
 
     for e in edo_list:
         click.echo(f"{e.command_line_listing_str()}")
