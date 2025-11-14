@@ -1,0 +1,86 @@
+name: Relaunch into ASG
+
+on:
+  push:
+    branches:
+      - try1                 # This workflow runs WHEN code is pushed to `try1`
+
+jobs:
+  build-ami:
+    runs-on: ubuntu-latest   # The GitHub Actions runner environment
+
+    permissions:
+      id-token: write        # Required for AWS OIDC authentication (no secrets needed)
+      contents: read         # Allows checking out the repository code
+
+    steps:
+      # 1) Checkout code
+      - uses: actions/checkout@v4
+        # This clones your repository into the runner.
+        # Without this, the runner has no code, so packer can't build anything.
+
+
+      # 2) Authenticate to AWS using GitHub OIDC
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/github-ami-builder-role
+          aws-region: ap-southeast-2
+        # This logs into AWS WITHOUT needing access keys.
+        # GitHub generates a temporary OIDC token.
+        # AWS verifies it and allows the role to be assumed securely.
+
+
+      # 3) Install packer on the runner
+      - name: Install Packer
+        run: |
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update && sudo apt-get install packer
+        # AMI building requires packer. GitHub runners don't include it by default.
+
+
+      # 4) Build AMI and capture AMI ID
+      - name: Build AMI
+        id: ami
+        run: |
+          AMI_ID=$(packer build -machine-readable packer.json \
+            | awk -F, '$0 ~/artifact,0,id/ {print $6}')
+          echo "ami_id=${AMI_ID#ami-}" >> $GITHUB_OUTPUT
+
+        # packer build => runs your AMI build steps (install software, copy app, etc.)
+        # -machine-readable => makes parsing output easier
+        # awk extracts the AMI ID packer produces
+        # echo writes the AMI ID to a GitHub Actions output variable
+        #
+        # Now the rest of the workflow can reference: ${{ steps.ami.outputs.ami_id }}
+
+
+      # 5) Create a new Launch Template version pointing to this new AMI
+      - name: Create new Launch Template version
+        run: |
+          aws ec2 create-launch-template-version \
+            --launch-template-name MyLaunchTemplate \
+            --source-version 1 \
+            --launch-template-data "{\"ImageId\":\"${{ steps.ami.outputs.ami_id }}\"}"
+
+        # This creates version X+1 of your Launch Template but only changes the AMI ID.
+        # Everything else (instance type, SGs, IAM role) stays the same.
+
+
+      # 6) Trigger an ASG Instance Refresh (rolling deploy)
+      - name: Trigger instance refresh
+        run: |
+          aws autoscaling start-instance-refresh \
+            --auto-scaling-group-name MyAutoScalingGroup \
+            --preferences '{"MinHealthyPercentage": 90, "InstanceWarmup": 180}'
+
+        # This instructs the ASG to:
+        # - gradually terminate old instances (with old AMI)
+        # - launch new ones using the updated Launch Template version
+        #
+        # MinHealthyPercentage=90 means:
+        #   keep 90% of servers alive while replacing them
+        #
+        # InstanceWarmup=180:
+        #   wait 180 seconds before marking each instance "healthy"
