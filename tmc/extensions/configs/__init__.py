@@ -7,7 +7,7 @@ from .database import DatabaseConfig
 class Configs:
     def __init__(self, app = None):
         if app is not None:
-            pass
+            self.init_app(app)
 
     @staticmethod
     def init_app(app):

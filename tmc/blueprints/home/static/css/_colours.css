@@ -1,32 +1,135 @@
-root {
-    --colour-base-hue-black: 90;
-    --colour-base-orange: oklch(1 0.4 60);
-    --colour-base-green: oklch(1 0.4 140);
-    --colour-base-hue-green: 140;
-    --colour-base-hue-blue: 240;
+:root {
 
-    --colour-base-chroma-low: 0.015;
-    --colour-base-chroma-mid: 0.15;
+    /* Theme main colours */
+    --colour-main-hue: 46;
 
-    /* Base colors */
-    --black-base: oklch(0.2 var(--colour-base-chroma-low) var(--colour-base-hue-black));
-    --orange-base: oklch(from var(--colour-base-orange) l c h);
-    --green-base: oklch(from var(--colour-base-green) l c h);
-    --blue-base: oklch(0.6 var(--colour-base-chroma-mid) var(--colour-base-hue-blue));
+    /* Setup a dark background and opposing text colour*/
+    --colour-base-background: oklch(0.1 0.04 var(--colour-main-hue));
 
-    /* Derived colors using from() */
-    --black-highlight: oklch(from var(--black-base) calc(l + 0.1) calc(c + 0.005) h);
-    --black-background: oklch(from var(--black-base) calc(l - 0.1) calc(c - 0.005) h);
+    /*
+     * Emotion-based “seed” colours
+     * (use these for theming; avoid naming by hue so meaning stays correct if colours change)
+     */
+    --colour-base-shadow: oklch(0.16 0 var(--colour-main-hue));
+    --colour-base-joy: oklch(0.75 0.17 46);
+    --colour-base-growth: oklch(0.82 0.27 147);
+    --colour-base-trust: oklch(0.775 0.177 213);
 
-    --orange-highlight: oklch(from var(--orange-base) calc(l + 0.1) calc(c + 0.05) h);
-    --orange-background: oklch(from var(--orange-base) calc(l + 0.25) calc(c - 0.1) h);
+    /*
+     * Back-compat aliases (existing names still work)
+     * Prefer using the emotion names going forward.
+     */
+    --colour-base-black: var(--colour-base-shadow);
+    --colour-base-orange: var(--colour-base-joy);
+    --colour-base-green: var(--colour-base-growth);
+    --colour-base-blue: var(--colour-base-trust);
 
-    --green-highlight: oklch(from var(--green-base) calc(l + 0.1) calc(c + 0.05) h);
-    --green-background: oklch(from var(--green-base) calc(l + 0.3) calc(c - 0.1) h);
+    --colour-base-chroma-low: 0.05;
+    --colour-base-chroma-mid: 0.13;
+    --colour-base-chroma-high: 0.18;
 
-    --blue-highlight: oklch(from var(--blue-base) calc(l + 0.1) calc(c + 0.05) h);
-    --blue-background: oklch(from var(--blue-base) calc(l + 0.3) calc(c - 0.1) h);
+    /* Base colors (emotion-based) */
+    --joy-base: oklch(from var(--colour-base-joy) l c h);
+    --growth-base: oklch(from var(--colour-base-growth) l c h);
+    --trust-base: oklch(from var(--colour-base-trust) l c h);
 
-    --base_hue_primary: 90; /* Orange */
+    /* Back-compat aliases */
+    --orange-base: var(--joy-base);
+    --green-base: var(--growth-base);
+    --blue-base: var(--trust-base);
 
+    /* Derived “shadow” colors */
+    --shadow-highlight: oklch(from var(--colour-base-shadow) l calc(c + var(--colour-base-chroma-low)) h);
+    --shadow-background: oklch(from var(--colour-base-shadow) calc(l - 0.1) calc(c - 0.005) h);
+
+    /* Back-compat aliases */
+    --black-highlight: var(--shadow-highlight);
+    --black-background: var(--shadow-background);
+
+    /* Simple joy intensity helpers (back-compat + new names) */
+    --joy-low: oklch(from var(--colour-base-joy) l var(--colour-base-chroma-low) h);
+    --joy-mid: oklch(from var(--colour-base-joy) l var(--colour-base-chroma-mid) h);
+    --joy-high: oklch(from var(--colour-base-joy) l var(--colour-base-chroma-high) h);
+
+    --orange-low: var(--joy-low);
+    --orange-mid: var(--joy-mid);
+    --orange-high: var(--joy-high);
+
+    /*
+     * Full “joy” palette derived from --colour-base-joy
+     * (everything updates automatically if --colour-base-joy / --colour-base-orange changes)
+     */
+
+    /* “White” with a slight joy tinge (use for cards/panels) */
+    --colour-joy-white: oklch(from var(--colour-base-joy)
+        clamp(0, calc(l + 0.22), 1)
+        clamp(0, calc(c * 0.10), 0.06)
+        h
+    );
+
+    /* Very light tints */
+    --colour-joy-50: oklch(from var(--colour-base-joy) 0.97 clamp(0, calc(c * 0.08), 0.05) h);
+    --colour-joy-100: oklch(from var(--colour-base-joy) 0.93 clamp(0, calc(c * 0.12), 0.06) h);
+    --colour-joy-200: oklch(from var(--colour-base-joy) 0.88 clamp(0, calc(c * 0.18), 0.08) h);
+
+    /* Mid tints */
+    --colour-joy-300: oklch(from var(--colour-base-joy) 0.82 clamp(0, calc(c * 0.28), 0.10) h);
+    --colour-joy-400: oklch(from var(--colour-base-joy) 0.78 clamp(0, calc(c * 0.45), 0.13) h);
+
+    /* Base + strong accents */
+    --colour-joy-500: oklch(from var(--colour-base-joy) l c h);
+    --colour-joy-600: oklch(from var(--colour-base-joy) clamp(0, calc(l - 0.08), 1) clamp(0, calc(c * 1.05), 0.24) h);
+    --colour-joy-700: oklch(from var(--colour-base-joy) clamp(0, calc(l - 0.16), 1) clamp(0, calc(c * 1.00), 0.22) h);
+
+    /* Deep (for dark UI accents) */
+    --colour-joy-800: oklch(from var(--colour-base-joy) 0.34 clamp(0, calc(c * 0.55), 0.14) h);
+    --colour-joy-900: oklch(from var(--colour-base-joy) 0.22 clamp(0, calc(c * 0.35), 0.10) h);
+
+    /* Dark text tuned to joy hue */
+    --colour-joy-text: oklch(from var(--colour-base-joy)
+        0.18
+        clamp(0, calc(c * 0.08), 0.03)
+        h
+    );
+
+    /* Highlight for dark UI (joy hue emphasis) */
+    --colour-joy-text-highlight: oklch(from var(--colour-base-joy)
+        0.78
+        clamp(0, calc(c * 1.00), 0.22)
+        h
+    );
+
+    /* Interactive states (hover/active) */
+    --colour-joy-accent: var(--colour-joy-500);
+    --colour-joy-accent-hover: oklch(from var(--colour-base-joy)
+        clamp(0, calc(l + 0.04), 1)
+        clamp(0, calc(c * 1.05), 0.24)
+        h
+    );
+    --colour-joy-accent-active: oklch(from var(--colour-base-joy)
+        clamp(0, calc(l - 0.06), 1)
+        clamp(0, calc(c * 1.10), 0.26)
+        h
+    );
+
+    /* Subtle interactive surfaces */
+    --colour-joy-surface: oklch(from var(--colour-base-joy) 0.16 clamp(0, calc(c * 0.10), 0.04) h);
+    --colour-joy-surface-hover: oklch(from var(--colour-base-joy) 0.20 clamp(0, calc(c * 0.14), 0.05) h);
+    --colour-joy-surface-active: oklch(from var(--colour-base-joy) 0.24 clamp(0, calc(c * 0.18), 0.06) h);
+
+    /* Focus ring / outline */
+    --colour-joy-focus: oklch(from var(--colour-base-joy) 0.78 clamp(0, calc(c * 0.85), 0.20) h);
+
+    /* Existing derived colours (now emotion-based sources) */
+    --growth-highlight: oklch(from var(--growth-base) calc(l + 0.1) calc(c + 0.05) h);
+    --growth-background: oklch(from var(--growth-base) calc(l + 0.3) calc(c - 0.1) h);
+
+    --trust-highlight: oklch(from var(--trust-base) calc(l + 0.1) calc(c + 0.05) h);
+    --trust-background: oklch(from var(--trust-base) calc(l + 0.3) calc(c - 0.1) h);
+
+    /* Back-compat aliases */
+    --green-highlight: var(--growth-highlight);
+    --green-background: var(--growth-background);
+    --blue-highlight: var(--trust-highlight);
+    --blue-background: var(--trust-background);
 }

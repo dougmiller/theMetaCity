@@ -1,15 +1,13 @@
 @charset "UTF-8";
-@import "_variables.css";
+@import "_colours2.css";
 @import "_layout.css";
+@import "_variables.css";
+@import "_fonts.css";
 
+:root {
 
-:root { }
-
-html {
-  background: var(--background);
-  color: var(--primary);
 }
 
-a {
-    color: var(--primary-highlight);
+html {
+  background-color: var(--theme-bg);
 }
