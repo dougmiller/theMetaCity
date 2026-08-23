@@ -1,0 +1,41 @@
+:root {
+    --colour-main-hue: 46;
+    --colour-main-chroma: 0.15;
+
+    --theme-bg-light: oklch(0.98 0.015 var(--colour-main-hue));
+    --theme-text-light: oklch(0.20 0.04 var(--colour-main-hue));
+
+    --theme-bg: var(--theme-bg-light);
+    --theme-text: var(--theme-text-light);
+
+    --theme-primary: oklch(0.65 var(--colour-main-chroma) var(--colour-main-hue));
+
+    --theme-50:  oklch(0.98 calc(var(--colour-main-chroma) * 0.1) var(--colour-main-hue));
+    --theme-100: oklch(0.95 calc(var(--colour-main-chroma) * 0.2) var(--colour-main-hue));
+    --theme-200: oklch(0.90 calc(var(--colour-main-chroma) * 0.4) var(--colour-main-hue));
+    --theme-300: oklch(0.80 calc(var(--colour-main-chroma) * 0.6) var(--colour-main-hue));
+    --theme-400: oklch(0.70 calc(var(--colour-main-chroma) * 0.8) var(--colour-main-hue));
+    --theme-500: oklch(0.60 var(--colour-main-chroma) var(--colour-main-hue));
+    --theme-600: oklch(0.50 var(--colour-main-chroma) var(--colour-main-hue));
+    --theme-700: oklch(0.40 calc(var(--colour-main-chroma) * 0.8) var(--colour-main-hue));
+    --theme-800: oklch(0.30 calc(var(--colour-main-chroma) * 0.6) var(--colour-main-hue));
+    --theme-900: oklch(0.20 calc(var(--colour-main-chroma) * 0.4) var(--colour-main-hue));
+
+    --theme-surface-1: oklch(from var(--theme-primary) 0.99 0.02 h);
+    --theme-surface-2: oklch(from var(--theme-primary) 0.96 0.04 h);
+    --theme-surface-3: oklch(from var(--theme-primary) 0.90 0.06 h);
+
+    --theme-primary-hover: oklch(from var(--theme-primary) clamp(0, calc(l + 0.08), 1) c h);
+    --theme-primary-active: oklch(from var(--theme-primary) clamp(0, calc(l - 0.05), 1) c h);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --theme-bg: oklch(0.15 0.02 var(--colour-main-hue));
+        --theme-text: oklch(0.95 0.02 var(--colour-main-hue));
+        
+        --theme-surface-1: oklch(from var(--theme-primary) 0.18 0.03 h);
+        --theme-surface-2: oklch(from var(--theme-primary) 0.22 0.04 h);
+        --theme-surface-3: oklch(from var(--theme-primary) 0.28 0.05 h);
+    }
+}
