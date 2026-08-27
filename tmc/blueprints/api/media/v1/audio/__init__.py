@@ -1,8 +1,4 @@
-from flask import Blueprint
-
-audio = Blueprint(
-	'audio',
-	__name__
-)
-
 from . import routes
+from .bp import bp as audio
+
+__all__ = ["audio", "routes"]

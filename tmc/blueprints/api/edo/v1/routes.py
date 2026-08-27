@@ -1,156 +1,111 @@
 import os
+
+from flask import current_app, jsonify, request
+from flask.typing import ResponseReturnValue
 from werkzeug.utils import secure_filename
-from flask import jsonify, request, current_app
-from . import v1
-from tmc.models.edo import EDO, EDO_Admin
+
+from tmc import queries
+from tmc.extensions import db, read_session
+from tmc.models.edo import EDO
+from tmc.queries import edo as edo_queries
 from tmc.schemas.edo import EDOSchema
 from tmc.utils.responses import api_response
-from tmc import db
+
+from .bp import bp
 
 
-@v1.route("/help/")
-@v1.route("/")
-def edo_index():
-    # return openAPI swagger doc (YAML)
-
+@bp.route("/help/")
+@bp.route("/")
+def edo_index() -> ResponseReturnValue:
     return jsonify(
         {
-            'info': 'Everyday Ordinary api endpoints ',
-            'routes': [
-                {"endoint": "/help", "description": "This information"},
-                {"endoint": "/login", "description": "Authenticates the user and their credentials. Returns a JWT for future use"},
-                {"endoint": "/logout", "description": "De-authenticates the user's JWT so they can no longer login"},
-                {"endoint": "/list", "description": "Return a list of all EDO entries"},
-                {"endoint": "/text", "description": "Add a new text only extry to edo"},
-                {"endoint": "/image", "description": "Add a new image only extry to edo"},
-            ]
+            "info": "Everyday Ordinary api endpoints ",
+            "routes": [
+                {"endpoint": "/help", "description": "This information"},
+                {"endpoint": "/login", "description": "Authenticates the user and their credentials. Returns a JWT for future use"},
+                {"endpoint": "/logout", "description": "De-authenticates the user's JWT so they can no longer login"},
+                {"endpoint": "/list", "description": "Return a list of all EDO entries"},
+                {"endpoint": "/text", "description": "Add a new text only extry to edo"},
+                {"endpoint": "/image", "description": "Add a new image only extry to edo"},
+            ],
         }
     )
 
 
-@v1.route("login", methods=["POST"])
-def login():
-    # Get user details from request
-    # Authenticate user
-    # Generate JWT
-    # Return response inc JWT
-    pass
+@bp.route("login", methods=["POST"])
+def login() -> ResponseReturnValue:
+    return "", 501
 
 
-@v1.route("logout", methods=["POST"])
-def logout():
-    # Get user details from JWT
-    # Invalidate JWT
-    # Return sensible response
-    pass
+@bp.route("logout", methods=["POST"])
+def logout() -> ResponseReturnValue:
+    return "", 501
 
 
-@v1.route("appreciate", methods=['POST'])
-def appreciate():
-    text_edo = EDO_Admin()
-    text_edo.content = request.form.get('text')
-    text_edo.save()
-    
-    
-    uploaded_image = request.files['image']
-    uploaded_name = secure_filename(uploaded_image.filename)
-    
-    
-    if uploaded_name is not '':
-        os.mkdir(current_app.config['EDO_UPLOAD_PATH'] + "/" + str(text_edo.id))
-        uploaded_image.save(os.path.join(current_app.config['EDO_UPLOAD_PATH'] + "/" + str(text_edo.id), uploaded_name))
+@bp.route("appreciate", methods=["POST"])
+def appreciate() -> ResponseReturnValue:
+    text_edo = EDO()
+    text_edo.content = request.form.get("text") or ""
+    queries.save(db.session, text_edo)
 
-    return api_response(
-        message=text_edo.content
-    )
+    uploaded_image = request.files["image"]
+    uploaded_name = secure_filename(uploaded_image.filename or "")
+
+    if uploaded_name != "":
+        os.mkdir(current_app.config["EDO_UPLOAD_PATH"] + "/" + str(text_edo.id))
+        uploaded_image.save(os.path.join(current_app.config["EDO_UPLOAD_PATH"] + "/" + str(text_edo.id), uploaded_name))
+
+    return api_response(message=text_edo.content)
 
 
-# Add JWT decorator
-@v1.route("text", methods=['POST'])
-def text():
-    if not request.form.get('text'):
+@bp.route("text", methods=["POST"])
+def text() -> ResponseReturnValue:
+    if not request.form.get("text"):
         return jsonify(["No text supplied"])
 
-    text_edo = EverydayOrdinary()
-    text_edo.content = request.form.get('text')
+    text_edo = EDO()
+    text_edo.content = request.form.get("text") or ""
     # todo run this through markdown
-    text_edo.save()
+    queries.save(db.session, text_edo)
     return jsonify(["OK"])
 
 
-# Add JWT decorator
-@v1.route("image", methods=['GET'])
-def g_image():
-    return api_response(
-        message='get request'
-    )
-
-# Add JWT decorator
-@v1.route("image", methods=['POST'])
-def image():
-    if 'image' not in request.files:
-        if 'image' in request.form:
-
-            return api_response(
-                message='Parameter "image" was not type "file" in request',
-                success=False,
-                status=400
-            )
-
-        return api_response(
-            message='No "image" in request',
-            success=False,
-            status=400
-        )
-    print(request)
-
-    uploaded_image = request.files['image']
-    uploaded_name = secure_filename(uploaded_image.filename)
-
-    if uploaded_name == '':
-        return api_response(
-            message='No image to upload',
-            success=False,
-            status=400
-        )
+@bp.route("image", methods=["GET"])
+def g_image() -> ResponseReturnValue:
+    return api_response(message="get request")
 
 
-    uploaded_image.save(os.path.join(current_app.config['EDO_UPLOAD_PATH'], uploaded_name))
-    return api_response(
-        message='Image uploaded',
-    )
+@bp.route("image", methods=["POST"])
+def image() -> ResponseReturnValue:
+    if "image" not in request.files:
+        if "image" in request.form:
+            return api_response(message='Parameter "image" was not type "file" in request', success=False, status=400)
+        return api_response(message='No "image" in request', success=False, status=400)
+
+    uploaded_image = request.files["image"]
+    uploaded_name = secure_filename(uploaded_image.filename or "")
+
+    if uploaded_name == "":
+        return api_response(message="No image to upload", success=False, status=400)
+
+    uploaded_image.save(os.path.join(current_app.config["EDO_UPLOAD_PATH"], uploaded_name))
+    return api_response(message="Image uploaded")
 
 
-# Add JWT decorator
-@v1.route("video", methods=['POST'])
-def video():
-    pass
+@bp.route("video", methods=["POST"])
+def video() -> ResponseReturnValue:
+    return "", 501
 
 
-@v1.route("list/", methods=["GET"])
-def list_edo():
-    all_list = EDO.all()
-    
-    EDO_schema = EDOSchema(many=True)
-        
-    return api_response(
-        data=EDO_schema.dump(all_list)
-    )
+@bp.route("list/", methods=["GET"])
+def list_edo() -> ResponseReturnValue:
+    all_list = edo_queries.all_edo(read_session())
+    return api_response(data=EDOSchema(many=True).dump(all_list))
 
 
-@v1.route("list/<uuid:record>", methods=["GET"])
-def one_edo(record):
-    one = EDO.get(record)
-    
+@bp.route("list/<uuid:record>", methods=["GET"])
+def one_edo(record) -> ResponseReturnValue:
+    one = edo_queries.by_id(read_session(), record)
     if one is None:
-        return api_response(
-            message="No matching record found",
-            success=False,
-            status=404
-        )
-    
-    EDO_schema = EDOSchema()
-        
-    return api_response(
-        data=EDO_schema.dump(one)
-    )
+        return api_response(message="No matching record found", success=False, status=404)
+    return api_response(data=EDOSchema().dump(one))

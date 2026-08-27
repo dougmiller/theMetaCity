@@ -2,9 +2,9 @@ from werkzeug.routing import BaseConverter
 
 
 class DateConverter(BaseConverter):
-    def to_python(self, value):
+    def to_python(self, value) -> str:
 
-        month = value.toLower()
+        month = value.lower()
 
         return {
             "jan": "01",
@@ -21,5 +21,5 @@ class DateConverter(BaseConverter):
             "dec": "12",
         }[month]
 
-    def to_url(self, value):
-        pass
+    def to_url(self, value) -> str:
+        return str(value)

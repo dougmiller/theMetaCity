@@ -1,0 +1,9 @@
+from flask import Blueprint
+
+bp: Blueprint = Blueprint(
+    name="blog",
+    import_name=__name__,
+    template_folder="templates",
+    static_folder="static",
+    static_url_path="static",
+)

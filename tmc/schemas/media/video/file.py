@@ -1,12 +1,11 @@
-from marshmallow_sqlalchemy import auto_field
+from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
-from tmc.extensions.marshmallow import ma
 from tmc.models.media.video import File
 
-__all__ = "FileSchema"
+__all__ = ["FileSchema"]
 
 
-class FileSchema(ma.SQLAlchemySchema):
+class FileSchema(SQLAlchemySchema):
     class Meta:
         model = File
         load_instance = True

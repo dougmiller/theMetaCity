@@ -1,27 +1,103 @@
-[tool.black]
-line-length = 150
-target-version = ["py312"]
-skip-string-normalization = false
-preview = true  # Use the latest formatting behaviour
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "themetacity"
+version = "0.1.0"
+description = "The Meta City Flask website"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    # Flask
+    "flask>=3.1,<3.3",
+    "werkzeug>=3.1",
+    "flask-caching>=2.3",
+    # Database
+    "sqlalchemy>=2.0",
+    "flask-sqlalchemy-lite>=0.2.1",
+    "flask-alembic>=3.2",
+    "sqlalchemy-utils>=0.41",
+    "psycopg[binary]>=3.2",
+    "psycopg-pool>=3.2",
+    "pgpasslib>=1.1",             # password sourcing; revisited in Phase 2
+    # Serialization
+    "marshmallow>=4.0",
+    "flask-marshmallow>=1.3",
+    "marshmallow-sqlalchemy>=1.4",
+    # Markdown / HTML
+    "markdown>=3.8",
+    "minify-html>=0.15",
+    # Utilities
+    "arrow>=1.3",
+    "python-dotenv>=1.1",
+    # Server
+    "gunicorn>=23.0",
+]
+
+[project.optional-dependencies]
+# Debug toolbar — not installed in production.
+debug = [
+    "flask-debugtoolbar>=0.15",
+]
+
+[dependency-groups]
+# uv dev tooling: runtime extras plus linters, type-checker, test runner, tox.
+dev = [
+    { include-group = "lint" },
+    { include-group = "test" },
+    "tox>=4.22",
+    "tox-uv>=1.13",
+    "themetacity[debug]",
+]
+lint = [
+    "ruff>=0.15",
+    "basedpyright>=1.39",
+]
+test = [
+    "pytest>=8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.setuptools.packages.find]
+include = ["tmc*"]
+
+[tool.setuptools.package-data]
+# Ship templates and static assets alongside the package.
+tmc = ["**/*.jinja2", "**/*.html", "static/**/*"]
 
 [tool.ruff]
 line-length = 150
-target-version = "py312"
-exclude = ["env", "venv", ".venv", "__pycache__"]
+target-version = "py314"
+extend-exclude = ["tmc/migrations"]
+
+[tool.ruff.format]
+# Black-compatible: double quotes. Replaces the former black config.
+quote-style = "double"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B", "TID252"]
-# E = pycodestyle (style errors, e.g. indentation, spacing, line length, etc.)
-# F = Logic issues (e.g. unused imports, undefined variables)
-# I = isort (Import sorting and grouping)
-# UP = pyupgrade (Upgrade syntax to modern Python (e.g. f-strings, type hints))
-# B = flake8-bugbear (Potential bugs and design issues (e.g. mutable defaults, bad comparisons))
-# TID252 = Disallow relative imports (forces absolute imports for clarity)
+# E/F/I/UP/B baseline plus high-signal groups; E501 handled by the formatter.
+# Return-type rules (ANN2*) are added in Phase 5/8 as views get annotated.
+select = [
+    "E", "F", "I", "UP", "B", "C4", "SIM", "RET", "PIE", "PERF", "A", "RUF",
+    # Return-type annotations (flake8-annotations ANN2* group only).
+    "ANN201", "ANN202", "ANN204", "ANN205", "ANN206",
+]
+ignore = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["tmc"]
 
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-preview = true
+[tool.ruff.lint.per-file-ignores]
+"tmc/models/*.py" = ["RUF012"]
+"tmc/blueprints/**/routes.py" = ["A001", "A002"]  # Flask views: id/all are endpoint-coupled & idiomatic
+
+[tool.basedpyright]
+pythonVersion = "3.14"
+include = ["tmc"]
+# Pragmatic on an existing codebase: "standard" catches high-value errors
+# without the full noise of the stricter modes. Tighten later.
+typeCheckingMode = "standard"

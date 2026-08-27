@@ -1,12 +1,11 @@
-from marshmallow_sqlalchemy import auto_field
+from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
-from tmc.extensions.marshmallow import ma
-from tmc.models.media.video.track import Track
+from tmc.models.media.audio import Track
 
-__all__ = "TrackSchema"
+__all__ = ["TrackSchema"]
 
 
-class TrackSchema(ma.SQLAlchemySchema):
+class TrackSchema(SQLAlchemySchema):
     class Meta:
         model = Track
         load_instance = True

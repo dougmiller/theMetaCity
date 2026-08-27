@@ -10,9 +10,10 @@ __all__ = (
     "AssetType",
     "Audio",
     "AudioAdmin",
-    "Video",
-    "VideoAdmin",
+    "Gallery",
     "Image",
     "Licence",
     "Postcard",
+    "Video",
+    "VideoAdmin",
 )

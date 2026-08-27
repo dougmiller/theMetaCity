@@ -1,12 +1,9 @@
-from sqlalchemy.ext.declarative import declared_attr, has_inherited_table
+from tmc.extensions.sqlalchemy import Base
 
-from tmc.extensions import db
-from tmc.models.extensions.mixins import QueryMixin
-
-__all__ = "_BaseModel"
+__all__ = ["_BaseModel"]
 
 
-class _BaseModel(db.Model):
+class _BaseModel(Base):
     """Abstract base class for all CRUD models.
     Provides an 'created_at', `updated_at` and `deleted_at` column to every model.
     """
@@ -14,12 +11,12 @@ class _BaseModel(db.Model):
     __abstract__ = True
 
     @property
-    def class_name(self):
+    def class_name(self) -> str:
         """Shortcut for returning class name."""
         return self.__class__.__name__
 
     @classmethod
-    def __ignore__(cls):
+    def __ignore__(cls) -> bool:
         """Custom class attr that lets us control which models get ignored.
 
         We are using this because knowing whether or not we're actually dealing
@@ -30,16 +27,5 @@ class _BaseModel(db.Model):
         """
         return cls.__name__ in ("BasicModel", "UUIDModel", "IntegerModel")  # can add more abstract base classes here
 
-    def __repr__(self):
-        return f"[{self.class_name}: {self.id}]"
-
-    @declared_attr
-    def __tablename__(cls):
-        """Generate a __tablename__ attr for every model that does not have
-        inherited tables.
-
-        Ensures table names match the model name without needing to declare it.
-        """
-        if has_inherited_table(cls):
-            return None
-        return cls.__name__.lower()
+    def __repr__(self) -> str:
+        return f"[{self.class_name}: {getattr(self, 'id', None)}]"

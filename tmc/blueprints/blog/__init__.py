@@ -1,12 +1,4 @@
-from flask import Blueprint
+from . import helpers, routes
+from .bp import bp as blog
 
-
-blog = Blueprint(
-    'blog',
-    __name__,
-    template_folder='templates',
-    static_folder='static',
-    static_url_path='static',
-)
-
-from . import routes, helpers
+__all__ = ["blog", "helpers", "routes"]

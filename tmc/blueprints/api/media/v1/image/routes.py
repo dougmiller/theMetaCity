@@ -1,41 +1,24 @@
-from tmc.models.media import Image
+import uuid
+
+from flask.typing import ResponseReturnValue
+
+from tmc.extensions import read_session
+from tmc.queries import media as media_queries
 from tmc.schemas.media.image import ImageSchema
 from tmc.utils.responses import api_response
 
-from . import image
+from .bp import bp
 
 
-@image.route("/")
-def all_audios():
-    all = Image.all()
-    
-    if all is None:
-        return api_response(
-            message="No matching records found",
-            success=False,
-            status=404
-        )
-    
-    media_item_schema = ImageSchema(many=True)
-    
-    return api_response(
-        data=media_item_schema.dump(all)
-    )
+@bp.route("/")
+def all_images() -> ResponseReturnValue:
+    items = media_queries.all_image(read_session())
+    return api_response(data=ImageSchema(many=True).dump(items))
 
 
-@image.route("/<uuid:image>")
-def image_details(image=None):
-    one = Image.get(image)
-
+@bp.route("/<uuid:image>")
+def image_details(image: uuid.UUID) -> ResponseReturnValue:
+    one = media_queries.image_by_id(read_session(), image)
     if one is None:
-        return api_response(
-            message="No matching record found",
-            success=False,
-            status=404
-        )
-    
-    image_item_schema = ImageSchema()
-    
-    return api_response(
-        data=image_item_schema.dump(one)
-    )
+        return api_response(message="No matching record found", success=False, status=404)
+    return api_response(data=ImageSchema().dump(one))

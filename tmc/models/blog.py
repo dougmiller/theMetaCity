@@ -3,114 +3,85 @@ from enum import Enum as PyEnum
 
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, declared_attr, has_inherited_table, mapped_column, relationship
 
 from tmc.models.extensions import BasicModel, UUIDModel
-from tmc.models.extensions.mixins import SmartQueryMixin, TimestampsMixin
+from tmc.models.extensions.mixins import TimestampsMixin
 
 __all__ = (
     "Article",
     "ArticleAdmin",
+    "ArticleTags",
+    "ArticleTagsAdmin",
+    "ArticleTagsSelector",
     "Blog",
     "BlogAdmin",
-    "Workshop",
-    "WorkshopAdmin",
     "Tag",
     "TagAdmin",
+    "Workshop",
+    "WorkshopAdmin",
 )
 
 
-class ArticleTagsBase(BasicModel):
-    """
-    Many to many Article <-> Tag intermediary mapping
-    Probably dont invoke this directly
-    """
+class ArticleTags(BasicModel):
+    """Many-to-many Article <-> Tag join table."""
 
-    __abstract__ = True
+    __tablename__ = "article_tags_joiner"
+    __table_args__ = {"schema": "com"}
 
     tag_id: Mapped[int] = mapped_column(ForeignKey("com.tags.id"), primary_key=True)
     article_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("com.articles.id"), primary_key=True)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"[ArticleTags: Article {self.article_id} - Tag {self.tag_id}]"
 
 
-class ArticleTagsSelector(ArticleTagsBase):
-    __tablename__ = "article_tags_joiner"
-    __table_args__ = {"schema": "com"}
-    __bind_key__ = "com_selector"
-
-
-class ArticleTagsAdmin(ArticleTagsBase):
-    __tablename__ = "article_tags_joiner"
-    __table_args__ = {"schema": "com"}
-    __bind_key__ = "com_admin"
-
-
-"""
-Articles (Blog, Workshop)
-"""
+# Back-compat aliases (read/write is now a session concern, not a class concern).
+ArticleTagsSelector = ArticleTags
+ArticleTagsAdmin = ArticleTags
 
 
 class Variant(PyEnum):
-    """
-    Articles Type enum.
-    Used to differentiate the article type.
-    Maps to DB enum types in PG.
-    """
+    """Article type discriminator (maps to a PG enum)."""
 
     blog = "blog"
     workshop = "workshop"
 
 
-class _ArticleBase(UUIDModel, TimestampsMixin, SmartQueryMixin):
-    __abstract__ = True
+class Article(UUIDModel, TimestampsMixin):
+    # Single-table inheritance: Blog/Workshop must NOT get their own table, so
+    # resolve tablename/table_args to None on inherited (subclass) mappings.
+    @declared_attr.directive
+    def __tablename__(cls) -> str | None:
+        return None if has_inherited_table(cls) else "articles"  # type: ignore[arg-type]
+
+    @declared_attr.directive
+    def __table_args__(cls) -> dict | None:
+        return None if has_inherited_table(cls) else {"schema": "com"}  # type: ignore[arg-type]
 
     title: Mapped[str] = mapped_column(unique=True)
     url: Mapped[str] = mapped_column(unique=True)
     blurb: Mapped[str | None]
     content: Mapped[str]
-    parent_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("com.articles.id"), nullable=True)
+    parent_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("com.articles.id"), nullable=True)
 
     variant: Mapped[Variant] = mapped_column(
-        SQLEnum(Variant, name="variant_enum", schema="com"), nullable=False, default=Variant.blog, server_default=Variant.blog.value
+        SQLEnum(Variant, name="variant_enum", schema="com"),
+        nullable=False,
+        default=Variant.blog,
+        server_default=Variant.blog.value,
     )
 
-    __mapper_args__ = {
-        "polymorphic_on": variant,
-    }
+    parent: Mapped[Article] = relationship("Article", remote_side="Article.id", backref="children", order_by="Article.id", lazy="selectin")
+    tags: Mapped[list[Tag]] = relationship("Tag", secondary=ArticleTags.__table__, back_populates="articles", lazy="subquery")
 
-    def __repr__(self):
+    __mapper_args__ = {"polymorphic_on": variant}
+
+    def __repr__(self) -> str:
         return f"[Article {self.id}: {self.title} ({self.variant.name})]"
 
 
-class Article(_ArticleBase):
-    __tablename__ = "articles"
-    __table_args__ = {"schema": "com"}
-    __bind_key__ = "com_selector"
-
-    parent: Mapped["Article"] = relationship("Article", remote_side="Article.id", backref="children", order_by="Article.id", lazy="selectin")
-
-    tags: Mapped[list["Tag"]] = relationship("Tag", secondary=ArticleTagsSelector.__table__, back_populates="articles", lazy="subquery")
-
-
-class ArticleAdmin(_ArticleBase):
-    __tablename__ = "articles"
-    __table_args__ = {"schema": "com"}
-    __bind_key__ = "com_admin"
-
-    parent: Mapped["ArticleAdmin"] = relationship(
-        "ArticleAdmin", remote_side="ArticleAdmin.id", backref="children", order_by="ArticleAdmin.id", lazy="selectin"
-    )
-
-    tags: Mapped[list["TagAdmin"]] = relationship("TagAdmin", secondary=ArticleTagsAdmin.__table__, back_populates="articles", lazy="subquery")
-
-
 class Blog(Article):
-    __mapper_args__ = {"polymorphic_identity": Variant.blog}
-
-
-class BlogAdmin(ArticleAdmin):
     __mapper_args__ = {"polymorphic_identity": Variant.blog}
 
 
@@ -118,37 +89,22 @@ class Workshop(Article):
     __mapper_args__ = {"polymorphic_identity": Variant.workshop}
 
 
-class WorkshopAdmin(ArticleAdmin):
-    __mapper_args__ = {"polymorphic_identity": Variant.workshop}
-
-
-"""
-Tags
-"""
-
-
-class TagBase(BasicModel, SmartQueryMixin):
-    __abstract__ = True
+class Tag(BasicModel):
+    __tablename__ = "tags"
+    __table_args__ = {"schema": "com"}
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     tag: Mapped[str] = mapped_column(unique=True)
-    blurb: Mapped[str] = mapped_column()
+    blurb: Mapped[str | None] = mapped_column(default=None)
 
-    def __repr__(self):
-        return f"[Tag {self.id}: {repr(self.tag)}]"
+    articles: Mapped[list[Article]] = relationship("Article", secondary=ArticleTags.__table__, back_populates="tags", lazy="subquery")
 
-
-class Tag(TagBase):
-    __tablename__ = "tags"
-    __table_args__ = {"schema": "com"}
-    __bind_key__ = "com_selector"
-
-    articles: Mapped[list[Article]] = relationship("Article", secondary=ArticleTagsSelector.__table__, back_populates="tags", lazy="subquery")
+    def __repr__(self) -> str:
+        return f"[Tag {self.id}: {self.tag!r}]"
 
 
-class TagAdmin(TagBase):
-    __tablename__ = "tags"
-    __table_args__ = {"schema": "com"}
-    __bind_key__ = "com_admin"
-
-    articles: Mapped[list[ArticleAdmin]] = relationship("ArticleAdmin", secondary=ArticleTagsAdmin.__table__, back_populates="tags", lazy="subquery")
+# Back-compat aliases for former *_admin classes.
+ArticleAdmin = Article
+BlogAdmin = Blog
+WorkshopAdmin = Workshop
+TagAdmin = Tag

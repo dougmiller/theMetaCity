@@ -1,21 +1,20 @@
-from marshmallow_sqlalchemy import auto_field
+from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
-from tmc.extensions.marshmallow import ma
-from tmc.models.media.video import File
+from tmc.models.media.audio import File
 
-__all__ = "FileSchema"
+__all__ = ["FileSchema"]
 
 
-class FileSchema(ma.SQLAlchemySchema):
+class FileSchema(SQLAlchemySchema):
     class Meta:
         model = File
         load_instance = True
 
     id = auto_field()
-    video_codec = auto_field()
+    bit_rate = auto_field()
+    bit_depth = auto_field()
+    sample_rate = auto_field()
+    vbr_encoded = auto_field()
     audio_codec = auto_field()
-    extension = auto_field()
-    resolution = auto_field()
     mime_type = auto_field()
-    file_size = auto_field()
-    is_fullscreen = auto_field()
+    extension = auto_field()

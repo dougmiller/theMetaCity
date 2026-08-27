@@ -1,66 +1,29 @@
-import json
-from flask import jsonify, request, current_app
-from sqlalchemy.sql.expression import func
-from tmc.utils.responses import api_response
-from . import video
-from tmc.models.media import Asset, Video, VideoAdmin
-from tmc.schemas.media.video import VideoSchema
+from flask.typing import ResponseReturnValue
 
+from tmc.extensions import read_session
+from tmc.queries import media as media_queries
+from tmc.schemas.media.video import VideoSchema
 from tmc.utils.responses import api_response
-from tmc import db
+
+from .bp import bp as video
 
 
 @video.route("/")
-def all_videos():
-    all = Video.all()
-    
-    if all is None:
-        return api_response(
-            message="No matching records found",
-            success=False,
-            status=404
-        )
-    
-    media_item_schema = VideoSchema(many=True)
-    
-    return api_response(
-        data=media_item_schema.dump(all)
-    )
+def all_videos() -> ResponseReturnValue:
+    items = media_queries.all_video(read_session())
+    return api_response(data=VideoSchema(many=True).dump(items))
 
 
 @video.route("/<int:video>")
-def video_details(video=None):
-    one = Video.get(video)
-       
+def video_details(video: int) -> ResponseReturnValue:
+    one = media_queries.video_by_id(read_session(), video)
     if one is None:
-        return api_response(
-            message="No matching record found",
-            success=False,
-            status=404
-        )
-    
-    video_item_schema = VideoSchema()
-    
-    return api_response(
-        data=video_item_schema.dump(one)
-    )
+        return api_response(message="No matching record found", success=False, status=404)
+    return api_response(data=VideoSchema().dump(one))
 
 
 @video.route("/follow_on/<int:video>/")
 @video.route("/follow_on/")
-def video_follow_on(video=None):
-	v_query = db.select(Video).order_by(func.random()).limit(2)
-	
-	if video is not None:
-		v_query = v_query.where(VideoAdmin.id != video)
-	
-	follow_ons = db.session.execute(
-		v_query
-	).scalars().all()
-
-	media_item_schema = AssetSchema(many=True)
-
-	return api_response(
-		data=media_item_schema.dump(follow_ons)
-	)
-
+def video_follow_on(video=None) -> ResponseReturnValue:
+    items = media_queries.random_videos(read_session(), exclude_id=video, limit=2)
+    return api_response(data=VideoSchema(many=True).dump(items))

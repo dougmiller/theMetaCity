@@ -12,7 +12,6 @@ class Licence(IntegerModel):
 
     __tablename__ = "licence"
     __table_args__ = {"schema": "media"}
-    __bind_key__ = "media_selector"
 
     name: Mapped[str] = mapped_column(String, unique=True)
     text: Mapped[str] = mapped_column(String, unique=True)

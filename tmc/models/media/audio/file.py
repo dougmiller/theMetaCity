@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from tmc.models.extensions import IntegerModel
 
-__all__ = "File"
+__all__ = ["File"]
 
 
 class AudioCodecType(PyEnum):
@@ -32,7 +32,6 @@ class Extension(PyEnum):
 class File(IntegerModel):
     __tablename__ = "audio_file"
     __table_args__ = {"schema": "media"}
-    __bind_key__ = "media_selector"
 
     parent_video: Mapped[int] = mapped_column(ForeignKey("media.media_item.id"))
     bit_rate: Mapped[int] = mapped_column()

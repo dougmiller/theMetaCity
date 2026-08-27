@@ -10,3 +10,17 @@ tmc/blog/static/css
 tmc/media/static/css
 /docker/db/.env
 /docker/db/credentials.env
+
+# --- Python / tooling ---
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv/
+.ruff_cache/
+.pytest_cache/
+.tox/
+*.egg-info/
+build/
+dist/
+uv.lock.bak
+_to_delete/

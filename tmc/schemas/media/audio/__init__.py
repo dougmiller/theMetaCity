@@ -1,5 +1,5 @@
+from .audio import AudioSchema as AudioSchema
 from .file import FileSchema as FileSchema
 from .track import TrackSchema as TrackSchema
-from .audio import AudioSchema as AudioSchema
 
-__all__ = ("FileSchema", "TrackSchema", "AudioSchema")
+__all__ = ("AudioSchema", "FileSchema", "TrackSchema")

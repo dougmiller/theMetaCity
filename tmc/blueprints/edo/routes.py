@@ -1,17 +1,12 @@
-from flask import render_template, make_response
-from tmc import db, cache
-from . import edo
-from tmc.models.edo import EDO
+from flask import render_template
+
+from tmc.extensions import read_session
+from tmc.queries import edo as edo_queries
+
+from .bp import bp
 
 
-@edo.route("/")
-def home():
-    edo_list = db.session.execute(
-        db.select(EDO)
-            .order_by(EDO.created_at.desc())
-            .limit(10)
-    ).scalars().all()
-
-    return render_template('edo/index.jinja2', **locals())
-
-
+@bp.route("/")
+def home() -> str:
+    edo_list = edo_queries.latest(read_session(), limit=10)
+    return render_template("edo/index.jinja2", edo_list=edo_list)

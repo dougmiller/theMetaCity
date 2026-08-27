@@ -1,8 +1,4 @@
-from flask import Blueprint
-
-gallery = Blueprint(
-	'gallery',
-	__name__
-)
-
 from . import routes
+from .bp import bp as gallery
+
+__all__ = ["gallery", "routes"]

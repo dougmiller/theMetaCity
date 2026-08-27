@@ -1,5 +1,5 @@
-from tmc.extensions import db
+from tmc.extensions.sqlalchemy import Base
 
 
-class BasicModel(db.Model):
+class BasicModel(Base):
     __abstract__ = True

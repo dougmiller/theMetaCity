@@ -1,0 +1,13 @@
+bind = "0.0.0.0:5000"
+workers = 4
+worker_class = "sync"
+timeout = 30
+keepalive = 2
+max_requests = 1000
+max_requests_jitter = 50
+accesslog = "-"
+errorlog = "-"
+loglevel = "info"
+proc_name = "themetacity"
+graceful_timeout = 30
+preload_app = False

@@ -1,17 +1,19 @@
 from flask import jsonify
-from . import edo
+from flask.typing import ResponseReturnValue
+
+from .bp import bp
 
 
-@edo.route("/help")
-@edo.route("/")
-def edo_index():
+@bp.route("/help")
+@bp.route("/")
+def edo_index() -> ResponseReturnValue:
     # return openAPI swagger doc (YAML)
 
     return jsonify(
         {
-            'info': 'Everyday Ordinary api endpoints ',
-            'routes': [
+            "info": "Everyday Ordinary api endpoints ",
+            "routes": [
                 {"/v1/": "API v1"},
-            ]
+            ],
         }
     )

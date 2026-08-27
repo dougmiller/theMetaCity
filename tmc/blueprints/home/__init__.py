@@ -1,11 +1,4 @@
-from flask import Blueprint
-
-home = Blueprint(
-    "home",
-    __name__,
-    template_folder="templates",
-    static_folder="static",
-    static_url_path="",
-)
-
 from . import routes
+from .bp import bp as homepage
+
+__all__ = ["homepage", "routes"]

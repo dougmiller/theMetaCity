@@ -35,7 +35,6 @@ class Extension(PyEnum):
 class File(IntegerModel):
     __tablename__ = "video_file"
     __table_args__ = {"schema": "media"}
-    __bind_key__ = "media_selector"
 
     parent_video: Mapped[int] = mapped_column(ForeignKey("media.media_item.id"))
     file_size: Mapped[int] = mapped_column()
@@ -70,18 +69,18 @@ class File(IntegerModel):
             schema="media",
         )
     )
-    
-    def file_size_human_readable(self):
+
+    def file_size_human_readable(self) -> str:
         if self.file_size == 0:
             return "0 bytes"
-        
+
         file_size = self.file_size
-        
+
         units = ["B", "KB", "MB", "GB"]
-        
+
         i = 0
         while file_size >= 1024 and i < len(units) - 1:
             file_size /= 1024
             i += 1
-        
+
         return f"{file_size:.2f} {units[i]}"

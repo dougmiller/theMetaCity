@@ -18,7 +18,6 @@ class AudioTrackType(PyEnum):
 class Track(IntegerModel):
     __tablename__ = "audio_track"
     __table_args__ = {"schema": "media"}
-    __bind_key__ = "media_selector"
 
     parent_audio: Mapped[int] = mapped_column(ForeignKey("media.media_item.id"))
     src_lang: Mapped[str] = mapped_column()

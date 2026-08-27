@@ -1,17 +1,19 @@
 from flask import jsonify
-from . import api
+from flask.typing import ResponseReturnValue
+
+from .bp import bp
 
 
-@api.route("/help/")
-@api.route("/")
-def api_index():
+@bp.route("/help/")
+@bp.route("/")
+def api_index() -> ResponseReturnValue:
     # Todo: Turn into Open API spec
     return jsonify(
         {
-            'info': 'Basic info on tmc api ',
-            'routes': [
-                {'/help/': 'This information'},
-                {'/edo/': 'Everyday Ordinary uploader'},
-            ]
+            "info": "Basic info on tmc api ",
+            "routes": [
+                {"/help/": "This information"},
+                {"/edo/": "Everyday Ordinary uploader"},
+            ],
         }
     )

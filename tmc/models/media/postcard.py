@@ -15,7 +15,6 @@ class Postcard(IntegerModel):  # Renamed to singular for convention
 
     __tablename__ = "postcard"
     __table_args__ = {"schema": "media"}
-    __bind_key__ = "media_selector"
 
     url: Mapped[str] = mapped_column(String, unique=True)
     title: Mapped[str] = mapped_column(String, unique=True)

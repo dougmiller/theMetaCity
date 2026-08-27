@@ -1,15 +1,15 @@
-from flask import jsonify
+from flask import Response, jsonify
 
 
-def api_response(data=None, success=True, message=None, status=200):
-	response = {
-		"success": success,
-	}
-	
-	if data:
-		response["data"] = data
+def api_response(data=None, success=True, message=None, status=200) -> tuple[Response, int]:
+    response = {
+        "success": success,
+    }
 
-	if message:
-		response["message"] = message
+    if data:
+        response["data"] = data
 
-	return jsonify(response), status
+    if message:
+        response["message"] = message
+
+    return jsonify(response), status

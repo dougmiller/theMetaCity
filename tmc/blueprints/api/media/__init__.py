@@ -1,11 +1,7 @@
-from flask import Blueprint
+from . import routes
+from .bp import bp as media
 from .v1 import v1
-
-media = Blueprint(
-	'media',
-	__name__
-)
 
 media.register_blueprint(v1, url_prefix="/v1")
 
-from . import routes
+__all__ = ["media", "routes"]

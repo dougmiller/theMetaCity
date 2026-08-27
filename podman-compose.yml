@@ -1,0 +1,91 @@
+# theMetaCity — podman stack (Postgres 18 + Flask/gunicorn + nginx).
+#
+# Prereqs (all git-ignored, create from the .example files):
+#   .env.basic, .env.database                       — app config (see .env.database.example)
+#   podman/postgres/secrets/*.txt                   — role passwords (see *.txt.example)
+#
+# The DB init scripts create roles + schemas + grants; the flask entrypoint runs
+# `flask db upgrade` (Alembic owns the tables).
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: tmc_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_DB: themetacity
+    secrets:
+      - postgres_password
+      - tmc_master_password
+      - tmc_selector_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./podman/postgres/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - tmc
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  flask-app:
+    build:
+      context: .
+      dockerfile: podman/flask/Dockerfile
+    container_name: tmc_flask
+    environment:
+      - FLASK_ENV=production
+      - GUNICORN_WORKERS=4
+    volumes:
+      - ./.env.basic:/app/.env.basic:ro
+      - ./.env.database:/app/.env.database:ro
+    secrets:
+      - tmc_master_password
+      - tmc_selector_password
+    networks:
+      - tmc
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS -H 'Host: www.themetacity.test' http://localhost:5000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: tmc_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./podman/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./podman/nginx/conf.d:/etc/nginx/conf.d:ro
+      - nginx_logs:/var/log/nginx
+    networks:
+      - tmc
+    depends_on:
+      - flask-app
+
+volumes:
+  postgres_data:
+    driver: local
+  nginx_logs:
+    driver: local
+
+networks:
+  tmc:
+    driver: bridge
+
+secrets:
+  postgres_password:
+    file: ./podman/postgres/secrets/postgres_password.txt
+  tmc_master_password:
+    file: ./podman/postgres/secrets/tmc_master_password.txt
+  tmc_selector_password:
+    file: ./podman/postgres/secrets/tmc_selector_password.txt

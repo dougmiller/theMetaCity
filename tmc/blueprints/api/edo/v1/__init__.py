@@ -1,9 +1,4 @@
-from flask import Blueprint
-
-
-v1 = Blueprint(
-    'v1',
-    __name__
-)
-
 from . import routes
+from .bp import bp as v1
+
+__all__ = ["routes", "v1"]

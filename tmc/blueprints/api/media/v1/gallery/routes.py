@@ -1,41 +1,22 @@
-from tmc.models.media import Gallery
+from flask.typing import ResponseReturnValue
+
+from tmc.extensions import read_session
+from tmc.queries import media as media_queries
 from tmc.schemas.media.gallery import GallerySchema
 from tmc.utils.responses import api_response
 
-from . import gallery
+from .bp import bp as gallery
 
 
 @gallery.route("/")
-def all_galleries():
-    all = Gallery.all()
-    
-    if all is None:
-        return api_response(
-            message="No matching records found",
-            success=False,
-            status=404
-        )
-    
-    media_item_schema = GallerySchema(many=True)
-    
-    return api_response(
-        data=media_item_schema.dump(all)
-    )
+def all_galleries() -> ResponseReturnValue:
+    items = media_queries.all_gallery(read_session())
+    return api_response(data=GallerySchema(many=True).dump(items))
 
 
 @gallery.route("/<int:gallery>")
-def gallery_details(gallery=None):
-    one = Gallery.get(gallery)
-
+def gallery_details(gallery: int) -> ResponseReturnValue:
+    one = media_queries.gallery_by_id(read_session(), gallery)
     if one is None:
-        return api_response(
-            message="No matching record found",
-            success=False,
-            status=404
-        )
-    
-    image_item_schema = GallerySchema()
-    
-    return api_response(
-        data=image_item_schema.dump(one)
-    )
+        return api_response(message="No matching record found", success=False, status=404)
+    return api_response(data=GallerySchema().dump(one))

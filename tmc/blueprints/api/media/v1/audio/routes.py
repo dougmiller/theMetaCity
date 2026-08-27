@@ -1,41 +1,22 @@
-from tmc.models.media import Audio
+from flask.typing import ResponseReturnValue
+
+from tmc.extensions import read_session
+from tmc.queries import media as media_queries
 from tmc.schemas.media.audio import AudioSchema
 from tmc.utils.responses import api_response
 
-from . import audio
+from .bp import bp
 
 
-@audio.route("/")
-def all_audios():
-    all = Audio.all()
-    
-    if all is None:
-        return api_response(
-            message="No matching records found",
-            success=False,
-            status=404
-        )
-    
-    media_item_schema = AudioSchema(many=True)
-    
-    return api_response(
-        data=media_item_schema.dump(all)
-    )
+@bp.route("/")
+def all_audios() -> ResponseReturnValue:
+    items = media_queries.all_audio(read_session())
+    return api_response(data=AudioSchema(many=True).dump(items))
 
 
-@audio.route("/<int:audio>")
-def audio_details(audio=None):
-    one = Audio.get(audio)
-
+@bp.route("/<int:audio>")
+def audio_details(audio: int) -> ResponseReturnValue:
+    one = media_queries.audio_by_id(read_session(), audio)
     if one is None:
-        return api_response(
-            message="No matching record found",
-            success=False,
-            status=404
-        )
-    
-    audio_item_schema = AudioSchema()
-    
-    return api_response(
-        data=audio_item_schema.dump(one)
-    )
+        return api_response(message="No matching record found", success=False, status=404)
+    return api_response(data=AudioSchema().dump(one))

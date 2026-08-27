@@ -4,7 +4,8 @@ from collections import deque
 import click
 from flask.cli import AppGroup
 
-from tmc.models.blog import Tag
+from tmc.extensions import read_session
+from tmc.queries import blog as blog_queries
 
 tags = AppGroup(
     "tags",
@@ -18,7 +19,7 @@ def list_tags() -> None:
     """
     List the tags (and article count) currently in the database
     """
-    tags_list = Tag.all()
+    tags_list = blog_queries.all_tags(read_session())
     colours = ["red", "green", "yellow", "blue", "magenta", "cyan", "white"]
     recent_colours = deque(maxlen=3)
 
@@ -30,7 +31,7 @@ def list_tags() -> None:
         recent_colours.append(colour)
 
     click.echo(",".join(styled_tags))
-    
+
 
 @tags.command("details")
 @click.argument("tag", nargs=1, type=click.STRING, required=True)
@@ -40,25 +41,25 @@ def tag_details(tag) -> None:
 
     The "tag" must match exactly (case-sensitive). No fuzzy or partial matching is performed.
     Articles are printed in color with recent colors avoided for readability.
-    
+
     Arguments:
         tag (str): A case-sensitive tag to get the details on.
     """
     if not tag.strip():
         click.echo(click.style("Queried 'tag' must not be empty.", fg="red"))
         return
-    
-    found_tag = Tag.first(tag=tag)
+
+    found_tag = blog_queries.tag_by_name(read_session(), tag)
 
     if not found_tag:
-        click.echo(click.style(f"No match for: {tag}", fg='yellow'))
+        click.echo(click.style(f"No match for: {tag}", fg="yellow"))
         return
 
-    click.echo(click.style(f"Listing {len(found_tag.articles)} articles for: {tag}", fg='yellow'))
-    
+    click.echo(click.style(f"Listing {len(found_tag.articles)} articles for: {tag}", fg="yellow"))
+
     colours = ["red", "green", "yellow", "blue", "magenta", "cyan", "white"]
     recent_colours = deque(maxlen=3)
-    
+
     for article in found_tag.articles:
         available_colours = [c for c in colours if c not in recent_colours] or colours
         colour = random.choice(available_colours)

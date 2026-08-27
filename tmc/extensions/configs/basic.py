@@ -1,26 +1,23 @@
-from dotenv import dotenv_values
+from typing import ClassVar
 
 
 class BasicConfig:
     """Handles basic environment validation and CLI inspection."""
 
-    REQUIRED_ENV_VARS = [
-        'SERVER_NAME',
-        'DEBUG',
-        'SECRET_KEY',
-        'CSRF_ENABLED',
-        'EDO_UPLOAD_PATH',
-        'ASSETS_PATH',
-        'DOCUMENTS_FOLDER_PATH',
+    REQUIRED_ENV_VARS: ClassVar[list[str]] = [
+        "SERVER_NAME",
+        "DEBUG",
+        "SECRET_KEY",
+        "CSRF_ENABLED",
+        "EDO_UPLOAD_PATH",
+        "ASSETS_PATH",
+        "DOCUMENTS_FOLDER_PATH",
     ]
 
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     def get_dict_of_configs(self, raw_config: dict) -> dict:
         """Return only the required environment variables from a raw config dict."""
-		
-        return {
-            key: raw_config.get(key)
-            for key in self.REQUIRED_ENV_VARS
-        }
+
+        return {key: raw_config.get(key) for key in self.REQUIRED_ENV_VARS}

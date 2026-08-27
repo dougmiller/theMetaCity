@@ -1,10 +1,9 @@
-from marshmallow_sqlalchemy import auto_field
+from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 
-from tmc.extensions.marshmallow import ma
 from tmc.models.media import Licence
 
 
-class LicenceSchema(ma.SQLAlchemySchema):
+class LicenceSchema(SQLAlchemySchema):
     class Meta:
         model = Licence
         load_instance = True
