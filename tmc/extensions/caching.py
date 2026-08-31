@@ -17,4 +17,5 @@ def init_app(app: Flask) -> None:
 
 def preflight(app: Flask) -> list[str]:
     # All cache settings have safe defaults, so none are strictly required.
+    app.config.setdefault("CACHE_TYPE", "simple")
     return []

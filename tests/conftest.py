@@ -54,6 +54,11 @@ def _config(db_url) -> dict:
         "EDO_UPLOAD_PATH": "/tmp/tmc-test-uploads",
         "ASSETS_PATH": "/tmp/tmc-test-assets",
         "DOCUMENTS_FOLDER_PATH": "/tmp/tmc-test-docs",
+        "S3_BUCKET_NAME": "test-bucket",
+        "S3_ACCESS_KEY": "test-access-key",
+        "S3_SECRET_KEY": "test-secret-key",
+        "S3_ENDPOINT_URL": "https://s3.test.invalid",
+        "S3_REGION_NAME": "us-east-1",
         "SQLALCHEMY_ENGINES": dict.fromkeys(ENGINE_NAMES, db_url),
     }
 

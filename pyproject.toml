@@ -33,6 +33,9 @@ dependencies = [
     "python-dotenv>=1.1",
     # Server
     "gunicorn>=23.0",
+    # Uploads
+    "boto3>=1.43.83",
+    "botocore>=1.43.83",
 ]
 
 [project.optional-dependencies]
@@ -49,6 +52,7 @@ dev = [
     "tox>=4.22",
     "tox-uv>=1.13",
     "themetacity[debug]",
+    "boto3-stubs>=1.43.83",
 ]
 lint = [
     "ruff>=0.15",

@@ -3,7 +3,7 @@ import os
 from flask import Flask, Response
 
 from tmc import extensions
-from tmc.extensions import configs, db, handlers, jinja_filters
+from tmc.extensions import db, handlers, jinja_filters
 from tmc.extensions.alembic import init_app as init_alembic
 
 
@@ -56,7 +56,7 @@ def create_app(config=None) -> Flask:
     )
 
     if config is None:
-        configs.init_app(app)
+        extensions.load_config(app)
     else:
         # Test / explicit config: bypass the .env + .pgpass pipeline.
         app.config.from_mapping(config)

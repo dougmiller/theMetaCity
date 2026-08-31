@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main, "upgrade/**"]
+  pull_request:
+
+jobs:
+  test:
+    name: Tests (pytest on Postgres 18)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: tmc_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      # conftest provisions schemas + tables itself, so a blank DB + superuser
+      # is all it needs. On PG18 uuidv7()/uuid_extract_timestamp() are native.
+      TMC_TEST_DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/tmc_test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install Python 3.14
+        run: uv python install 3.14
+      - name: Run tests
+        run: uv run tox -e py314
+
+  lint:
+    name: Lint (ruff format + full rule set)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install Python 3.14
+        run: uv python install 3.14
+      - name: Ruff
+        run: uv run tox -e lint
+
+  type:
+    name: Type check (basedpyright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install Python 3.14
+        run: uv python install 3.14
+      - name: basedpyright
+        run: uv run tox -e type

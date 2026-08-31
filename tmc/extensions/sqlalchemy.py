@@ -59,3 +59,10 @@ def read_session() -> Session:
     if "_read_session" not in g:
         g._read_session = Session(bind=db.engines["read_only"], expire_on_commit=False)
     return g._read_session
+
+
+def load_config(app: Flask) -> None:
+    """Populate SQLALCHEMY_ENGINES from the environment (non-injected path)."""
+    from tmc.extensions.database import engines_from_env
+
+    app.config["SQLALCHEMY_ENGINES"] = engines_from_env()
