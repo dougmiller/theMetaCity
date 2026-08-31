@@ -42,6 +42,7 @@ dependencies = [
 # Debug toolbar — not installed in production.
 debug = [
     "flask-debugtoolbar>=0.15",
+    "flask-debugtoolbar-sqlalchemy>=0.2",
 ]
 
 [dependency-groups]

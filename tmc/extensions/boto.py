@@ -12,7 +12,7 @@ shared client is both correct and fast — far cheaper than rebuilding a client
 from dataclasses import dataclass
 from typing import Any
 
-from flask import Flask
+from flask import Flask, request
 
 # S3 configuration keys (populated from env on the non-injected path).
 _S3_KEYS = (
@@ -27,7 +27,21 @@ _S3_KEYS = (
 @dataclass
 class S3Extension:
     client: Any
+    generate_presigned_post: Any
+    post_file_to_storage: Any
 
+
+def generate_presigned_post(presign_data) -> Any:
+    """Generate a presigned post request to S3.
+    Requires that the client be configured
+    :return JSON response S3 presigned post request with details to upload to"""
+    pass
+
+def post_file_to_storage(post_upload) -> Any:
+    """Accept and send up the file to the presigned location.
+    Requires that the client be configured
+    :return JSON response that that the upload actualy worked"""
+    pass
 
 def load_config(app: Flask) -> None:
     """Populate S3 config from the environment (non-injected path)."""
@@ -52,7 +66,11 @@ def init_app(app: Flask) -> None:
             s3={"addressing_style": "virtual"},
         ),
     )
-    app.extensions["s3"] = S3Extension(client=client)
+    app.extensions["s3"] = S3Extension(
+        client=client,
+        generate_presigned_post=generate_presigned_post,
+        post_file_to_storage=post_file_to_storage,
+    )
 
 
 def preflight(app: Flask) -> list[str]:

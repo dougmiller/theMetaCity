@@ -7,12 +7,11 @@ version table lives in its own `alembic` schema.
 
 from __future__ import annotations
 
-import os
-
 from flask import Flask
 from flask_alembic import Alembic
 from sqlalchemy.schema import SchemaItem
 
+from tmc.extensions._env import raw_env
 from tmc.extensions.sqlalchemy import Base
 
 _TRACKED_SCHEMAS = {"com", "media", "everyday_ordinary"}
@@ -37,11 +36,24 @@ def _include_object(
 
 alembic = Alembic(metadatas=Base.metadata)
 
+_ALEMBIC_KEYS = (
+    "ALEMBIC_VERSION_TABLE_SCHEMA",
+)
+
+
+def load_config(app: Flask) -> None:
+    """Source logging config from the environment (non-injected path)."""
+    env = raw_env()
+    app.config.from_mapping({key: env.get(key) for key in _ALEMBIC_KEYS if env.get(key) is not None})
+
 
 def init_app(app: Flask) -> None:
+    app.config.setdefault("ALEMBIC_VERSION_TABLE_SCHEMA", "alembic")
+
+
     app.config["ALEMBIC"] = {"script_location": "migrations"}
     app.config["ALEMBIC_CONTEXT"] = {
-        "version_table_schema": os.environ.get("ALEMBIC_VERSION_TABLE_SCHEMA", "alembic"),
+        "version_table_schema": app.config.get("ALEMBIC_VERSION_TABLE_SCHEMA"),
         "include_schemas": True,
         "include_object": _include_object,
     }
