@@ -9,7 +9,17 @@ from tmc.extensions.jinja_filters import register_filters
 from tmc.extensions.sqlalchemy import Base, db, read_session
 
 # App-general logging first, then extensions in initialisation order.
-_REGISTRY = (logging, config, sqlalchemy, caching, boto, debug_toolbar, markdown)
+# markdown kept off the load as it is not used yet
+_REGISTRY = (
+    logging,
+    config,
+    sqlalchemy,
+    caching,
+    boto,
+    markdown,
+    debug_toolbar
+)
+
 
 
 def load_config(app: Flask) -> None:

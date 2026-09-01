@@ -20,8 +20,6 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from tmc import queries
-from tmc.extensions import md
-from tmc.extensions.markdown import TMCBlogMetadataSchema
 from tmc.models.blog import Article, Tag
 from tmc.queries import blog as blog_queries
 
@@ -101,14 +99,14 @@ def process_markdown_file(session: Session, filename: str) -> ProcessResult:
     with open(full_path, encoding="utf-8") as f:
         content = f.read()
 
-    md.reset()
-    md.convert(content)
+    current_app.extensions["markdown"].md.reset()
+    current_app.extensions["markdown"].md.convert(content)
     body = strip_metadata(content)
 
-    meta_source: dict[str, list[str]] = getattr(md, "Meta", {})
+    meta_source: dict[str, list[str]] = getattr(current_app.extensions["markdown"].md, "Meta", {})
     meta_raw = {key: value[0] for key, value in meta_source.items() if value}
     try:
-        meta: dict[str, Any] = cast("dict[str, Any]", TMCBlogMetadataSchema().load(meta_raw))
+        meta: dict[str, Any] = cast("dict[str, Any]", current_app.extensions['markdown'].TMCBlogMetadataSchema().load(meta_raw))
     except ValidationError as err:
         messages = [m for msgs in err.messages_dict.values() for m in msgs]
         raise BlogProcessingError("Metadata validation failed: " + "; ".join(messages)) from err

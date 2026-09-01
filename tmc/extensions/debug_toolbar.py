@@ -41,6 +41,7 @@ def _swap_sqlalchemy_panel(app: Flask) -> None:
 
 
 def init_app(app: Flask) -> None:
+    # SECRET_KEY (required by the toolbar) is preflighted by the app-general config, which runs first in the registry.
     # Dev-only aid, shipped in the optional `debug` extra. Never required for
     # boot: skip unless FLASK_DEBUG is on AND the package is installed (it isn't
     # in the production image). Import is deferred so importing this module
@@ -55,8 +56,3 @@ def init_app(app: Flask) -> None:
     DebugToolbarExtension(app)  # populates DEBUG_TB_PANELS defaults
     _swap_sqlalchemy_panel(app)  # then swap the SQLAlchemy panel in place
 
-
-def preflight(app: Flask) -> list[str]:
-    # SECRET_KEY (required by the toolbar) is preflighted by the app-general
-    # config, which runs first in the registry.
-    return []

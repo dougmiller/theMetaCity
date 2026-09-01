@@ -18,7 +18,10 @@ from flask import Flask
 
 from tmc.extensions._env import raw_env
 
-_LOG_KEYS = ("LOG_LEVEL", "LOG_FILE")
+_LOG_KEYS = (
+    "LOG_LEVEL",
+    "LOG_FILE"
+)
 
 
 def load_config(app: Flask) -> None:

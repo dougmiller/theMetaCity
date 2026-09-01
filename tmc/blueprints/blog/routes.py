@@ -1,7 +1,7 @@
-from flask import abort, make_response, render_template
+from flask import abort, current_app, make_response, render_template
 from flask.typing import ResponseReturnValue
 
-from tmc.extensions import md, read_session
+from tmc.extensions import read_session
 from tmc.queries import blog as blog_queries
 
 from .bp import bp
@@ -30,7 +30,7 @@ def title(url: str) -> str:
     article = blog_queries.blog_by_url(read_session(), url)
     if article is None:
         abort(404)
-    article.content = md.convert(article.content)
+    article.content = current_app.extensions["markdown"].md.convert(article.content)
     return render_template("blog/article.jinja2", article=article)
 
 

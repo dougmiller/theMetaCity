@@ -5,14 +5,18 @@ meta {
 }
 
 post {
-  url: {{Protocol}}{{Domain}}{{Port}}/{{Namespace}}/{{Version}}/appreciate
+  url: {{Protocol}}{{Domain}}{{Port}}/{{Namespace}}/{{Version}}/presign?key=&policy=
   body: multipartForm
   auth: none
 }
 
+params:query {
+  key: 
+  policy: 
+}
+
 body:multipart-form {
-  text: This is the initial text
-  image: @file(/Users/doug/Desktop/11.png)
+  filename: whattodo.pdf
 }
 
 vars:post-response {

@@ -7,16 +7,14 @@ from .bp import bp
 
 @bp.route("/presign", methods=["POST"])
 def presign() -> ResponseReturnValue:
-    data = request.get_json(silent=True)
+    data = request.form
     if not data or "filename" not in data:
         return jsonify({"success": False, "error": "Missing 'filename' in JSON body"}), 400
 
-    s3 = current_app.extensions["s3"].client
+    s3 = current_app.extensions["s3"]
     try:
         response = s3.generate_presigned_post(
-            current_app.config["S3_BUCKET_NAME"],
             data["filename"],
-            ExpiresIn=3600,
         )
     except ClientError:
         current_app.logger.exception("presign failed")
