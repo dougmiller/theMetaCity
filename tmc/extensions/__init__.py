@@ -2,24 +2,24 @@ import sys
 
 from flask import Flask
 
-from tmc.extensions import boto, caching, config, debug_toolbar, logging, markdown, sqlalchemy
+from tmc.extensions import alembic, boto, caching, config, debug_toolbar, handlers, jinja_filters, logging, marshmallow, sqlalchemy, tmc_markdown
 from tmc.extensions.caching import cache
-from tmc.extensions.handlers import handlers as handlers
-from tmc.extensions.jinja_filters import register_filters
 from tmc.extensions.sqlalchemy import Base, db, read_session
 
 # App-general logging first, then extensions in initialisation order.
-# markdown kept off the load as it is not used yet
 _REGISTRY = (
     logging,
     config,
+    alembic,
     sqlalchemy,
     caching,
     boto,
-    markdown,
-    debug_toolbar
+    tmc_markdown,
+    marshmallow,
+    debug_toolbar,
+    handlers,
+    jinja_filters
 )
-
 
 
 def load_config(app: Flask) -> None:
@@ -27,7 +27,7 @@ def load_config(app: Flask) -> None:
     sources its own config. Skipped when config is injected (tests)."""
     for component in _REGISTRY:
         loader = getattr(component, "load_config", None)
-        if loader is not None:
+        if loader is not None: # The component may not have a load_config method. Skip if so.
             loader(app)
 
 
@@ -38,7 +38,7 @@ def preflight(app: Flask) -> None:
     errors_list: list[str] = []
     for component in _REGISTRY:
         _preflight = getattr(component, "preflight", None)
-        if _preflight is not None:
+        if _preflight is not None: # The component may not have a preflight method. Skip if so.
             errors_list.extend(_preflight(app))
     if errors_list:
         sys.exit("Startup failed:\n" + "\n".join(f"  - {e}" for e in errors_list))
@@ -54,9 +54,7 @@ __all__ = (
     "Base",
     "cache",
     "db",
-    "handlers",
     "load_config",
-    "md",
     "read_session",
     "register_filters",
 )

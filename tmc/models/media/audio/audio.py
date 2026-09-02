@@ -7,7 +7,7 @@ from tmc.models.media.asset import Asset, AssetType
 from tmc.models.media.audio.file import File
 from tmc.models.media.audio.track import Track
 
-__all__ = ("Audio", "AudioAdmin")
+__all__ = ("Audio",)
 
 
 class Audio(Asset):
@@ -26,6 +26,3 @@ class Audio(Asset):
     def format_running_time_to_human_readable(self) -> str:
         return "123"
 
-
-# Read vs write is chosen by session now; alias kept for former admin call sites.
-AudioAdmin = Audio

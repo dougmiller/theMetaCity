@@ -3,8 +3,7 @@ import os
 from flask import Flask, Response
 
 from tmc import extensions
-from tmc.extensions import db, handlers, jinja_filters
-from tmc.extensions.alembic import init_app as init_alembic
+from tmc.extensions import db
 
 
 def _setup_url_maps(app) -> None:
@@ -63,11 +62,6 @@ def create_app(config=None) -> Flask:
 
     extensions.preflight(app)
     extensions.init_app(app)
-
-    # debug_toolbar.init_app(app)
-    init_alembic(app)
-    jinja_filters.register_filters(app)
-    handlers.init_app(app)
 
     _setup_url_maps(app)
     _setup_blueprints(app)

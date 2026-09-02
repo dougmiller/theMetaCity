@@ -99,14 +99,14 @@ def process_markdown_file(session: Session, filename: str) -> ProcessResult:
     with open(full_path, encoding="utf-8") as f:
         content = f.read()
 
-    current_app.extensions["markdown"].md.reset()
-    current_app.extensions["markdown"].md.convert(content)
+    md = current_app.extensions["markdown"].make()
+    md.convert(content)  # populates md.Meta from the document frontmatter
     body = strip_metadata(content)
 
-    meta_source: dict[str, list[str]] = getattr(current_app.extensions["markdown"].md, "Meta", {})
+    meta_source: dict[str, list[str]] = getattr(md, "Meta", {})
     meta_raw = {key: value[0] for key, value in meta_source.items() if value}
     try:
-        meta: dict[str, Any] = cast("dict[str, Any]", current_app.extensions['markdown'].TMCBlogMetadataSchema().load(meta_raw))
+        meta: dict[str, Any] = cast("dict[str, Any]", current_app.extensions['markdown'].blog_metadata_schema.load(meta_raw))
     except ValidationError as err:
         messages = [m for msgs in err.messages_dict.values() for m in msgs]
         raise BlogProcessingError("Metadata validation failed: " + "; ".join(messages)) from err

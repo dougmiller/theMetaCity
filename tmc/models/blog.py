@@ -10,16 +10,10 @@ from tmc.models.extensions.mixins import TimestampsMixin
 
 __all__ = (
     "Article",
-    "ArticleAdmin",
     "ArticleTags",
-    "ArticleTagsAdmin",
-    "ArticleTagsSelector",
     "Blog",
-    "BlogAdmin",
     "Tag",
-    "TagAdmin",
     "Workshop",
-    "WorkshopAdmin",
 )
 
 
@@ -36,14 +30,8 @@ class ArticleTags(BasicModel):
         return f"[ArticleTags: Article {self.article_id} - Tag {self.tag_id}]"
 
 
-# Back-compat aliases (read/write is now a session concern, not a class concern).
-ArticleTagsSelector = ArticleTags
-ArticleTagsAdmin = ArticleTags
-
-
 class Variant(PyEnum):
     """Article type discriminator (maps to a PG enum)."""
-
     blog = "blog"
     workshop = "workshop"
 
@@ -101,10 +89,3 @@ class Tag(BasicModel):
 
     def __repr__(self) -> str:
         return f"[Tag {self.id}: {self.tag!r}]"
-
-
-# Back-compat aliases for former *_admin classes.
-ArticleAdmin = Article
-BlogAdmin = Blog
-WorkshopAdmin = Workshop
-TagAdmin = Tag

@@ -5,7 +5,7 @@ from tmc.models.media.asset import Asset, AssetType
 from tmc.models.media.video.file import File
 from tmc.models.media.video.track import Track
 
-__all__ = ("Video", "VideoAdmin")
+__all__ = ("Video",)
 
 
 class Video(Asset):
@@ -21,5 +21,3 @@ class Video(Asset):
         "with_polymorphic": "*",
     }
 
-
-VideoAdmin = Video

@@ -4,9 +4,10 @@ from markupsafe import Markup
 
 def tmc_markdown(raw_markdown) -> Markup:
     """Render Markdown safely as HTML."""
-    return Markup(current_app.extensions["markdown"].md.convert(raw_markdown))
+    return Markup(current_app.extensions["markdown"].convert(raw_markdown))
 
 
-def register_filters(app: Flask) -> None:
-    """Register custom filters with the Flask app."""
+def init_app(app: Flask) -> None:
+    app.logger.info("Initializing Jinja filters")
     app.jinja_env.filters["markdown"] = tmc_markdown
+    app.logger.info("Finished initializing Jinja filters")

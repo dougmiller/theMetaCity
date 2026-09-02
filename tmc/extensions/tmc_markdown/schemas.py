@@ -6,13 +6,13 @@ from tmc.models.blog import Variant
 
 
 class TMCBlogMetadataSchema(Schema):
-    id = fields.String(allow_none=True)
+    id = fields.UUID(allow_none=True)
     title = fields.String(required=True)
     url = fields.String(required=True)
-    variant = fields.Enum(Variant, load_default=Variant.blog)
+    variant = fields.Enum(Variant, by_value=True, load_default=Variant.blog)
     blurb = fields.String(required=True)
     tags = fields.List(fields.String(), load_default=[])
-    parent = fields.String(allow_none=True)
+    parent = fields.UUID(allow_none=True)
 
     @pre_load
     def normalize_keys(self, data, **kwargs) -> dict:
@@ -20,10 +20,13 @@ class TMCBlogMetadataSchema(Schema):
         return {k.lower(): v for k, v in data.items()}
 
     @pre_load
-    def normalize_type(self, data, **kwargs) -> dict:
-        if "variant" in data and isinstance(data["variant"], str):
-            raw_variant = data["variant"].lower().strip()
-            data["variant"] = Variant(raw_variant)
+    def normalize_variant(self, data, **kwargs) -> dict:
+        # Normalise only the raw string (case/whitespace); let the Enum field do
+        # the conversion so a bad value raises ValidationError (caught by the
+        # caller), not a bare ValueError that escapes it.
+        variant = data.get("variant")
+        if isinstance(variant, str):
+            data["variant"] = variant.lower().strip()
         return data
 
     @pre_load
@@ -51,11 +54,6 @@ class TMCBlogMetadataSchema(Schema):
         slug_pattern = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
         if not slug_pattern.match(value):
             raise ValidationError("URL must be a valid slug (lowercase, no spaces, use hyphens)")
-
-    @validates("variant")
-    def validate_type(self, value, **kwargs) -> None:
-        if value not in {Variant.blog, Variant.workshop}:
-            raise ValidationError("Type must be either 'blog' or 'workshop'.")
 
     @validates_schema
     def check_blank_id(self, data, **kwargs) -> None:

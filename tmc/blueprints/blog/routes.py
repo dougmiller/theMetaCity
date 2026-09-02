@@ -30,7 +30,7 @@ def title(url: str) -> str:
     article = blog_queries.blog_by_url(read_session(), url)
     if article is None:
         abort(404)
-    article.content = current_app.extensions["markdown"].md.convert(article.content)
+    article.content = current_app.extensions["markdown"].convert(article.content)
     return render_template("blog/article.jinja2", article=article)
 
 

@@ -16,7 +16,7 @@ from tmc.extensions._env import raw_env
 
 _CACHE_KEYS = ("CACHE_TYPE", "CACHE_DEFAULT_TIMEOUT", "CACHE_KEY_PREFIX")
 
-cache: Cache = Cache()
+cache = Cache()
 
 
 def load_config(app: Flask) -> None:

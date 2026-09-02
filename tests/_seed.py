@@ -72,9 +72,9 @@ def make_postcard(session) -> Postcard:
 
 
 def make_edo(session, content="hello world") -> EDO:
-    from tmc.models.edo import EDO_Admin
+    from tmc.models.edo import EDO
 
-    edo = EDO_Admin(id=uuid7(), content=content)
+    edo = EDO(id=uuid7(), content=content)
     session.add(edo)
     session.flush()
     return edo

@@ -1,20 +1,12 @@
-from flask import render_template
+from flask import Flask, render_template
 
 
-class Handlers:
-    def __init__(self, app=None) -> None:
-        if app is not None:
-            pass
+def init_app(app: Flask) -> None:
+    def page_not_found(e) -> tuple[str, int]:
+        return render_template("404.html"), 404
 
-    def init_app(self, app) -> None:
-        def page_not_found(e) -> tuple[str, int]:
-            return render_template("404.html"), 404
+    def error_page(e) -> tuple[str, int]:
+        return render_template("500.html"), 500
 
-        def error_page(e) -> tuple[str, int]:
-            return render_template("500.html"), 500
-
-        app.register_error_handler(404, page_not_found)
-        app.register_error_handler(500, error_page)
-
-
-handlers = Handlers()
+    app.register_error_handler(404, page_not_found)
+    app.register_error_handler(500, error_page)
