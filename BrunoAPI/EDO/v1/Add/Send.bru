@@ -1,0 +1,32 @@
+meta {
+  name: Send
+  type: http
+  seq: 2
+}
+
+put {
+  url: https://tmc-blog.sg-sin-1.linodeobjects.com/whattodo.pdf?key=whattodo.pdf&policy=eyJleHBpcmF0aW9uIjogIjIwMjYtMDktMDFUMDQ6NDk6MTNaIiwgImNvbmRpdGlvbnMiOiBbeyJidWNrZXQiOiAidG1jLWJsb2cifSwgeyJrZXkiOiAid2hhdHRvZG8ucGRmIn0sIHsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwgeyJ4LWFtei1jcmVkZW50aWFsIjogIkJXN0xHSDlTWVJZRFg5TUQzMTJPLzIwMjYwOTAxL3NnLXNpbi0xL3MzL2F3czRfcmVxdWVzdCJ9LCB7IngtYW16LWRhdGUiOiAiMjAyNjA5MDFUMDM0OTEzWiJ9XX0=&x-amz-algorithm=AWS4-HMAC-SHA256&x-amz-credential=BW7LGH9SYRYDX9MD312O/20260901/sg-sin-1/s3/aws4_request&x-amz-date=20260901T034913Z&x-amz-signature=c7beaeb1a61b4a52141194fe7554a709bd1b40faf5d4f2b6dc96ebec02afafb1
+  body: multipartForm
+  auth: none
+}
+
+params:query {
+  key: whattodo.pdf
+  policy: eyJleHBpcmF0aW9uIjogIjIwMjYtMDktMDFUMDQ6NDk6MTNaIiwgImNvbmRpdGlvbnMiOiBbeyJidWNrZXQiOiAidG1jLWJsb2cifSwgeyJrZXkiOiAid2hhdHRvZG8ucGRmIn0sIHsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwgeyJ4LWFtei1jcmVkZW50aWFsIjogIkJXN0xHSDlTWVJZRFg5TUQzMTJPLzIwMjYwOTAxL3NnLXNpbi0xL3MzL2F3czRfcmVxdWVzdCJ9LCB7IngtYW16LWRhdGUiOiAiMjAyNjA5MDFUMDM0OTEzWiJ9XX0=
+  x-amz-algorithm: AWS4-HMAC-SHA256
+  x-amz-credential: BW7LGH9SYRYDX9MD312O/20260901/sg-sin-1/s3/aws4_request
+  x-amz-date: 20260901T034913Z
+  x-amz-signature: c7beaeb1a61b4a52141194fe7554a709bd1b40faf5d4f2b6dc96ebec02afafb1
+}
+
+body:multipart-form {
+  file: @file(/Users/doug/Documents/WhatToDoWhenTrisectorComes.pdf) @contentType(application/pdf)
+}
+
+body:file {
+  file: @file(/Users/doug/Documents/WhatToDoWhenTrisectorComes.pdf) @contentType(application/pdf)
+}
+
+vars:post-response {
+  : 
+}

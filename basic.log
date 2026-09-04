@@ -1,0 +1,128 @@
+2026-09-02 15:41:29,078 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-09-02 15:41:29,078 INFO werkzeug [33mPress CTRL+C to quit[0m
+2026-09-02 15:41:29,079 INFO werkzeug  * Restarting with stat
+2026-09-02 15:41:29,482 WARNING werkzeug  * Debugger is active!
+2026-09-02 15:41:29,497 INFO werkzeug  * Debugger PIN: 686-476-445
+2026-09-02 15:41:49,653 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-09-02 15:41:49,653 INFO werkzeug [33mPress CTRL+C to quit[0m
+2026-09-02 15:41:49,654 INFO werkzeug  * Restarting with stat
+2026-09-02 15:41:50,161 WARNING werkzeug  * Debugger is active!
+2026-09-02 15:41:50,175 INFO werkzeug  * Debugger PIN: 686-476-445
+2026-09-02 15:43:14,204 INFO werkzeug  * Detected change in '/Users/doug/Code/tmc/theMetaCityFlask/tmc/extensions/jinja_filters/__init__.py', reloading
+2026-09-02 15:43:14,478 INFO werkzeug  * Restarting with stat
+2026-09-02 15:43:15,023 INFO tmc Initializing Jinja filters
+2026-09-02 15:43:15,095 WARNING werkzeug  * Debugger is active!
+2026-09-02 15:43:15,112 INFO werkzeug  * Debugger PIN: 686-476-445
+2026-09-02 15:43:22,350 INFO werkzeug  * Detected change in '/Users/doug/Code/tmc/theMetaCityFlask/tmc/extensions/jinja_filters/__init__.py', reloading
+2026-09-02 15:43:22,633 INFO werkzeug  * Restarting with stat
+2026-09-02 15:43:23,138 INFO tmc Initializing Jinja filters
+2026-09-02 15:43:23,138 INFO tmc Finished initializing Jinja filters
+2026-09-02 15:43:23,205 WARNING werkzeug  * Debugger is active!
+2026-09-02 15:43:23,220 INFO werkzeug  * Debugger PIN: 686-476-445
+2026-09-02 15:43:29,514 INFO tmc Initializing Jinja filters
+2026-09-02 15:43:29,514 INFO tmc Finished initializing Jinja filters
+2026-09-02 15:43:29,577 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-09-02 15:43:29,577 INFO werkzeug [33mPress CTRL+C to quit[0m
+2026-09-02 15:43:29,578 INFO werkzeug  * Restarting with stat
+2026-09-02 15:43:29,932 INFO tmc Initializing Jinja filters
+2026-09-02 15:43:29,932 INFO tmc Finished initializing Jinja filters
+2026-09-02 15:43:29,994 WARNING werkzeug  * Debugger is active!
+2026-09-02 15:43:30,006 INFO werkzeug  * Debugger PIN: 686-476-445
+2026-09-02 15:44:49,746 INFO werkzeug  * Detected change in '/Users/doug/Code/tmc/theMetaCityFlask/tmc/blueprints/blog/routes.py', reloading
+2026-09-02 15:44:50,014 INFO werkzeug  * Restarting with stat
+2026-09-02 15:44:50,610 INFO tmc Initializing Jinja filters
+2026-09-02 15:44:50,610 INFO tmc Finished initializing Jinja filters
+2026-09-02 15:44:50,708 WARNING werkzeug  * Debugger is active!
+2026-09-02 15:44:50,724 INFO werkzeug  * Debugger PIN: 686-476-445
+2026-09-02 15:46:14,130 INFO werkzeug 127.0.0.1 - - [02/Sep/2026 15:46:14] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2026-09-02 15:46:14,182 INFO werkzeug 127.0.0.1 - - [02/Sep/2026 15:46:14] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2026-09-02 15:46:14,183 INFO werkzeug 127.0.0.1 - - [02/Sep/2026 15:46:14] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2026-09-02 15:46:14,233 INFO werkzeug 127.0.0.1 - - [02/Sep/2026 15:46:14] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2026-09-02 15:46:51,079 INFO werkzeug  * Detected change in '/Users/doug/Code/tmc/theMetaCityFlask/tmc/blueprints/blog/routes.py', reloading
+2026-09-02 15:46:51,469 INFO werkzeug  * Restarting with stat
+2026-09-02 15:46:52,084 INFO tmc Initializing Jinja filters
+2026-09-02 15:46:52,084 INFO tmc Finished initializing Jinja filters
+2026-09-02 15:46:52,161 WARNING werkzeug  * Debugger is active!
+2026-09-02 15:46:52,193 INFO werkzeug  * Debugger PIN: 686-476-445
+2026-09-02 15:55:28,038 INFO werkzeug  * Detected change in '/Users/doug/Code/tmc/theMetaCityFlask/tmc/extensions/caching.py', reloading
+2026-09-02 15:55:28,336 INFO werkzeug  * Restarting with stat
+2026-09-02 15:55:28,953 INFO tmc Initializing Jinja filters
+2026-09-02 15:55:28,953 INFO tmc Finished initializing Jinja filters
+2026-09-02 15:55:29,018 WARNING werkzeug  * Debugger is active!
+2026-09-02 15:55:29,029 INFO werkzeug  * Debugger PIN: 686-476-445
+2026-09-02 16:54:16,068 INFO tmc Initializing Jinja filters
+2026-09-02 16:54:16,069 INFO tmc Finished initializing Jinja filters
+2026-09-02 16:54:16,166 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-09-02 16:54:16,166 INFO werkzeug [33mPress CTRL+C to quit[0m
+2026-09-02 16:54:16,167 INFO werkzeug  * Restarting with stat
+2026-09-02 16:54:16,512 INFO tmc Initializing Jinja filters
+2026-09-02 16:54:16,512 INFO tmc Finished initializing Jinja filters
+2026-09-02 16:54:16,572 WARNING werkzeug  * Debugger is active!
+2026-09-02 16:54:16,585 INFO werkzeug  * Debugger PIN: 686-476-445
+2026-09-02 16:54:44,868 INFO tmc Initializing Jinja filters
+2026-09-02 16:54:44,869 INFO tmc Finished initializing Jinja filters
+2026-09-02 18:26:01,320 INFO tmc Initializing Jinja filters
+2026-09-02 18:26:01,321 INFO tmc Finished initializing Jinja filters
+2026-09-02 18:26:08,058 INFO tmc Initializing Jinja filters
+2026-09-02 18:26:08,058 INFO tmc Finished initializing Jinja filters
+2026-09-02 18:26:08,158 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-09-02 18:26:08,158 INFO werkzeug [33mPress CTRL+C to quit[0m
+2026-09-02 18:26:08,159 INFO werkzeug  * Restarting with stat
+2026-09-02 18:26:08,512 INFO tmc Initializing Jinja filters
+2026-09-02 18:26:08,512 INFO tmc Finished initializing Jinja filters
+2026-09-02 18:26:08,571 WARNING werkzeug  * Debugger is active!
+2026-09-02 18:26:08,589 INFO werkzeug  * Debugger PIN: 134-407-224
+2026-09-03 18:54:09,503 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-09-03 18:54:09,503 INFO werkzeug [33mPress CTRL+C to quit[0m
+2026-09-03 18:54:09,504 INFO werkzeug  * Restarting with stat
+2026-09-03 18:54:09,930 WARNING werkzeug  * Debugger is active!
+2026-09-03 18:54:09,945 INFO werkzeug  * Debugger PIN: 134-407-224
+2026-09-03 18:54:24,260 ERROR werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:24] code 400, message Bad request version ('\x13\x01\x13\x03\x13\x02À+À/Ì©Ì¨À,À0À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06µ\x00\x00\x00\x19\x00\x17\x00\x00\x14www.themetacity.test\x00\x17\x00\x00ÿ\x01\x00\x01\x00\x00')
+2026-09-03 18:54:24,260 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:24] "[31m[1m\x16\x03\x01\x07 \x01\x00\x07\x1c\x03\x03£Q8~µÞU\x08\x85-²ÿå[\x85±\x97¸\x150ü\x07\x8b\x84\\\x00ÝTÃ\x81Þt ýN\x86\x04¹\x97ìôy¦XW<\x97\x1cÍd\x1c1a]dïsÏÏ¬\x00ÃD"\x96\x00\x1e\x13\x01\x13\x03\x13\x02À+À/Ì©Ì¨À,À0À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06µ\x00\x00\x00\x19\x00\x17\x00\x00\x14www.themetacity.test\x00\x17\x00\x00ÿ\x01\x00\x01\x00\x00[0m" 400 -
+2026-09-03 18:54:25,820 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "GET / HTTP/1.1" 200 -
+2026-09-03 18:54:25,857 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "[33mGET /fonts/Roboto-Regular.ttf HTTP/1.1[0m" 404 -
+2026-09-03 18:54:25,857 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "GET /css/style.css HTTP/1.1" 200 -
+2026-09-03 18:54:25,857 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "GET /css/home.css HTTP/1.1" 200 -
+2026-09-03 18:54:25,858 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "GET /fonts/RobotoMono-Regular.ttf HTTP/1.1" 200 -
+2026-09-03 18:54:25,860 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "GET /images/tmc-logo-animated.svg HTTP/1.1" 200 -
+2026-09-03 18:54:25,865 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "GET /css/_layout.css HTTP/1.1" 200 -
+2026-09-03 18:54:25,865 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "GET /css/_variables.css HTTP/1.1" 200 -
+2026-09-03 18:54:25,866 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "GET /css/_colours2.css HTTP/1.1" 200 -
+2026-09-03 18:54:25,865 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "GET /css/_fonts.css HTTP/1.1" 200 -
+2026-09-03 18:54:25,873 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "[33mGET /fonts/Roboto-Regular.ttf HTTP/1.1[0m" 404 -
+2026-09-03 18:54:25,874 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:25] "[36mGET /fonts/RobotoMono-Regular.ttf HTTP/1.1[0m" 304 -
+2026-09-03 18:54:29,775 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:29] "[32mGET /blog HTTP/1.1[0m" 308 -
+2026-09-03 18:54:29,815 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:29] "GET /blog/ HTTP/1.1" 200 -
+2026-09-03 18:54:29,837 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:29] "GET /blog/static/css/blog-style.css HTTP/1.1" 200 -
+2026-09-03 18:54:29,856 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:29] "GET /blog/static/css/_variables.css HTTP/1.1" 200 -
+2026-09-03 18:54:29,856 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 18:54:29] "GET /blog/static/css/_layout.css HTTP/1.1" 200 -
+2026-09-03 23:39:43,912 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-09-03 23:39:43,912 INFO werkzeug [33mPress CTRL+C to quit[0m
+2026-09-03 23:39:43,913 INFO werkzeug  * Restarting with stat
+2026-09-03 23:39:44,323 WARNING werkzeug  * Debugger is active!
+2026-09-03 23:39:44,339 INFO werkzeug  * Debugger PIN: 134-407-224
+2026-09-03 23:39:48,326 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:48] "GET / HTTP/1.1" 200 -
+2026-09-03 23:39:48,375 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:48] "[33mGET /fonts/Roboto-Regular.ttf HTTP/1.1[0m" 404 -
+2026-09-03 23:39:48,377 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:48] "GET /css/style.css HTTP/1.1" 200 -
+2026-09-03 23:39:48,377 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:48] "GET /fonts/RobotoMono-Regular.ttf HTTP/1.1" 200 -
+2026-09-03 23:39:48,377 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:48] "GET /css/home.css HTTP/1.1" 200 -
+2026-09-03 23:39:48,384 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:48] "GET /images/tmc-logo-animated.svg HTTP/1.1" 200 -
+2026-09-03 23:39:48,390 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:48] "GET /css/_colours2.css HTTP/1.1" 200 -
+2026-09-03 23:39:48,391 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:48] "GET /css/_layout.css HTTP/1.1" 200 -
+2026-09-03 23:39:48,391 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:48] "GET /css/_variables.css HTTP/1.1" 200 -
+2026-09-03 23:39:48,392 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:48] "GET /css/_fonts.css HTTP/1.1" 200 -
+2026-09-03 23:39:53,207 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:53] "GET /blog/a-brief-note-to-young-players/ HTTP/1.1" 200 -
+2026-09-03 23:39:53,236 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:53] "GET /blog/static/css/blog-style.css HTTP/1.1" 200 -
+2026-09-03 23:39:53,243 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:53] "GET /blog/static/css/_layout.css HTTP/1.1" 200 -
+2026-09-03 23:39:53,243 INFO werkzeug 127.0.0.1 - - [03/Sep/2026 23:39:53] "GET /blog/static/css/_variables.css HTTP/1.1" 200 -
+2026-09-04 00:07:26,191 INFO werkzeug 127.0.0.1 - - [04/Sep/2026 00:07:26] "GET /blog/ HTTP/1.1" 200 -
+2026-09-04 00:07:26,224 INFO werkzeug 127.0.0.1 - - [04/Sep/2026 00:07:26] "GET /blog/static/css/blog-style.css HTTP/1.1" 200 -
+2026-09-04 00:07:26,232 INFO werkzeug 127.0.0.1 - - [04/Sep/2026 00:07:26] "GET /blog/static/css/_variables.css HTTP/1.1" 200 -
+2026-09-04 00:07:26,232 INFO werkzeug 127.0.0.1 - - [04/Sep/2026 00:07:26] "GET /blog/static/css/_layout.css HTTP/1.1" 200 -
