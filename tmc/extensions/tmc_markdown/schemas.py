@@ -1,6 +1,6 @@
 import re
 
-from marshmallow import Schema, ValidationError, fields, pre_load, validates, validates_schema
+from marshmallow import Schema, ValidationError, fields, pre_load, validates
 
 from tmc.models.blog import Variant
 
@@ -54,8 +54,3 @@ class TMCBlogMetadataSchema(Schema):
         slug_pattern = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
         if not slug_pattern.match(value):
             raise ValidationError("URL must be a valid slug (lowercase, no spaces, use hyphens)")
-
-    @validates_schema
-    def check_blank_id(self, data, **kwargs) -> None:
-        if "id" in data and data["id"] is not None and not data["id"].strip():
-            raise ValidationError("'id' is present but blank")

@@ -16,20 +16,21 @@ def _setup_url_maps(app) -> None:
 def _setup_blueprints(app) -> None:
     from tmc.blueprints import api, blog, edo, homepage, media
 
-    app.register_blueprint(homepage, url_prefix="/")
-    app.register_blueprint(blog, url_prefix="/blog")
+    app.register_blueprint(homepage, url_prefix="/", subdomain="www")
+    app.register_blueprint(blog, url_prefix="/blog", subdomain="www")
     app.register_blueprint(media, subdomain="media")
     app.register_blueprint(api, subdomain="api")
     app.register_blueprint(edo, subdomain="everydayordinary")
 
 
 def _setup_cli(app) -> None:
-    from tmc.cli import assets, blog, edo, tmc_app
+    from tmc.cli import assets, blog, db_check, edo, tmc_app
 
     app.cli.add_command(edo)
     app.cli.add_command(blog)
     app.cli.add_command(assets)
     app.cli.add_command(tmc_app)
+    app.cli.add_command(db_check)
 
 
 def _setup_minification(app) -> None:

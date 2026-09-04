@@ -60,7 +60,11 @@ class Article(UUIDModel, TimestampsMixin):
         server_default=Variant.blog.value,
     )
 
-    parent: Mapped[Article] = relationship("Article", remote_side="Article.id", backref="children", order_by="Article.id", lazy="selectin")
+    # post_update=True: this relationship is self-referential — an Article (e.g. a
+    # workshop index/TOC) may list itself as parent. SQLAlchemy inserts the row
+    # first, then issues a follow-up UPDATE to set parent_id, breaking the
+    # otherwise-circular flush dependency.
+    parent: Mapped[Article] = relationship("Article", remote_side="Article.id", backref="children", order_by="Article.id", lazy="selectin", post_update=True)
     tags: Mapped[list[Tag]] = relationship("Tag", secondary=ArticleTags.__table__, back_populates="articles", lazy="subquery")
 
     __mapper_args__ = {"polymorphic_on": variant}

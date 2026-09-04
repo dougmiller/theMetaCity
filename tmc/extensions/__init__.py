@@ -56,5 +56,4 @@ __all__ = (
     "db",
     "load_config",
     "read_session",
-    "register_filters",
 )

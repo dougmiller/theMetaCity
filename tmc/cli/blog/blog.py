@@ -54,6 +54,32 @@ def process(file) -> None:
     click.echo("Finished processing.")
 
 
+@blog.command("process-published")
+@click.option("--dir", "subdir", default="published", help="Subdirectory under the documents folder to import (default: published)")
+@with_appcontext
+def process_published(subdir) -> None:
+    """Bulk-import every Markdown file in the published directory.
+
+    Each record is (re)created under the UUIDv7 id from its frontmatter, so the
+    generated created_at/updated_at columns derive from that id's timestamp.
+    Safe to re-run: existing records are updated in place. Intended as a one-off
+    after recreating the database.
+    """
+    try:
+        summary = blog_service.process_published_directory(db.session, subdir)
+    except blog_service.BlogProcessingError as err:
+        click.echo(click.style(str(err), fg="red"))
+        return
+
+    click.echo(click.style(f"Inserted: {summary.inserted}", fg="green"))
+    click.echo(f"Updated:  {summary.updated}")
+    if summary.failures:
+        click.echo(click.style(f"Failed:   {len(summary.failures)}", fg="red"))
+        for name, message in summary.failures:
+            click.echo(click.style(f"  - {name}: {message}", fg="red"))
+    click.echo("Finished processing published directory.")
+
+
 @blog.command("rm")
 @click.argument("record", nargs=1, type=click.UUID, required=True)
 def rm(record) -> None:

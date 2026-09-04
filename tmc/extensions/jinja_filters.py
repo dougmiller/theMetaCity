@@ -8,6 +8,4 @@ def tmc_markdown(raw_markdown) -> Markup:
 
 
 def init_app(app: Flask) -> None:
-    app.logger.info("Initializing Jinja filters")
     app.jinja_env.filters["markdown"] = tmc_markdown
-    app.logger.info("Finished initializing Jinja filters")
