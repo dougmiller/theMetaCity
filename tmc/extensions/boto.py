@@ -2,7 +2,7 @@
 
 One client is created at app initialisation and stored on
 ``app.extensions['s3']``. boto3's low-level clients are thread-safe once
-constructed, and ``generate_presigned_post`` does no network I/O, so a single
+constructed, and ``generate_presigned_url`` does no network I/O, so a single
 shared client is both correct and fast — far cheaper than rebuilding a client
 (which loads botocore service models) on every request. Config is validated in
 ``preflight`` and, on the normal boot path, sourced from the environment in
@@ -29,11 +29,49 @@ class S3Extension:
     client: Any
     bucket: str
 
-    def generate_presigned_post(self, filename: str, *, expires_in: int = 3600) -> dict:
-        """Generate a presigned post request to S3.
-        Requires that the client be configured
-        :return JSON response S3 presigned post request with details to upload to"""
-        return self.client.generate_presigned_post(self.bucket, filename, ExpiresIn=expires_in)
+    def generate_presigned_put(
+        self,
+        key: str,
+        *,
+        content_type: str | None = None,
+        expires_in: int = 3600,
+    ) -> str:
+        """Presign a single-object ``PUT`` upload.
+
+        The Linode S3-compatible endpoint accepts a plain HTTP ``PUT`` of the
+        raw bytes to the returned URL (it does not support presigned POST). When
+        ``content_type`` is given it is signed into the URL, so the client must
+        send exactly that ``Content-Type`` header on the PUT. Requires that the
+        client be configured.
+
+        :return: the presigned URL to PUT the object bytes to.
+        """
+        params: dict[str, Any] = {"Bucket": self.bucket, "Key": key}
+        if content_type:
+            params["ContentType"] = content_type
+        return self.client.generate_presigned_url(
+            "put_object",
+            Params=params,
+            ExpiresIn=expires_in,
+        )
+
+    def object_exists(self, key: str) -> bool:
+        """Return whether ``key`` exists in the bucket (HEAD, no body transfer).
+
+        Used to confirm the client actually completed its presigned upload
+        before a post is allowed to reference it. Missing object -> ``False``;
+        any other client error is re-raised for the caller to handle.
+        """
+        from botocore.exceptions import ClientError
+
+        try:
+            self.client.head_object(Bucket=self.bucket, Key=key)
+        except ClientError as exc:
+            code = exc.response.get("Error", {}).get("Code", "")
+            if code in ("404", "NoSuchKey", "NotFound"):
+                return False
+            raise
+        return True
 
 
 def load_config(app: Flask) -> None:

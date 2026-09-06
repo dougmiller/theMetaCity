@@ -100,7 +100,7 @@ def video() -> ResponseReturnValue:
 @bp.route("list/", methods=["GET"])
 def list_edo() -> ResponseReturnValue:
     all_list = edo_queries.all_edo(read_session())
-    return api_response(data=EDOSchema(many=True).dump(all_list))
+    return api_response(data={"routes": EDOSchema(many=True).dump(all_list)})
 
 
 @bp.route("list/<uuid:record>", methods=["GET"])

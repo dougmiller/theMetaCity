@@ -1,0 +1,108 @@
+# theMetaCity — PRODUCTION stack (TLS + mTLS at the edge).
+#
+# Self-contained on purpose: run it explicitly with
+#   podman-compose -f podman-compose.prod.yml up -d      (or: make up-prod)
+# so your dev `podman-compose.yml` stays exactly as it is. Do NOT run both
+# stacks at once — they share host ports and secret files.
+#
+# KEEP IN SYNC with podman-compose.yml for the postgres/flask service defs.
+#
+# Differences from dev:
+#   - nginx terminates TLS on :443 and requires a client cert (mTLS).
+#   - nginx uses nginx.prod.conf + conf.d.prod and mounts ./podman/nginx/certs.
+#   - postgres is NOT published to the host (internal network only).
+#   - flask runs with FLASK_ENV=production (DEBUG must be off in prod).
+#
+# Prereqs: run scripts/gen-certs.sh first to create podman/nginx/certs/*.
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: tmc_postgres_prod
+    # no host port: the DB is reachable only on the internal `tmc` network.
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_DB: themetacity
+    secrets:
+      - postgres_password
+      - tmc_master_password
+      - tmc_selector_password
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql
+      - ./podman/postgres/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - tmc
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  flask-app:
+    build:
+      context: .
+      dockerfile: podman/flask/Dockerfile
+    container_name: tmc_flask_prod
+    environment:
+      - FLASK_ENV=production
+      - GUNICORN_WORKERS=4
+    volumes:
+      - ./.env.basic:/app/.env.basic:ro
+      - ./.env.database:/app/.env.database:ro
+    secrets:
+      - tmc_master_password
+      - tmc_selector_password
+    networks:
+      - tmc
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS -H 'Host: localhost' http://localhost:5000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  nginx:
+    image: nginx:1.30-alpine
+    container_name: tmc_nginx_prod
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./podman/nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      # prod server block; path matches `include /etc/nginx/conf.d.prod/*.conf`.
+      - ./podman/nginx/conf.d.prod:/etc/nginx/conf.d.prod:ro
+      - ./podman/nginx/certs:/etc/nginx/certs:ro
+      - nginx_logs_prod:/var/log/nginx
+    networks:
+      - tmc
+    depends_on:
+      - flask-app
+    restart: unless-stopped
+
+volumes:
+  postgres_data_prod:
+    driver: local
+  nginx_logs_prod:
+    driver: local
+
+networks:
+  tmc:
+    driver: bridge
+
+secrets:
+  # PROD uses podman's own secret store, not loose files. Create them rootful
+  # (matching the rootful stack) before `up`:  sudo podman secret create <name> -
+  # (see docs/deploy-linode.md Phase 5). Dev's podman-compose.yml still uses files.
+  postgres_password:
+    external: true
+  tmc_master_password:
+    external: true
+  tmc_selector_password:
+    external: true

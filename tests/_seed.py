@@ -12,7 +12,7 @@ import uuid
 
 import arrow
 
-from tmc.models.edo import EDO
+from tmc.models.edo import EDO, EdoMedia
 from tmc.models.media import Audio, Gallery, Image, Licence, Postcard
 from tmc.models.media.audio.file import File
 
@@ -140,3 +140,19 @@ def make_audio_file(session, audio) -> File:
     session.add(f)
     session.flush()
     return f
+
+
+def make_edo_media(session, edo, s3_key=None, content_type=None, kind="file", position=0) -> EdoMedia:
+    from tmc.models.edo import EdoMedia
+
+    media = EdoMedia(
+        id=uuid7(),
+        edo_id=edo.id,
+        s3_key=s3_key or _uniq("s3key"),
+        content_type=content_type,
+        kind=kind,
+        position=position,
+    )
+    session.add(media)
+    session.flush()
+    return media

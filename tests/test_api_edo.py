@@ -26,8 +26,8 @@ def test_list_edo_empty(client, db_session) -> None:
     assert resp.status_code == 200
     body = resp.get_json()
     assert body["success"] is True
-    # Empty result → api_response omits the `data` key (falsy list).
-    assert body.get("data", []) == []
+    # `data` is always present; empty result → routes is an empty list.
+    assert body["data"] == {"routes": []}
 
 
 def test_list_edo_with_row(client, db_session) -> None:
@@ -37,7 +37,7 @@ def test_list_edo_with_row(client, db_session) -> None:
     assert resp.status_code == 200
     body = resp.get_json()
     assert body["success"] is True
-    contents = [row["content"] for row in body["data"]]
+    contents = [row["content"] for row in body["data"]["routes"]]
     assert "first post" in contents
 
 
